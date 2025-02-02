@@ -1,20 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './SignupForm.module.css';
 import { Content } from 'antd/es/layout/layout';
-import { Col, Flex, Form, Row, Input, Checkbox, Button } from 'antd';
+import { Form, Input, Checkbox, Button } from 'antd';
 
 const SignupForm = () => {
+  const [form, setForm] = useState({ username: '', email: '', password: '' });
   const onFinish = (values) => {
     console.log('Success:', values);
   };
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+  const clickRegister = async () => {
+    const stringForm = JSON.stringify(form);
+    await fetch('http://127.0.0.1:5000/auth/register', {
+      method: 'POST',
+      body: stringForm,
+
+      // mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    })
+      // .then((res) => {
+      //   res.json();
+      // })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+  const onChangeForm = (value, type) => {
+    setForm({ ...form, [type]: value });
+  };
   return (
     <>
       <Content className={styles.container}>
         <Form
           className={styles.form_container}
+          on
           name="basic"
           labelCol={{
             span: 8,
@@ -30,6 +53,18 @@ const SignupForm = () => {
           autoComplete="off"
         >
           <Form.Item
+            label="이름"
+            name="username"
+            rules={[
+              {
+                required: true,
+                message: '닉네임을 입력해주세요!',
+              },
+            ]}
+          >
+            <Input onChange={(e) => onChangeForm(e.target.value, 'username')} />
+          </Form.Item>
+          <Form.Item
             label="이메일"
             name="이메일"
             rules={[
@@ -39,7 +74,10 @@ const SignupForm = () => {
               },
             ]}
           >
-            <Input type="email" />
+            <Input
+              type="email"
+              onChange={(e) => onChangeForm(e.target.value, 'email')}
+            />
           </Form.Item>
 
           <Form.Item
@@ -64,7 +102,9 @@ const SignupForm = () => {
               },
             ]}
           >
-            <Input.Password />
+            <Input.Password
+              onChange={(e) => onChangeForm(e.target.value, 'password')}
+            />
           </Form.Item>
 
           <Form.Item
@@ -77,7 +117,7 @@ const SignupForm = () => {
           </Form.Item>
 
           <Form.Item className={styles.form_bottom} label={null}>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" onClick={clickRegister}>
               가입
             </Button>
           </Form.Item>
