@@ -1,14 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './SignupForm.module.css';
 import { Content } from 'antd/es/layout/layout';
-import { Col, Flex, Form, Row, Input, Checkbox, Button } from 'antd';
+import { Col, Flex, Form, Row, Input, Checkbox, Button, Alert } from 'antd';
 
 const LoginForm = () => {
+  const [loginForm, setForm] = useState({
+    email: '',
+    password: '',
+  });
+  const [error, setError] = useState({
+    title: '',
+    contents: '',
+    errorOpen: false,
+  });
+
   const onFinish = (values) => {
     console.log('Success:', values);
   };
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
+  };
+  const clickLogin = async () => {
+    const stringForm = JSON.stringify(loginForm);
+    try {
+      const response = await fetch('http://127.0.0.1:5000/auth/login', {
+        method: 'POST',
+        body: stringForm,
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      });
+      if (!response.ok) {
+        //  에러 처리
+        const errorData = await response.json();
+        setError({
+          title: '로그인 실패!',
+          contents: errorData.message,
+          errorOpen: true,
+        });
+        return;
+      }
+
+      // 성공 처리
+      const data = await response.json();
+      alert(`로그인 성공!!`);
+    } catch (error) {
+      console.error('네트워크 오류:', error);
+      alert('서버와의 연결에 문제가 발생했습니다.');
+    }
+  };
+
+  const onChangeForm = (value, type) => {
+    setForm({ ...loginForm, [type]: value });
   };
   return (
     <>
@@ -32,7 +76,7 @@ const LoginForm = () => {
         >
           <Form.Item
             label="이메일"
-            name="이메일"
+            name="email"
             rules={[
               {
                 required: true,
@@ -40,12 +84,15 @@ const LoginForm = () => {
               },
             ]}
           >
-            <Input type="email" />
+            <Input
+              type="email"
+              onChange={(e) => onChangeForm(e.target.value, 'email')}
+            />
           </Form.Item>
 
           <Form.Item
             label="패스워드"
-            name="패스워드"
+            name="password"
             rules={[
               {
                 required: true,
@@ -53,7 +100,9 @@ const LoginForm = () => {
               },
             ]}
           >
-            <Input.Password />
+            <Input.Password
+              onChange={(e) => onChangeForm(e.target.value, 'password')}
+            />
           </Form.Item>
 
           <Form.Item
@@ -68,6 +117,7 @@ const LoginForm = () => {
 
         <Row style={{ width: '100%', placeContent: 'end' }}>
           <Button
+            onClick={clickLogin}
             className={styles.form_bottom}
             type="primary"
             htmlType="submit"
@@ -76,6 +126,15 @@ const LoginForm = () => {
           </Button>
         </Row>
       </Content>
+      {error.errorOpen && (
+        <Alert
+          message={error.title}
+          description={error.contents}
+          type="error"
+          closable
+          banner
+        />
+      )}
     </>
   );
 };

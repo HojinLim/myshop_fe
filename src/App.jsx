@@ -1,4 +1,5 @@
 import '@/assets/styles/index.css';
+import '@/assets/styles/global.scss';
 import SignupForm from '@/components/auth/SignupForm';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Landing from '@/components/Landing';
