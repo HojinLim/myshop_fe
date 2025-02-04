@@ -2,8 +2,16 @@ import React, { useState } from 'react';
 import styles from './SignupForm.module.css';
 import { Content } from 'antd/es/layout/layout';
 import { Col, Flex, Form, Row, Input, Checkbox, Button, Alert } from 'antd';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
+  if (user.id) {
+    navigate('/');
+  }
+
   const [loginForm, setForm] = useState({
     email: '',
     password: '',
@@ -23,14 +31,17 @@ const LoginForm = () => {
   const clickLogin = async () => {
     const stringForm = JSON.stringify(loginForm);
     try {
-      const response = await fetch('http://127.0.0.1:5000/auth/login', {
-        method: 'POST',
-        body: stringForm,
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACK_URL}/auth/login`,
+        {
+          method: 'POST',
+          body: stringForm,
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        }
+      );
       if (!response.ok) {
         //  에러 처리
         const errorData = await response.json();
@@ -44,6 +55,12 @@ const LoginForm = () => {
 
       // 성공 처리
       const data = await response.json();
+      console.log(data);
+
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+      }
+      window.location.href = '/';
       alert(`로그인 성공!!`);
     } catch (error) {
       console.error('네트워크 오류:', error);
@@ -126,6 +143,7 @@ const LoginForm = () => {
           </Button>
         </Row>
       </Content>
+      <a href="/signup">회원가입</a>
       {error.errorOpen && (
         <Alert
           message={error.title}
