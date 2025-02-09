@@ -1,22 +1,5 @@
-.container {
-  width: 80vw;
-  background-color: antiquewhite;
-  /* margin: auto; */
-  height: 50vh;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 15px;
-}
-.form_container {
-  padding: 3rem !important;
-  height: fit-content;
-  position: relative;
-}
-
-.form_bottom {
+/* .form_bottom {
   justify-self: end;
   text-align: end;
   margin-right: 25px;
-}
+} */

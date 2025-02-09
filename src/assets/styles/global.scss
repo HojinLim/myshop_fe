@@ -1,7 +1,24 @@
-.ant-alert.ant-alert-error {
-  // position: absolute;
-  // bottom: 0;
-  // right: 0;
-
-  // margin: 15px;
+.form_outer_container {
+  width: 80vw;
+  // background-color: antiquewhite;
+  height: fit-content;
+  // min-height: 100px;
+  // max-height: 600px;
+  width: 100%;
+  min-width: 500px;
+  max-width: 500px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 15px;
+}
+.form_container {
+  // padding: 3rem !important;
+  height: 90%;
+  position: relative;
+  input {
+    border-bottom: 1px solid black !important;
+    border-radius: 0;
+  }
 }

@@ -1,9 +1,22 @@
 import React, { useState } from 'react';
-import styles from './SignupForm.module.css';
+import styles from './LoginForm.module.css';
 import { Content } from 'antd/es/layout/layout';
-import { Col, Flex, Form, Row, Input, Checkbox, Button, Alert } from 'antd';
+import {
+  Col,
+  Flex,
+  Form,
+  Row,
+  Input,
+  Checkbox,
+  Button,
+  Alert,
+  Typography,
+} from 'antd';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import theme from '@/assets/styles/theme';
+import { LeftOutlined } from '@ant-design/icons';
+import FormHeader from './common/FormHeader';
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -73,16 +86,18 @@ const LoginForm = () => {
   };
   return (
     <>
-      <Content className={styles.container}>
+      <Content className="form_outer_container">
+        <FormHeader text="이메일로 로그인" />
         <Form
-          className={styles.form_container}
+          className="form_container"
           name="basic"
+          {...theme.commonFormProps}
           labelAlign="left"
           labelCol={{
             span: 8,
           }}
           wrapperCol={{
-            span: 16,
+            span: 24,
           }}
           initialValues={{
             remember: true,
@@ -92,7 +107,6 @@ const LoginForm = () => {
           autoComplete="off"
         >
           <Form.Item
-            label="이메일"
             name="email"
             rules={[
               {
@@ -101,6 +115,7 @@ const LoginForm = () => {
               },
             ]}
           >
+            <Typography.Title level={5}>이메일</Typography.Title>
             <Input
               type="email"
               onChange={(e) => onChangeForm(e.target.value, 'email')}
@@ -108,7 +123,6 @@ const LoginForm = () => {
           </Form.Item>
 
           <Form.Item
-            label="패스워드"
             name="password"
             rules={[
               {
@@ -117,33 +131,37 @@ const LoginForm = () => {
               },
             ]}
           >
+            <Typography.Title level={5}>패스워드</Typography.Title>
             <Input.Password
               onChange={(e) => onChangeForm(e.target.value, 'password')}
             />
           </Form.Item>
 
           <Form.Item
-            className="place-content-end"
+            className="place-self-end whitespace-nowrap"
             name="remember"
             valuePropName="checked"
-            label={null}
           >
-            <Checkbox>Remember me</Checkbox>
+            <Checkbox>정보 저장</Checkbox>
           </Form.Item>
         </Form>
 
-        <Row style={{ width: '100%', placeContent: 'end' }}>
-          <Button
-            onClick={clickLogin}
-            className={styles.form_bottom}
-            type="primary"
-            htmlType="submit"
-          >
-            로그인
-          </Button>
+        <Row>
+          <Col span={24}>
+            <Button
+              onClick={clickLogin}
+              className={styles.form_bottom}
+              type="primary"
+              htmlType="submit"
+            >
+              로그인
+            </Button>
+          </Col>
+          <a className="text-right w-full mt-3" href="/signup">
+            회원가입 바로가기
+          </a>
         </Row>
       </Content>
-      <a href="/signup">회원가입</a>
       {error.errorOpen && (
         <Alert
           message={error.title}
