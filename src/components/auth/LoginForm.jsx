@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './LoginForm.module.css';
 import { Content } from 'antd/es/layout/layout';
 import {
@@ -11,6 +11,7 @@ import {
   Button,
   Alert,
   Typography,
+  message,
 } from 'antd';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -20,10 +21,15 @@ import FormHeader from './common/FormHeader';
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  // antd 메시지 훅
+  const [messageApi, contextHolder] = message.useMessage();
   const user = useSelector((state) => state.user);
-  if (user.id) {
-    navigate('/');
-  }
+  // 이미 로그인 상태일 시 리다이렉트
+  useEffect(() => {
+    if (user.id) {
+      navigate('/');
+    }
+  }, [user]);
 
   const [loginForm, setForm] = useState({
     email: '',
@@ -73,8 +79,18 @@ const LoginForm = () => {
       if (data.token) {
         localStorage.setItem('token', data.token);
       }
-      window.location.href = '/';
-      alert(`로그인 성공!!`);
+      await messageApi
+        .open({
+          type: 'success',
+          content: '로그인 성공 :)',
+          duration: 2,
+        })
+        .then(() => {
+          navigate('/');
+        })
+        .catch((err) => {
+          console.log(err, '네트워크 오류 발생!');
+        });
     } catch (error) {
       console.error('네트워크 오류:', error);
       alert('서버와의 연결에 문제가 발생했습니다.');
@@ -86,6 +102,7 @@ const LoginForm = () => {
   };
   return (
     <>
+      {contextHolder}
       <Content className="form_outer_container">
         <FormHeader text="이메일로 로그인" />
         <Form

@@ -13,9 +13,11 @@ import {
 } from 'antd';
 import theme from '@/assets/styles/theme';
 import FormHeader from './common/FormHeader';
+import { useNavigate } from 'react-router-dom';
 
 const SignupForm = () => {
   const [form] = Form.useForm();
+  const navigate = useNavigate();
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [signupForm, setForm] = useState({
     username: '',
@@ -59,7 +61,11 @@ const SignupForm = () => {
 
       // 성공 처리
       const data = await response.json();
-      alert(`회원가입 성공: ${data.user.username}`);
+
+      if (data) {
+        alert(`회원가입 성공: ${data.user.username}`);
+        navigate('/login');
+      }
     } catch (error) {
       console.error('네트워크 오류:', error);
       alert('서버와의 연결에 문제가 발생했습니다.');

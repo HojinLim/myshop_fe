@@ -1,0 +1,18 @@
+.layout {
+  width: 100vw;
+  height: 100vh;
+}
+.sider {
+  width: 25%;
+  height: 100%;
+  background-color: white;
+}
+.sider_info_container {
+  height: 30%;
+  border-bottom: 1px solid black;
+  text-align: center;
+  place-items: center;
+
+  justify-self: center;
+  margin: auto;
+}

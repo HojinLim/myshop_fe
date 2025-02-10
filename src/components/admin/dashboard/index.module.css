@@ -1,0 +1,14 @@
+.header {
+  background-color: transparent;
+  border-bottom: 1px solid #ccc;
+  height: fit-content;
+  padding: 0 10px;
+}
+
+.content {
+  height: 100vh;
+}
+.content_container {
+  height: 300px;
+  border: 1px solid black;
+}

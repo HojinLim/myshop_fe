@@ -14,6 +14,7 @@ const fetchUserInfo = async (setUser) => {
 
     if (response.ok) {
       const userData = await response.json();
+
       setUser(userData);
     } else {
       console.log('토큰이 만료되었거나 유효하지 않습니다.');

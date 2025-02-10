@@ -3,7 +3,12 @@ import '@/assets/styles/global.scss';
 import SignupForm from '@/components/auth/SignupForm';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Landing from '@/components/Landing';
-import LoginForm from './components/auth/LoginForm';
+import AdminLanding from '@/components/admin';
+import Dashboard from '@/components/admin/dashboard';
+import Settings from '@/components/admin/settings';
+import Users from '@/components/admin/users';
+import LoginForm from '@/components/auth/LoginForm';
+
 import { useEffect, useState } from 'react';
 import { fetchUserInfo } from './api';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,6 +33,13 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Landing />} />
+        {/* 부모 */}
+        <Route path="/admin" element={<AdminLanding />}>
+          {/* 자식 */}
+          <Route path="dashboard" element={<Dashboard />} index />
+          <Route path="settings" element={<Settings />} />
+          <Route path="users" element={<Users />} />
+        </Route>
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/login" element={<LoginForm />} />
       </Routes>

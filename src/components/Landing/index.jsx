@@ -28,7 +28,7 @@ const Landing = () => {
   const logout = () => {
     localStorage.removeItem('token');
     // 초기화
-    dispatch(setUser({ id: '', username: '', email: '' }));
+    dispatch(setUser({ id: '', username: '', email: '', role: '' }));
   };
 
   return (

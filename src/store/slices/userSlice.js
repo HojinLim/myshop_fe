@@ -6,6 +6,7 @@ const userSlice = createSlice({
     id: '',
     email: '',
     username: '',
+    role: '',
   },
   reducers: {
     setUser: (state, action) => {
