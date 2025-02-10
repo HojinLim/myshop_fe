@@ -1,9 +1,23 @@
 import { setUser } from '@/store/slices/userSlice';
-import { Avatar, Button, Col, Input, Layout, Row, Typography } from 'antd';
+import {
+  Avatar,
+  Button,
+  Carousel,
+  Col,
+  Input,
+  Layout,
+  Row,
+  Typography,
+} from 'antd';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './index.module.css';
-import Icon, { SearchOutlined, HomeOutlined } from '@ant-design/icons';
+import Icon, {
+  SearchOutlined,
+  HomeOutlined,
+  UnorderedListOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import logo from '@/assets/images/logo.png';
 const Landing = () => {
   const { Content, Header, Footer } = Layout;
@@ -23,7 +37,7 @@ const Landing = () => {
         <Header className={styles.header}>
           <Row>
             <Col span={23}>
-              <Input prefix={<SearchOutlined />}></Input>
+              <Input prefix={<SearchOutlined />} allowClear></Input>
             </Col>
             <Col span={1}>
               <Avatar src={logo} />
@@ -31,13 +45,28 @@ const Landing = () => {
           </Row>
         </Header>
         <Content>
-          <Row className={styles.ad}>
-            <Col span={24}>이거슨 광고여</Col>
+          <Row>
+            <Col span={24}>
+              <Carousel arrows infinite>
+                <div className={styles.ad_contaier}>
+                  <img className={styles.ad} src={logo} />
+                </div>
+                <div className={styles.ad_contaier}>
+                  <img className={styles.ad} src={logo} />
+                </div>
+                <div className={styles.ad_contaier}>
+                  <img className={styles.ad} src={logo} />
+                </div>
+                <div className={styles.ad_contaier}>
+                  <img className={styles.ad} src={logo} />
+                </div>
+              </Carousel>
+            </Col>
           </Row>
           <Row>
             <Col span={2}></Col>
             {Array.from({ length: 5 }).map((_, index) => (
-              <Col className="cursor-pointer text-center" span={4}>
+              <Col className="cursor-pointer text-center" key={index} span={4}>
                 <img src={logo} />
                 <Title level={5}>신발</Title>
               </Col>
@@ -47,7 +76,7 @@ const Landing = () => {
           <Row>
             <Col span={2}></Col>
             {Array.from({ length: 5 }).map((_, index) => (
-              <Col className="cursor-pointer text-center" span={4}>
+              <Col key={index} className="cursor-pointer text-center" span={4}>
                 <img src={logo} />
                 <Title level={5}>신발</Title>
               </Col>
@@ -76,20 +105,20 @@ const Landing = () => {
         <Footer className={styles.footer}>
           <Row className="text-center">
             <Col className="cursor-pointer" span={6}>
-              <HomeOutlined />
+              <HomeOutlined className={styles.icon} />
               <Title level={5}>홈</Title>
             </Col>
             <Col className="cursor-pointer" span={6}>
-              <HomeOutlined />
-              <Title level={5}>홈</Title>
-            </Col>{' '}
+              <UnorderedListOutlined className={styles.icon} />
+              <Title level={5}>전체보기</Title>
+            </Col>
             <Col className="cursor-pointer" span={6}>
-              <HomeOutlined />
-              <Title level={5}>홈</Title>
-            </Col>{' '}
+              <SearchOutlined className={styles.icon} />
+              <Title level={5}>검색</Title>
+            </Col>
             <Col className="cursor-pointer" span={6}>
-              <HomeOutlined />
-              <Title level={5}>홈</Title>
+              <UserOutlined className={styles.icon} />
+              <Title level={5}>마이페이지</Title>
             </Col>
           </Row>
         </Footer>
