@@ -36,10 +36,10 @@ const Landing = () => {
       <Layout className={styles.layout}>
         <Header className={styles.header}>
           <Row>
-            <Col span={23}>
+            <Col span={22}>
               <Input prefix={<SearchOutlined />} allowClear></Input>
             </Col>
-            <Col span={1}>
+            <Col span={2}>
               <Avatar src={logo} />
             </Col>
           </Row>
