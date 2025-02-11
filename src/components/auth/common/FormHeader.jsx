@@ -12,8 +12,8 @@ const FormHeader = (props) => {
   };
   return (
     <Row className="mb-7">
-      <Col span={4}>
-        <Button icon={<LeftOutlined />} onClick={() => go(-1)}></Button>
+      <Col span={4} className="self-center">
+        <LeftOutlined className="cursor-pointer" onClick={() => go(-1)} />
       </Col>
       <Col className="text-center" span={16}>
         <Avatar

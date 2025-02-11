@@ -16,7 +16,9 @@ const index = () => {
   const user = useSelector((state) => state.user);
   // 어드민 권한이 아닐 시 리다이렉트
   useEffect(() => {
-    if (user.role && user.role !== 'admin') {
+    console.log(user);
+
+    if ((user.role && user.role !== 'admin') || !user.role) {
       navigate('/');
     }
   }, [user]);
