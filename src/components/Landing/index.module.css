@@ -6,6 +6,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
+  max-width: 600px;
 }
 .header {
   padding: 0;
@@ -49,6 +50,7 @@
   right: 0;
   width: 70%;
   justify-self: center;
+  max-width: 600px;
 }
 
 .icon {
