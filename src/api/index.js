@@ -23,5 +23,21 @@ const fetchUserInfo = async (setUser) => {
     console.error('사용자 정보를 가져오는 중 오류 발생:', error);
   }
 };
+const getAllUsers = async (setData) => {
+  try {
+    const response = await fetch(`${back_url}/admin/getAllUsers`);
 
-export { fetchUserInfo };
+    if (response.ok) {
+      const data = await response.json();
+      // 테이블에 필요한 키 설정
+      const users = data.users.map((user) => ({ ...user, key: user.id }));
+      setData(users);
+    } else {
+      console.log('시스템 오류 발생생.');
+    }
+  } catch (error) {
+    console.error(' 오류 발생:', error);
+  }
+};
+
+export { fetchUserInfo, getAllUsers };

@@ -1,0 +1,33 @@
+.header {
+  padding: 0;
+  background-color: transparent;
+  text-align: center;
+}
+
+.ad_contaier {
+  margin: 0;
+  width: 100%;
+  height: 30vh;
+  min-height: 160px;
+  max-height: 350px;
+  color: black;
+  line-height: 160px;
+  text-align: center;
+  background: #364d79;
+}
+.ad {
+  justify-self: center;
+  object-fit: cover;
+  height: 90%;
+  width: 100%;
+  max-width: fit-content;
+}
+
+.item_info_container {
+  align-items: center !important;
+}
+.item_info {
+  display: flex;
+  flex-direction: column;
+  align-items: center !important;
+}

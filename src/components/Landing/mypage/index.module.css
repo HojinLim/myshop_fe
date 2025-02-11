@@ -1,0 +1,15 @@
+.menu_container {
+  cursor: pointer;
+  &:active {
+    & {
+      background-color: aliceblue;
+    }
+    .icon {
+      background-color: aliceblue;
+    }
+  }
+
+  div {
+    padding: 24px;
+  }
+}

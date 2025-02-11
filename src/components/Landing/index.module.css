@@ -8,39 +8,7 @@
   position: relative;
   max-width: 600px;
 }
-.header {
-  padding: 0;
-  background-color: transparent;
-  text-align: center;
-}
 
-.ad_contaier {
-  margin: 0;
-  width: 100%;
-  height: 30vh;
-  min-height: 160px;
-  max-height: 350px;
-  color: black;
-  line-height: 160px;
-  text-align: center;
-  background: #364d79;
-}
-.ad {
-  justify-self: center;
-  object-fit: cover;
-  height: 90%;
-  width: 100%;
-  max-width: fit-content;
-}
-
-.item_info_container {
-  align-items: center !important;
-}
-.item_info {
-  display: flex;
-  flex-direction: column;
-  align-items: center !important;
-}
 .footer {
   background-color: white;
   border-top: 1px solid #eee;
@@ -55,4 +23,14 @@
 
 .icon {
   font-size: 24px;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+}
+/*  .selected가 있을 때 스타일 적용 */
+:global(.selected) {
+  color: #4096ff;
+  h5 {
+    color: #4096ff;
+  }
 }
