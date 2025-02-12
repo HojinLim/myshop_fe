@@ -17,14 +17,14 @@ const Landing = () => {
 
   const location = useLocation();
   const [selectedId, setSelectedId] = useState(0);
-  const [route, setRoute] = useState(null);
+
   const navigate = useNavigate();
 
   const menuList = [
     { icon: <HomeOutlined />, text: '홈', value: '/' },
     { icon: <UnorderedListOutlined />, text: '전체보기', value: '/' },
     { icon: <SearchOutlined />, text: '검색', value: '/' },
-    { icon: <UserOutlined />, text: '마이페이지', value: 'mypage' },
+    { icon: <UserOutlined />, text: '마이페이지', value: '/mypage' },
   ];
   console.log(user);
 
@@ -32,23 +32,21 @@ const Landing = () => {
     setSelectedId(id);
 
     const routeName = menuList[id]['value'];
-    setRoute(routeName);
 
     navigate(routeName);
   };
   useEffect(() => {
-    if (location.pathname === '/') {
-      setSelectedId(0);
-    }
+    const idx = menuList.findIndex((el, idx) => el.value === location.pathname);
+    setSelectedId(idx);
   }, [location.pathname]);
   useEffect(() => {
     if (user.id === '') {
-      if (route === 'mypage') {
+      if (location.pathname === 'mypage') {
         navigate('/login');
         return;
       }
     }
-  }, [user, route]);
+  }, [user, location.pathname]);
 
   return (
     <>

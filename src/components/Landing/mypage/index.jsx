@@ -6,6 +6,7 @@ import styles from './index.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setUser } from '@/store/slices/userSlice';
+import MenuHeader from '@/components/common/MenuHeader';
 const index = () => {
   const { Title, Text } = Typography;
   const dispatch = useDispatch();
@@ -17,24 +18,17 @@ const index = () => {
     dispatch(setUser({ id: '', username: '', email: '', role: '' }));
     navigate('/');
   };
-  if (user.id === '') {
-    navigate('/login');
-    return;
-  }
+
   return (
     <Content>
-      <Row className="py-6">
-        <Col className="icon" span={4}>
-          <LeftOutlined />
-        </Col>
-        <Col span={16}>
-          <Title level={5} className="text-center">
-            마이페이지
-          </Title>
-        </Col>
-        <Col span={2}></Col>
-      </Row>
-      <Row className={styles.menu_container}>
+      <MenuHeader title="마이 페이지" />
+
+      <Row
+        className={styles.menu_container}
+        onClick={() => {
+          navigate('/mypage/profile');
+        }}
+      >
         <Col span={22}>
           <Text>회원 정보 수정</Text>
         </Col>

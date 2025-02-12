@@ -10,6 +10,7 @@ import {
 import HomeLanding from '@/components/Landing';
 import Home from '@/components/Landing/home';
 import Mypage from '@/components/Landing/mypage';
+import Profile from '@/components/Landing/mypage/profile';
 import AdminLanding from '@/components/admin';
 import Dashboard from '@/components/admin/dashboard';
 import Settings from '@/components/admin/settings';
@@ -43,6 +44,8 @@ function App() {
         <Route path="/" element={<HomeLanding />}>
           <Route path="/" element={<Home />} index />
           <Route path="/mypage" element={<Mypage />} />
+
+          <Route path="/mypage/profile" element={<Profile />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

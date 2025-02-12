@@ -3,7 +3,6 @@ import styles from './LoginForm.module.css';
 import { Content } from 'antd/es/layout/layout';
 import {
   Col,
-  Flex,
   Form,
   Row,
   Input,
@@ -16,7 +15,7 @@ import {
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import theme from '@/assets/styles/theme';
-import { LeftOutlined } from '@ant-design/icons';
+
 import FormHeader from './common/FormHeader';
 
 const LoginForm = () => {
@@ -123,6 +122,7 @@ const LoginForm = () => {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
+          <Typography.Title level={5}>이메일</Typography.Title>
           <Form.Item
             name="email"
             rules={[
@@ -132,13 +132,13 @@ const LoginForm = () => {
               },
             ]}
           >
-            <Typography.Title level={5}>이메일</Typography.Title>
             <Input
               type="email"
               onChange={(e) => onChangeForm(e.target.value, 'email')}
             />
           </Form.Item>
 
+          <Typography.Title level={5}>패스워드</Typography.Title>
           <Form.Item
             name="password"
             rules={[
@@ -148,7 +148,6 @@ const LoginForm = () => {
               },
             ]}
           >
-            <Typography.Title level={5}>패스워드</Typography.Title>
             <Input.Password
               onChange={(e) => onChangeForm(e.target.value, 'password')}
             />
