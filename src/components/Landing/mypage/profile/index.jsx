@@ -33,9 +33,7 @@ const index = () => {
       // FormData로 파일 서버로 전송
       const formData = new FormData();
       formData.append('profileImage', uploadFile);
-      // if (user && user.id !== '') {
-      //   const user = { id: '1' };
-      // }
+
       formData.append('user', user);
       uploadProfile(formData);
     }
