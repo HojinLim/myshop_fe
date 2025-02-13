@@ -5,20 +5,34 @@ import MenuHeader from '@/components/common/MenuHeader';
 import { Content } from 'antd/es/layout/layout';
 import { CameraFilled, UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Col, Row, Typography } from 'antd';
-import { uploadProfile } from '@/api';
+
 import { useSelector } from 'react-redux';
+import supabase from '@/config/supabase';
+import { createBucketIfNotExists } from '@/functions';
 const index = () => {
   const [uploadImgUrl, setUploadImgUrl] = useState(null);
   const user = useSelector((state) => state.user);
+  const bucketname = 'profileUrl';
   const clcikUpload = () => {
     photoRef.current.click();
   };
   const photoRef = useRef(null);
 
   // 사진 input 핸들러
-  const onchangeImageUpload = (e) => {
+  const onchangeImageUpload = async (e) => {
     const { files } = e.target;
     const uploadFile = files[0];
+
+    // const filePath = `profiles/${user.id}/${uploadFile.name}`;
+
+    // const { data, error } = await supabase.storage
+    //   .from(bucketname)
+    //   .upload(filePath, uploadFile);
+
+    // if (error.message === 'The resource already exists') {
+    //   console.log('이미 있어');
+    //   return null;
+    // }
 
     if (uploadFile) {
       const reader = new FileReader();
@@ -28,14 +42,36 @@ const index = () => {
         setUploadImgUrl(reader.result);
       };
 
-      reader.readAsDataURL(uploadFile);
+      // reader.readAsDataURL(uploadFile);
+      // Use the JS library to create a bucket.
 
-      // FormData로 파일 서버로 전송
-      const formData = new FormData();
-      formData.append('profileImage', uploadFile);
+      // 프로필 버킷 생성
 
-      formData.append('user', user);
-      uploadProfile(formData);
+      await createBucketIfNotExists(bucketname);
+      return;
+      // return data.path; // 파일 경로 반환
+
+      const filePath = `profiles/${user.id}/${uploadFile.name}`;
+
+      const { data, error } = supabase.storage
+        .from(bucketname)
+        .upload(filePath, uploadFile, { upsert: true });
+
+      if (error) {
+        console.error('업로드 실패:', error.message);
+        return null;
+      }
+      console.log(data);
+    }
+  };
+  const getProfileImageUrl = async (filePath) => {
+    try {
+      const { data } = supabase.storage.from(bucketname).getPublicUrl(filePath);
+      return data.publicUrl;
+    } catch (error) {
+      console.log(error);
+
+      retrun;
     }
   };
 

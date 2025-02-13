@@ -38,24 +38,5 @@ const getAllUsers = async (setData) => {
     console.error(' 오류 발생:', error);
   }
 };
-const uploadProfile = async (formData) => {
-  try {
-    const response = await fetch(`${back_url}/auth/upload_profile`, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const result = await response.json();
-    if (result.success) {
-      console.log('Upload successful:', result.imageUrl);
-    } else {
-      console.error('Upload failed');
-    }
-  } catch (error) {
-    console.error('Error uploading file:', error);
-  }
-};
 
-export { fetchUserInfo, getAllUsers, uploadProfile };
+export { fetchUserInfo, getAllUsers };
