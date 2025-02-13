@@ -7,12 +7,11 @@ import { CameraFilled, UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Col, Row, Typography } from 'antd';
 
 import { useSelector } from 'react-redux';
-import supabase from '@/config/supabase';
-import { createBucketIfNotExists } from '@/functions';
+
 const index = () => {
   const [uploadImgUrl, setUploadImgUrl] = useState(null);
-  const user = useSelector((state) => state.user);
-  const bucketname = 'profileUrl';
+  const user = useSelector((state) => state.user.data);
+
   const clcikUpload = () => {
     photoRef.current.click();
   };
@@ -23,17 +22,6 @@ const index = () => {
     const { files } = e.target;
     const uploadFile = files[0];
 
-    // const filePath = `profiles/${user.id}/${uploadFile.name}`;
-
-    // const { data, error } = await supabase.storage
-    //   .from(bucketname)
-    //   .upload(filePath, uploadFile);
-
-    // if (error.message === 'The resource already exists') {
-    //   console.log('이미 있어');
-    //   return null;
-    // }
-
     if (uploadFile) {
       const reader = new FileReader();
 
@@ -41,37 +29,6 @@ const index = () => {
         // 미리보기 이미지 URL 설정
         setUploadImgUrl(reader.result);
       };
-
-      // reader.readAsDataURL(uploadFile);
-      // Use the JS library to create a bucket.
-
-      // 프로필 버킷 생성
-
-      await createBucketIfNotExists(bucketname);
-      return;
-      // return data.path; // 파일 경로 반환
-
-      const filePath = `profiles/${user.id}/${uploadFile.name}`;
-
-      const { data, error } = supabase.storage
-        .from(bucketname)
-        .upload(filePath, uploadFile, { upsert: true });
-
-      if (error) {
-        console.error('업로드 실패:', error.message);
-        return null;
-      }
-      console.log(data);
-    }
-  };
-  const getProfileImageUrl = async (filePath) => {
-    try {
-      const { data } = supabase.storage.from(bucketname).getPublicUrl(filePath);
-      return data.publicUrl;
-    } catch (error) {
-      console.log(error);
-
-      retrun;
     }
   };
 

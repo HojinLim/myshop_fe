@@ -11,31 +11,29 @@ import HomeLanding from '@/components/Landing';
 import Home from '@/components/Landing/home';
 import Mypage from '@/components/Landing/mypage';
 import Profile from '@/components/Landing/mypage/profile';
+// 어드민
 import AdminLanding from '@/components/admin';
 import Dashboard from '@/components/admin/dashboard';
 import Settings from '@/components/admin/settings';
 import Users from '@/components/admin/users';
+import Products from '@/components/admin/products';
+
 import LoginForm from '@/components/auth/LoginForm';
 import NotFound from '@/components/notfound';
 
 import { useEffect, useState } from 'react';
-import { fetchUserInfo } from './api';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from './store/slices/userSlice';
+import { fetchUserInfo } from './store/slices/userSlice';
 
 function App() {
-  const [user, setMyUser] = useState(null);
-
-  const myUser = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user.data);
+  const login = useSelector((state) => state.login);
   const dispatch = useDispatch();
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
-    fetchUserInfo(setMyUser);
-  }, [window.location.href]);
-
-  useEffect(() => {
-    dispatch(setUser(user));
-  }, [user]);
+    dispatch(fetchUserInfo());
+  }, []);
 
   return (
     // 라우터
@@ -53,6 +51,7 @@ function App() {
         <Route path="/admin" element={<AdminLanding />}>
           {/* 어드민 자식 라우터*/}
           <Route path="dashboard" element={<Dashboard />} index />
+          <Route path="products" element={<Products />} />
           <Route path="settings" element={<Settings />} />
           <Route path="users" element={<Users />} />
         </Route>

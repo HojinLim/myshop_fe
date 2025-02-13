@@ -12,23 +12,19 @@ import {
   Typography,
   message,
 } from 'antd';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import theme from '@/assets/styles/theme';
 
 import FormHeader from './common/FormHeader';
+import { fetchUserInfo, login } from '@/store/slices/userSlice';
 
 const LoginForm = () => {
   const navigate = useNavigate();
   // antd 메시지 훅
   const [messageApi, contextHolder] = message.useMessage();
-  const user = useSelector((state) => state.user);
-  // 이미 로그인 상태일 시 리다이렉트
-  useEffect(() => {
-    if (user.id) {
-      navigate('/');
-    }
-  }, [user]);
+  const user = useSelector((state) => state.user.data);
+  const dispatch = useDispatch();
 
   const [loginForm, setForm] = useState({
     email: '',
@@ -85,8 +81,12 @@ const LoginForm = () => {
           duration: 2,
         })
         .then(() => {
+          // 로그인 성공 후 유저 정보 가져오기
+          dispatch(fetchUserInfo()); // 유저 정보 가져오기
+          // 홈으로 이동
           navigate('/');
         })
+
         .catch((err) => {
           console.log(err, '네트워크 오류 발생!');
         });

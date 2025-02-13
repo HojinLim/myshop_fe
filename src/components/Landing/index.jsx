@@ -13,7 +13,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 const Landing = () => {
   const { Footer } = Layout;
   const { Title, Text } = Typography;
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user.data);
 
   const location = useLocation();
   const [selectedId, setSelectedId] = useState(0);
@@ -26,21 +26,20 @@ const Landing = () => {
     { icon: <SearchOutlined />, text: '검색', value: '/' },
     { icon: <UserOutlined />, text: '마이페이지', value: '/mypage' },
   ];
-  console.log(user);
 
   const clickMenu = (id) => {
     setSelectedId(id);
 
     const routeName = menuList[id]['value'];
-
     navigate(routeName);
   };
+  // 주소창 path 변경마다 메뉴 인덱스 상태 변경
   useEffect(() => {
     const idx = menuList.findIndex((el, idx) => el.value === location.pathname);
     setSelectedId(idx);
   }, [location.pathname]);
   useEffect(() => {
-    if (user.id === '') {
+    if (!user) {
       if (location.pathname === 'mypage') {
         navigate('/login');
         return;
