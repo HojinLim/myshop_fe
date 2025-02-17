@@ -10,7 +10,7 @@ const getAllUsers = async (setData) => {
       const users = data.users.map((user) => ({ ...user, key: user.id }));
       setData(users);
     } else {
-      console.log('시스템 오류 발생생.');
+      console.log('시스템 오류 발생.');
     }
   } catch (error) {
     console.error(' 오류 발생:', error);

@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { useNavigate } from 'react-router-dom';
 const back_url = import.meta.env.VITE_BACK_URL;
 
 // ✅ 비동기 API 요청 (Thunk 사용)
@@ -16,11 +15,13 @@ export const fetchUserInfo = createAsyncThunk(
       });
 
       if (!response.ok) {
+        localStorage.removeItem('token');
         throw new Error('유저 정보를 가져오는데 실패했습니다.');
       }
 
       return await response.json(); // 성공 시 반환되는 값
     } catch (error) {
+      localStorage.removeItem('token');
       return rejectWithValue(error.message); // 실패 시 반환되는 에러 메시지
     }
   }
@@ -34,6 +35,7 @@ const userSlice = createSlice({
       email: '',
       username: '',
       role: '',
+      profileUrl: '',
     },
     loading: false,
     error: null,

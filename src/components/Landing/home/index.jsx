@@ -4,7 +4,6 @@ import { Content, Header } from 'antd/es/layout/layout';
 import { SearchOutlined } from '@ant-design/icons';
 import { Avatar, Carousel, Col, Input, Row, Typography } from 'antd';
 import logo from '@/assets/images/logo.png';
-import Loading from '@/components/common/Loading';
 const index = () => {
   const { Text, Title } = Typography;
   return (
