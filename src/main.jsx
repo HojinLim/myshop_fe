@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import '@/assets/styles/index.css';
 import '@/assets/styles/global.scss';
+import 'antd/dist/reset.css'; // Ant Design 스타일시트
 import App from './App.jsx';
 
 // 리덕스 툴킷 provider

@@ -1,12 +1,7 @@
 import '@/assets/styles/index.css';
 import '@/assets/styles/global.scss';
 import SignupForm from '@/components/auth/SignupForm';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomeLanding from '@/components/Landing';
 import Home from '@/components/Landing/home';
 import Mypage from '@/components/Landing/mypage';
