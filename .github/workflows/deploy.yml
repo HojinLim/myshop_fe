@@ -26,7 +26,6 @@ jobs:
 
       - name: Build the project
         run: |
-          echo "VITE_BACK_URL is: $VITE_BACK_URL"
           yarn build  # 빌드 결과물을 생성
 
       - name: Upload build files to EC2
@@ -45,6 +44,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }} # EC2 사용자 이름 (예: ec2-user, ubuntu)
           key: ${{ secrets.EC2_SSH_KEY }} # EC2 SSH 키 (Private Key)
           script: |
-            sudo mv /home/ubuntu/dist/* /var/www/frontend/  # 일반 사용자 디렉토리에서 Nginx가 있는 디렉토리로 파일 이동
+            sudo rm -rf /var/www/frontend/*
+            sudo mv -f /home/ubuntu/dist/* /var/www/frontend/  # 일반 사용자 디렉토리에서 Nginx가 있는 디렉토리로 파일 이동
             sudo chown -R www-data:www-data /var/www/frontend  # Nginx 사용자 권한으로 변경
             sudo systemctl restart nginx  # Nginx 서버 재시작
