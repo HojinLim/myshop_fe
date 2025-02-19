@@ -8,6 +8,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      VITE_BACK_URL: ${{ secrets.VITE_BACK_URL }}
 
     steps:
       - name: Checkout code
@@ -17,11 +19,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '22.13.1'
-
-      - name: Create Sentry release
-        uses: getsentry/action-release@v1
-        env:
-          VITE_BACK_URL: ${{ secrets.VITE_BACK_URL }} # GitHub Secrets에서 VITE_BACK_URL 값 가져오기
 
       - name: Install dependencies
         run: |
