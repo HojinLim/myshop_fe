@@ -44,9 +44,11 @@ const LoginForm = () => {
   };
   const clickLogin = async () => {
     const stringForm = JSON.stringify(loginForm);
+    const url = import.meta.env.VITE_BACK_URL || 'http://video-down.shop/api';
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BACK_URL}/auth/login`,
+        // `${import.meta.env.VITE_BACK_URL}/auth/login`,
+        `${url}/auth/login`,
         {
           method: 'POST',
           body: stringForm,
