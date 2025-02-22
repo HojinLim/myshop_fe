@@ -16,6 +16,9 @@ import Products from '@/components/admin/products';
 import LoginForm from '@/components/auth/LoginForm';
 import NotFound from '@/components/notfound';
 
+// 결제
+import Payment from '@/components/payment';
+
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from './store/slices/userSlice';
@@ -50,6 +53,8 @@ function App() {
           <Route path="settings" element={<Settings />} />
           <Route path="users" element={<Users />} />
         </Route>
+        <Route path="/payment" element={<Payment />}></Route>
+
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/login" element={<LoginForm />} />
       </Routes>

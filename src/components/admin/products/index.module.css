@@ -1,3 +1,8 @@
 .product_page_container {
   height: 100%;
 }
+
+.update_button {
+  margin-top: 25px;
+  width: 100%;
+}

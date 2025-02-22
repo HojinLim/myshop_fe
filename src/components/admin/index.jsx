@@ -12,7 +12,7 @@ import {
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Notfound from '@/components/notfound';
-import Loading from '../common/Loading';
+
 const index = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.data);

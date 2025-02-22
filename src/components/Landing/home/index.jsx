@@ -4,6 +4,7 @@ import { Content, Header } from 'antd/es/layout/layout';
 import { SearchOutlined } from '@ant-design/icons';
 import { Avatar, Carousel, Col, Input, Row, Typography } from 'antd';
 import logo from '@/assets/images/logo.png';
+import { MenuItem } from '@/components/common/MenuItem';
 const index = () => {
   const { Text, Title } = Typography;
   return (
@@ -41,20 +42,14 @@ const index = () => {
         <Row>
           <Col span={2}></Col>
           {Array.from({ length: 5 }).map((_, index) => (
-            <Col className="cursor-pointer text-center" key={index} span={4}>
-              <img src={logo} />
-              <Title level={5}>신발</Title>
-            </Col>
+            <MenuItem index={index} image={logo} text={'신발'} />
           ))}
           <Col span={2}></Col>
         </Row>
         <Row>
           <Col span={2}></Col>
           {Array.from({ length: 5 }).map((_, index) => (
-            <Col key={index} className="cursor-pointer text-center" span={4}>
-              <img src={logo} />
-              <Title level={5}>신발</Title>
-            </Col>
+            <MenuItem index={index} image={logo} text={'신발'} />
           ))}
           <Col span={2}></Col>
         </Row>

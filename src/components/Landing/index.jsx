@@ -52,7 +52,10 @@ const Landing = () => {
       <Layout className={styles.layout}>
         <Outlet />
 
-        <ConfigProvider wave={{ disabled: true }}>
+        <ConfigProvider
+          wave={{ disabled: true }}
+          typography={{ style: { margin: '0 !important', padding: 0 } }}
+        >
           <Footer className={styles.footer}>
             <Row className="text-center">
               {menuList.map((value, index) => (

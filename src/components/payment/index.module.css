@@ -1,0 +1,35 @@
+.payment_container {
+  position: relative;
+  height: 100vh;
+}
+.menu_container {
+  h4 {
+    margin: 0 !important;
+  }
+}
+.item_container {
+  background-color: #eee;
+  padding: 15px;
+  margin-top: 10px;
+}
+.button_container {
+  button {
+    width: 100%;
+  }
+}
+
+.bottom_container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 15px 0;
+
+  button {
+    width: 100%;
+    color: white;
+    background-color: rgb(250, 108, 108);
+    padding: 20px;
+    font-weight: 600;
+  }
+}
