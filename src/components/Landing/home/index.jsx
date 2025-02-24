@@ -7,6 +7,19 @@ import logo from '@/assets/images/logo.png';
 import { MenuItem } from '@/components/common/MenuItem';
 const index = () => {
   const { Text, Title } = Typography;
+  const productList = [
+    { index: 1, image: logo, category: '전체' },
+    { index: 2, image: logo, category: '신발' },
+    { index: 3, image: logo, category: '양말' },
+    { index: 4, image: logo, category: '상의' },
+    { index: 5, image: logo, category: '하의' },
+    { index: 6, image: logo, category: '아우터' },
+    { index: 7, image: logo, category: '악세사리' },
+    { index: 8, image: logo, category: '반지' },
+    { index: 9, image: logo, category: '주얼리' },
+    { index: 10, image: logo, category: 'etc' },
+  ];
+
   return (
     <>
       <Header className={styles.header}>
@@ -41,15 +54,15 @@ const index = () => {
         </Row>
         <Row>
           <Col span={2}></Col>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <MenuItem index={index} image={logo} text={'신발'} />
+          {productList.slice(0, 5).map((item, idx) => (
+            <MenuItem key={idx} item={item} />
           ))}
           <Col span={2}></Col>
         </Row>
         <Row>
           <Col span={2}></Col>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <MenuItem index={index} image={logo} text={'신발'} />
+          {productList.slice(5, 10).map((item, idx) => (
+            <MenuItem key={idx} item={item} />
           ))}
           <Col span={2}></Col>
         </Row>

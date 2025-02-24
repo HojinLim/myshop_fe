@@ -1,5 +1,6 @@
 import { getAllUsers } from '@/api';
 import { Table } from 'antd';
+import dayjs from '@/utils/dayjs'; // 경로는 프로젝트에 맞게 수정
 import React, { useEffect, useState } from 'react';
 
 const UserTable = () => {
@@ -8,30 +9,31 @@ const UserTable = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // const fetchUsers = async () => {
-    //   try {
-    //     setLoading(true);
-    //     await getAllUsers(setData).then(() => {
-    //       console.log(data);
-    //     });
-    //     const users = data.map((user) => ({ ...user, key: user.id }));
-    //     setData(users); // key 설정
-    //   } catch (error) {
-    //     console.error('Failed to fetch users:', error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-
-    getAllUsers(setData);
+    fetchUser();
   }, []);
+  const fetchUser = async () => {
+    await getAllUsers()
+      .then((res) => {
+        console.log(res.users);
+
+        const filtered = res.users.map((data, idx) => {
+          return {
+            ...data,
+            updatedAt: dayjs(data.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
+            createdAt: dayjs(data.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+          };
+        });
+        setData(filtered);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   useEffect(() => {
     if (!data) {
       setLoading(true);
     } else {
-      // key 설정
-      // const users = data.map((user) => ({ ...user, key: user.id }));
-      // setData(users);
       setLoading(false);
     }
     console.log(data);

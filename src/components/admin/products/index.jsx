@@ -1,11 +1,27 @@
-import { Avatar, Button, Col, Form, Image, Input, Row, Typography } from 'antd';
+import {
+  Avatar,
+  Button,
+  Col,
+  Form,
+  Image,
+  Input,
+  InputNumber,
+  Row,
+  Typography,
+} from 'antd';
 import Layout, { Content } from 'antd/es/layout/layout';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './index.module.css';
 import logo from '@/assets/images/logo.png';
 import { CameraFilled } from '@ant-design/icons';
 import { AdminMenuItem } from '@/components/common/AdminMenuItem';
+
 const index = () => {
+  const handleChange = (value) => {
+    setSelectedIcon(value);
+  };
+
+  const [selectedIcon, setSelectedIcon] = useState(null);
   const [productnForm, setForm] = useState({
     image: null,
     name: '',
@@ -13,7 +29,7 @@ const index = () => {
     originPrice: '',
     discountPrice: '',
   });
-  const productList = [
+  const orginProductList = [
     { index: 1, image: logo, category: '전체' },
     { index: 2, image: logo, category: '신발' },
     { index: 3, image: logo, category: '양말' },
@@ -25,7 +41,7 @@ const index = () => {
     { index: 9, image: logo, category: '주얼리' },
     { index: 10, image: logo, category: 'etc' },
   ];
-  const [products, setProducts] = useState(productList);
+  const [originProducts, setOriginProducts] = useState(orginProductList);
   return (
     <Content>
       <Row className={styles.product_page_container}>
@@ -33,10 +49,11 @@ const index = () => {
         <Col span={14} className="border-r">
           <Row>
             <Col span={2}></Col>
-            {products.slice(0, 5).map((item, idx) => (
+            {originProducts.slice(0, 5).map((item, idx) => (
               <AdminMenuItem
-                products={products}
-                setProducts={setProducts}
+                key={idx}
+                products={originProducts}
+                setProducts={setOriginProducts}
                 item={item}
               />
             ))}
@@ -45,10 +62,11 @@ const index = () => {
           </Row>
           <Row>
             <Col span={2}></Col>
-            {products.slice(5, 10).map((item, idx) => (
+            {originProducts.slice(5, 10).map((item, idx) => (
               <AdminMenuItem
-                products={products}
-                setProducts={setProducts}
+                key={idx}
+                products={originProducts}
+                setProducts={setOriginProducts}
                 item={item}
               />
             ))}
@@ -62,12 +80,7 @@ const index = () => {
         <Col span={10}>
           <Row>
             <Col span={24} className="text-center">
-              <Image
-                src={logo}
-                width={300}
-                forceRender={false}
-                preview={false}
-              />
+              <Image src={logo} width={300} preview={false} />
             </Col>
             <Col span={24} className="text-center">
               <Button onClick={() => clcikUpload()}>
@@ -128,7 +141,16 @@ const index = () => {
                     },
                   ]}
                 >
-                  <Input type="text" />
+                  <InputNumber
+                    className={styles.inputNumber}
+                    type="text"
+                    suffix={<div className={styles.circle_icon}>원</div>}
+                    formatter={(value) =>
+                      value ? value.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : ''
+                    }
+                    parser={(value) => value.replace(/\D/g, '')}
+                    controls={false}
+                  />
                 </Form.Item>
                 <Typography.Title level={5}>할인된 가격</Typography.Title>
                 <Form.Item
@@ -140,7 +162,16 @@ const index = () => {
                     },
                   ]}
                 >
-                  <Input type="text" />
+                  <InputNumber
+                    className={styles.inputNumber}
+                    type="text"
+                    suffix={<div className={styles.circle_icon}>원</div>}
+                    formatter={(value) =>
+                      value ? value.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : ''
+                    }
+                    parser={(value) => value.replace(/\D/g, '')}
+                    controls={false}
+                  />
                 </Form.Item>
               </Form>
             </Col>

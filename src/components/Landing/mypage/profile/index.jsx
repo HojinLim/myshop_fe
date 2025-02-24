@@ -6,7 +6,8 @@ import { Content } from 'antd/es/layout/layout';
 import { CameraFilled, UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Col, Row, Typography } from 'antd';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserInfo } from '@/store/slices/userSlice';
 
 const backURL = import.meta.env.VITE_BACK_URL;
 
@@ -14,6 +15,8 @@ const index = () => {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const user = useSelector((state) => state.user.data);
+
+  const dispatch = useDispatch();
 
   const clcikUpload = () => {
     photoRef.current.click();
@@ -23,29 +26,36 @@ const index = () => {
   // 사진 input 핸들러
   const onchangeImageUpload = async (e) => {
     const file = e.target.files[0];
+    if (!file) return;
     setImage(file);
     setPreview(URL.createObjectURL(file)); // 이미지 미리보기
+
+    await handleUpload(file);
   };
   // 🔹 S3로 업로드하는 함수
-  const handleUpload = async () => {
-    if (!image) {
+  const handleUpload = async (file) => {
+    if (!file) {
       alert('이미지를 선택하세요.');
       return;
     }
 
     const formData = new FormData();
-    formData.append('profile', image);
+    formData.append('profile', file);
     formData.append('userId', user.id);
 
     try {
-      const response = await fetch(`${backURL}/auth/upload`, {
+      const response = await fetch(`${backURL}/auth/upload?userId=${user.id}`, {
         body: formData,
         method: 'POST',
       });
-      alert('업로드 성공!');
-      if (response.data) {
-        console.log('Uploaded Image URL:', response.data.imageUrl);
-        return;
+      const responseData = await response.json(); // 응답 확인
+
+      if (responseData.imageUrl) {
+        dispatch(fetchUserInfo()); // 유저 정보 새로 불러오기
+        setPreview(responseData.imageUrl); // 새로운 프로필 이미지 URL로 미리보기 업데이트
+        alert('업로드 성공!');
+      } else {
+        alert('이미지 URL이 없습니다.');
       }
     } catch (error) {
       console.error('업로드 실패:', error);
@@ -77,11 +87,13 @@ const index = () => {
     }
   };
   useEffect(() => {
-    console.log(user);
-
-    getProfileImage();
-  }, []);
+    if (user && user.id) {
+      getProfileImage();
+    }
+  }, [user]);
   const deleteProfileImage = async () => {
+    console.log('hh', user);
+
     if (user && (user.profileUrl === '' || !user.profileUrl)) return;
     try {
       const response = await fetch(`${backURL}/auth/delete_profile`, {
@@ -93,7 +105,9 @@ const index = () => {
       });
 
       const data = await response.json();
-      console.log(data.message); // "프로필 이미지가 삭제되었습니다."
+      console.log(data); // "프로필 이미지가 삭제되었습니다."
+
+      dispatch(fetchUserInfo());
       setPreview(null); // 이미지 삭제 후 미리보기 제거
       return;
     } catch (error) {
@@ -114,9 +128,6 @@ const index = () => {
           <Col span={24}>
             <Button onClick={() => clcikUpload()}>
               <CameraFilled /> 사진 올리기
-            </Button>
-            <Button onClick={() => handleUpload()}>
-              <CameraFilled /> 사진 업로드
             </Button>
           </Col>
           <Col span={24} className="underline mt-1 ">

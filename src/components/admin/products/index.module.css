@@ -6,3 +6,9 @@
   margin-top: 25px;
   width: 100%;
 }
+.inputNumber {
+  width: 100%;
+  input {
+    border-radius: 0 !important;
+  }
+}

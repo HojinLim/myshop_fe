@@ -9,14 +9,17 @@ import {
   ShopOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Notfound from '@/components/notfound';
 
 const index = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.data);
+  const location = useLocation();
+
   const [loading, setLoading] = useState(true);
+  const [defaultMenu, setDefaultMenu] = useState('dashboard');
   const { Sider } = Layout;
 
   const items = [
@@ -29,12 +32,33 @@ const index = () => {
     { key: 'users', icon: <UserOutlined />, label: '유저관리' },
     { key: 'settings', icon: <SettingOutlined />, label: '설정' },
   ];
+  const onSelect = (e) => {
+    // if (e.key) {
+    //   localStorage.setItem('adminMenu', e.key);
+    // }
+  };
 
   const onClick = (e) => {
     if (e.key) {
       navigate(e.key);
     }
   };
+  useEffect(() => {
+    const menu = localStorage.getItem('adminMenu');
+    if (menu) {
+      const tempMenu = menu ? menu : '1';
+      setDefaultMenu(tempMenu);
+    }
+    return () => {
+      localStorage.removeItem('adminMenu');
+    };
+  }, []);
+  useEffect(() => {
+    const filterd = location.pathname.split('/');
+    const filtererPath = filterd[filterd.length - 1];
+    localStorage.setItem('adminMenu', filtererPath);
+    setDefaultMenu(filtererPath);
+  }, [location.pathname, location.key]);
 
   if ((!loading && !user) || user.role !== 'admin') return <Notfound />;
 
@@ -54,10 +78,11 @@ const index = () => {
               <Col span={24}>
                 <Menu
                   onClick={onClick}
-                  defaultSelectedKeys={['1']}
-                  defaultOpenKeys={['1']}
+                  defaultSelectedKeys={[defaultMenu]}
+                  defaultOpenKeys={[defaultMenu]}
                   mode="inline"
                   items={items}
+                  onSelect={onSelect}
                 />
               </Col>
             </Row>

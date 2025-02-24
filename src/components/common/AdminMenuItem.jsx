@@ -22,6 +22,21 @@ export const AdminMenuItem = (props) => {
     });
     setProducts(list);
   };
+  const changeProduct = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const blobUrl = URL.createObjectURL(file);
+
+    const list = products.map((value, idx) => {
+      if (value.index === item.index) {
+        return { ...value, image: blobUrl };
+      } else {
+        return value;
+      }
+    });
+    setProducts(list);
+  };
 
   return (
     <Col key={item.index} className="text-center" span={4}>
@@ -29,11 +44,18 @@ export const AdminMenuItem = (props) => {
       <img
         src={item.image}
         className="cursor-pointer"
+        // style={{ maxWidth: '150px', maxHeight: '150px' }}
         onClick={() => {
           imageRef.current.click();
         }}
       />
-      <input ref={imageRef} hidden type="file" accept="image/*" />
+      <input
+        ref={imageRef}
+        hidden
+        type="file"
+        accept="image/*"
+        onChange={changeProduct}
+      />
       {edit ? (
         <Row>
           <Col span={18}>

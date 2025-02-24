@@ -21,33 +21,38 @@ export const fetchUserInfo = createAsyncThunk(
 
       return await response.json(); // 성공 시 반환되는 값
     } catch (error) {
-      localStorage.removeItem('token');
       return rejectWithValue(error.message); // 실패 시 반환되는 에러 메시지
     }
   }
 );
 
+// 초기 상태값
+const initialState = {
+  data: {
+    id: '',
+    email: '',
+    username: '',
+    role: '',
+    profileUrl: '',
+  },
+  loading: false,
+  error: null,
+};
+
 const userSlice = createSlice({
   name: 'user',
-  initialState: {
-    data: {
-      id: '',
-      email: '',
-      username: '',
-      role: '',
-      profileUrl: '',
-    },
-    loading: false,
-    error: null,
-  },
+  initialState,
   reducers: {
     login: (state, action) => {
-      state.data = action.payload;
+      state.data = { ...action.payload.data };
     },
     logout: (state) => {
       localStorage.removeItem('token'); // 로그아웃 시 토큰 삭제
 
-      state.data = null;
+      state.data = { ...initialState.data };
+    },
+    refresh: (state, action) => {
+      state.data = { ...action.payload.data };
     },
   },
   extraReducers: (builder) => {
@@ -57,7 +62,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserInfo.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
+        state.data = { ...action.payload.data };
       })
       .addCase(fetchUserInfo.rejected, (state, action) => {
         state.loading = false;
