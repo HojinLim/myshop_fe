@@ -15,33 +15,57 @@ import styles from './index.module.css';
 import logo from '@/assets/images/logo.png';
 import { CameraFilled } from '@ant-design/icons';
 import { AdminMenuItem } from '@/components/common/AdminMenuItem';
+import { getCategories } from '@/api/category';
 
 const index = () => {
-  const handleChange = (value) => {
-    setSelectedIcon(value);
-  };
-
+  const [categories, setCategories] = useState([]);
+  const [originCategories, setOriginCategories] = useState([]);
   const [selectedIcon, setSelectedIcon] = useState(null);
-  const [productnForm, setForm] = useState({
-    image: null,
-    name: '',
-    category: '',
-    originPrice: '',
-    discountPrice: '',
-  });
-  const orginProductList = [
-    { index: 1, image: logo, category: '전체' },
-    { index: 2, image: logo, category: '신발' },
-    { index: 3, image: logo, category: '양말' },
-    { index: 4, image: logo, category: '상의' },
-    { index: 5, image: logo, category: '하의' },
-    { index: 6, image: logo, category: '아우터' },
-    { index: 7, image: logo, category: '악세사리' },
-    { index: 8, image: logo, category: '반지' },
-    { index: 9, image: logo, category: '주얼리' },
-    { index: 10, image: logo, category: 'etc' },
-  ];
-  const [originProducts, setOriginProducts] = useState(orginProductList);
+  const [originText, setOriginText] = useState([]);
+  const [updated, setUpdated] = useState(false);
+  const [changed, setChanged] = useState(false);
+
+  const getCategoryList = async () => {
+    await getCategories()
+      .then((res) => {
+        console.log(res);
+        if (Array.isArray(res.categories) && res.categories.length > 0) {
+          setCategories(res.categories);
+          setOriginCategories(res.categories);
+
+          const nameList = res.categories.map((category) => ({
+            id: category.id,
+            name: category.name,
+          }));
+
+          console.log('nameList', nameList);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  const resetHandler = () => {
+    setCategories(originCategories);
+    setChanged(false);
+  };
+  const compareDiff = () => {
+    const isChanged = originCategories.some(
+      (oldItem, index) => oldItem.name !== categories[index].name
+    );
+    setChanged(isChanged);
+    setUpdated(false);
+    console.log('변함', isChanged);
+  };
+  useEffect(() => {
+    getCategoryList();
+  }, []);
+
+  useEffect(() => {
+    if (updated) {
+      compareDiff();
+    }
+  }, [updated]);
   return (
     <Content>
       <Row className={styles.product_page_container}>
@@ -49,12 +73,13 @@ const index = () => {
         <Col span={14} className="border-r">
           <Row>
             <Col span={2}></Col>
-            {originProducts.slice(0, 5).map((item, idx) => (
+            {categories.slice(0, 5).map((category, idx) => (
               <AdminMenuItem
                 key={idx}
-                products={originProducts}
-                setProducts={setOriginProducts}
-                item={item}
+                category={category}
+                categories={categories}
+                setCategories={setCategories}
+                setUpdated={setUpdated}
               />
             ))}
 
@@ -62,18 +87,28 @@ const index = () => {
           </Row>
           <Row>
             <Col span={2}></Col>
-            {originProducts.slice(5, 10).map((item, idx) => (
+            {categories.slice(5, 10).map((category, idx) => (
               <AdminMenuItem
                 key={idx}
-                products={originProducts}
-                setProducts={setOriginProducts}
-                item={item}
+                category={category}
+                categories={categories}
+                setCategories={setCategories}
+                setUpdated={setUpdated}
               />
             ))}
             <Col span={2}></Col>
           </Row>
           <Col span={24}>
-            <Button className={styles.update_button}>업데이트</Button>
+            <Button className={styles.button} onClick={compareDiff}>
+              업데이트
+            </Button>
+            <Button
+              className={styles.button}
+              onClick={resetHandler}
+              disabled={!changed}
+            >
+              초기화
+            </Button>
           </Col>
         </Col>
         {/* 상품 추가 영역 */}
@@ -91,7 +126,6 @@ const index = () => {
               <Form
                 className="form_container"
                 name="basic"
-                // {...theme.commonFormProps}
                 labelAlign="left"
                 labelCol={{
                   span: 8,
@@ -102,8 +136,6 @@ const index = () => {
                 initialValues={{
                   remember: true,
                 }}
-                // onFinish={onFinish}
-                // onFinishFailed={onFinishFailed}
                 autoComplete="off"
               >
                 <Typography.Title level={5}>상품명</Typography.Title>

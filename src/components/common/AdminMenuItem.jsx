@@ -1,50 +1,52 @@
 import { Col, Flex, Input, Row } from 'antd';
 import Title from 'antd/es/typography/Title';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   CloseCircleOutlined,
   CloseOutlined,
   CheckOutlined,
 } from '@ant-design/icons';
+import logo from '@/assets/images/logo.png';
+
+const bucket_url = import.meta.env.VITE_BUCKET_URL;
 
 export const AdminMenuItem = (props) => {
-  const { item, products, setProducts } = props;
+  const { category, categories, setCategories, setUpdated } = props;
   const [edit, setEdit] = useState(false);
+  const [preview, setPreview] = useState(null);
+
   const imageRef = useRef(null);
 
   const onChangeCategory = (e) => {
-    const list = products.map((value, idx) => {
-      if (value.index === item.index) {
-        return { ...value, category: e.target.value };
+    const list = categories.map((_category, _) => {
+      if (_category.id === category.id) {
+        return { ..._category, name: e.target.value };
       } else {
-        return value;
+        return _category;
       }
     });
-    setProducts(list);
+    setCategories(list);
+    setUpdated(true);
   };
-  const changeProduct = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
 
-    const blobUrl = URL.createObjectURL(file);
-
-    const list = products.map((value, idx) => {
-      if (value.index === item.index) {
-        return { ...value, image: blobUrl };
-      } else {
-        return value;
-      }
-    });
-    setProducts(list);
+  useEffect(() => {
+    updatePreviewImage();
+  }, []);
+  const updatePreviewImage = () => {
+    if (!category.imageUrl) {
+      setPreview(logo);
+    } else {
+      const imageUrl = `${bucket_url}/${category.imageUrl}`;
+      setPreview(imageUrl);
+    }
   };
 
   return (
-    <Col key={item.index} className="text-center" span={4}>
+    <Col key={category.id} className="text-center" span={4}>
       <CloseCircleOutlined className="cursor-pointer right-0 absolute" />
       <img
-        src={item.image}
+        src={preview}
         className="cursor-pointer"
-        // style={{ maxWidth: '150px', maxHeight: '150px' }}
         onClick={() => {
           imageRef.current.click();
         }}
@@ -54,23 +56,27 @@ export const AdminMenuItem = (props) => {
         hidden
         type="file"
         accept="image/*"
-        onChange={changeProduct}
+        // onChange={changeProduct}
       />
       {edit ? (
         <Row>
           <Col span={18}>
-            <Input value={item.category} onChange={onChangeCategory} />
+            <Input value={category.name} onChange={onChangeCategory} />
           </Col>
 
           <Col span={6} className="place-self-center">
             <Flex vertical>
               <CheckOutlined
                 className="cursor-pointer"
-                onClick={() => setEdit(false)}
+                onClick={() => {
+                  setEdit(false);
+                }}
               />
               <CloseOutlined
                 className="cursor-pointer"
-                onClick={() => setEdit(false)}
+                onClick={() => {
+                  setEdit(false);
+                }}
               />
             </Flex>
           </Col>
@@ -82,7 +88,7 @@ export const AdminMenuItem = (props) => {
             setEdit(true);
           }}
         >
-          {item.category}
+          {category.name}
         </Title>
       )}
     </Col>
