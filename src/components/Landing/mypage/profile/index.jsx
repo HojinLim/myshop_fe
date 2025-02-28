@@ -40,8 +40,8 @@ const index = () => {
     }
 
     const formData = new FormData();
-    formData.append('profile', file);
     formData.append('userId', user.id);
+    formData.append('profile', file);
 
     try {
       const response = await fetch(`${backURL}/auth/upload?userId=${user.id}`, {

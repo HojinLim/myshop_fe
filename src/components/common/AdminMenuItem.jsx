@@ -11,7 +11,8 @@ import logo from '@/assets/images/logo.png';
 const bucket_url = import.meta.env.VITE_BUCKET_URL;
 
 export const AdminMenuItem = (props) => {
-  const { category, categories, setCategories, setUpdated } = props;
+  const { category, categories, setCategories, setUpdated, reset, setReset } =
+    props;
   const [edit, setEdit] = useState(false);
   const [preview, setPreview] = useState(null);
 
@@ -32,13 +33,37 @@ export const AdminMenuItem = (props) => {
   useEffect(() => {
     updatePreviewImage();
   }, []);
+  useEffect(() => {
+    if (reset) {
+      updatePreviewImage();
+    }
+  }, [reset]);
   const updatePreviewImage = () => {
+    // imageUrl 없으면 기본 로고로 적용
     if (!category.imageUrl) {
       setPreview(logo);
     } else {
       const imageUrl = `${bucket_url}/${category.imageUrl}`;
       setPreview(imageUrl);
     }
+    console.log('yo');
+
+    setReset(false);
+  };
+
+  const changeCategoryImage = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setPreview(URL.createObjectURL(file)); // 이미지 미리보기
+
+    const uploadPhotoCategory = categories.map((_category, _) => {
+      if (_category.id === category.id) {
+        return { ..._category, upload_photo: file };
+      } else return _category;
+    });
+    setCategories(uploadPhotoCategory);
+    console.log(uploadPhotoCategory);
   };
 
   return (
@@ -56,7 +81,7 @@ export const AdminMenuItem = (props) => {
         hidden
         type="file"
         accept="image/*"
-        // onChange={changeProduct}
+        onChange={changeCategoryImage}
       />
       {edit ? (
         <Row>

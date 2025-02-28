@@ -15,30 +15,24 @@ import styles from './index.module.css';
 import logo from '@/assets/images/logo.png';
 import { CameraFilled } from '@ant-design/icons';
 import { AdminMenuItem } from '@/components/common/AdminMenuItem';
-import { getCategories } from '@/api/category';
+import { getCategories, updateCategories } from '@/api/category';
 
 const index = () => {
   const [categories, setCategories] = useState([]);
-  const [originCategories, setOriginCategories] = useState([]);
+  const [originCategories, setOriginCategories] = useState([]); // 처음 불러온 값
   const [selectedIcon, setSelectedIcon] = useState(null);
   const [originText, setOriginText] = useState([]);
   const [updated, setUpdated] = useState(false);
   const [changed, setChanged] = useState(false);
+  const [reset, setReset] = useState(false);
 
   const getCategoryList = async () => {
     await getCategories()
       .then((res) => {
-        console.log(res);
         if (Array.isArray(res.categories) && res.categories.length > 0) {
           setCategories(res.categories);
           setOriginCategories(res.categories);
-
-          const nameList = res.categories.map((category) => ({
-            id: category.id,
-            name: category.name,
-          }));
-
-          console.log('nameList', nameList);
+          console.log('res.categories', res.categories);
         }
       })
       .catch((error) => {
@@ -48,24 +42,46 @@ const index = () => {
   const resetHandler = () => {
     setCategories(originCategories);
     setChanged(false);
+    setReset(true);
   };
+
   const compareDiff = () => {
-    const isChanged = originCategories.some(
-      (oldItem, index) => oldItem.name !== categories[index].name
+    let isChanged = categories.some(
+      (category, index) => category.name !== originCategories[index].name
     );
-    setChanged(isChanged);
+
+    isChanged = categories.some((category, index) => category.upload_photo);
+
+    setChanged(isChanged); // 변경 여부 업데이트
     setUpdated(false);
-    console.log('변함', isChanged);
   };
+
+  const updateCategoriesHandler = async () => {
+    const changedArr = categories.filter(
+      (changeItem, index) =>
+        // 기존 텍스트와 다른거나 (name업데이트), 사진 업로드 있을 시 (photo 업데이트)
+        changeItem.name !== originCategories[index].name ||
+        changeItem.upload_photo
+    );
+
+    await updateCategories(changedArr)
+      .then((res) => {
+        console.log(res);
+        // 업데이트 성공시 다시 불러오기
+        getCategoryList();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     getCategoryList();
   }, []);
 
   useEffect(() => {
-    if (updated) {
-      compareDiff();
-    }
-  }, [updated]);
+    compareDiff();
+  }, [updated, categories]);
   return (
     <Content>
       <Row className={styles.product_page_container}>
@@ -80,6 +96,8 @@ const index = () => {
                 categories={categories}
                 setCategories={setCategories}
                 setUpdated={setUpdated}
+                reset={reset}
+                setReset={setReset}
               />
             ))}
 
@@ -94,12 +112,14 @@ const index = () => {
                 categories={categories}
                 setCategories={setCategories}
                 setUpdated={setUpdated}
+                reset={reset}
+                setReset={setReset}
               />
             ))}
             <Col span={2}></Col>
           </Row>
           <Col span={24}>
-            <Button className={styles.button} onClick={compareDiff}>
+            <Button className={styles.button} onClick={updateCategoriesHandler}>
               업데이트
             </Button>
             <Button
