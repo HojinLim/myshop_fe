@@ -1,24 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './index.module.css';
 import { Content, Header } from 'antd/es/layout/layout';
 import { SearchOutlined } from '@ant-design/icons';
 import { Avatar, Carousel, Col, Input, Row, Typography } from 'antd';
 import logo from '@/assets/images/logo.png';
 import { MenuItem } from '@/components/common/MenuItem';
+import { getCategories } from '@/api/category';
 const index = () => {
   const { Text, Title } = Typography;
-  const productList = [
-    { index: 1, image: logo, category: '전체' },
-    { index: 2, image: logo, category: '신발' },
-    { index: 3, image: logo, category: '양말' },
-    { index: 4, image: logo, category: '상의' },
-    { index: 5, image: logo, category: '하의' },
-    { index: 6, image: logo, category: '아우터' },
-    { index: 7, image: logo, category: '악세사리' },
-    { index: 8, image: logo, category: '반지' },
-    { index: 9, image: logo, category: '주얼리' },
-    { index: 10, image: logo, category: 'etc' },
-  ];
+  const [categories, setCategories] = useState([]);
+
+  const getCategoryList = async () => {
+    await getCategories()
+      .then((res) => {
+        if (Array.isArray(res.categories) && res.categories.length > 0) {
+          setCategories(res.categories);
+          console.log('res.categories', res.categories);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  useEffect(() => {
+    getCategoryList();
+  }, []);
 
   return (
     <>
@@ -54,14 +60,14 @@ const index = () => {
         </Row>
         <Row>
           <Col span={2}></Col>
-          {productList.slice(0, 5).map((item, idx) => (
+          {categories.slice(0, 5).map((item, idx) => (
             <MenuItem key={idx} item={item} />
           ))}
           <Col span={2}></Col>
         </Row>
         <Row>
           <Col span={2}></Col>
-          {productList.slice(5, 10).map((item, idx) => (
+          {categories.slice(5, 10).map((item, idx) => (
             <MenuItem key={idx} item={item} />
           ))}
           <Col span={2}></Col>

@@ -7,8 +7,7 @@ import {
   CheckOutlined,
 } from '@ant-design/icons';
 import logo from '@/assets/images/logo.png';
-
-const bucket_url = import.meta.env.VITE_BUCKET_URL;
+import { returnBucketUrl } from '@/functions';
 
 export const AdminMenuItem = (props) => {
   const { category, categories, setCategories, setUpdated, reset, setReset } =
@@ -43,10 +42,10 @@ export const AdminMenuItem = (props) => {
     if (!category.imageUrl) {
       setPreview(logo);
     } else {
-      const imageUrl = `${bucket_url}/${category.imageUrl}`;
+      const imageUrl = returnBucketUrl(category.imageUrl);
+
       setPreview(imageUrl);
     }
-    console.log('yo');
 
     setReset(false);
   };
@@ -63,12 +62,28 @@ export const AdminMenuItem = (props) => {
       } else return _category;
     });
     setCategories(uploadPhotoCategory);
-    console.log(uploadPhotoCategory);
+  };
+
+  // 사진 제거 핸들러
+  const removePhotoHandler = () => {
+    // 이미 없는 상태면 리턴
+    if (!category.imageUrl) return;
+    const uploadPhotoCategory = categories.map((_category) =>
+      _category.id === category.id
+        ? { ..._category, upload_photo: null }
+        : _category
+    );
+
+    setPreview(logo);
+    setCategories([...uploadPhotoCategory]); // 새 배열로 감싸서 상태 변경 유도
   };
 
   return (
     <Col key={category.id} className="text-center" span={4}>
-      <CloseCircleOutlined className="cursor-pointer right-0 absolute" />
+      <CloseCircleOutlined
+        className="cursor-pointer right-0 absolute"
+        onClick={removePhotoHandler}
+      />
       <img
         src={preview}
         className="cursor-pointer"

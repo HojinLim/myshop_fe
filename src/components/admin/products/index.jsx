@@ -7,32 +7,85 @@ import {
   Input,
   InputNumber,
   Row,
+  Select,
   Typography,
 } from 'antd';
 import Layout, { Content } from 'antd/es/layout/layout';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.module.css';
 import logo from '@/assets/images/logo.png';
 import { CameraFilled } from '@ant-design/icons';
 import { AdminMenuItem } from '@/components/common/AdminMenuItem';
 import { getCategories, updateCategories } from '@/api/category';
+import { capitalizeJs } from '@/functions';
+import { uploadProduct } from '@/api/product';
 
 const index = () => {
+  const [form] = Form.useForm();
+  const imageRef = useRef(null);
   const [categories, setCategories] = useState([]);
   const [originCategories, setOriginCategories] = useState([]); // 처음 불러온 값
-  const [selectedIcon, setSelectedIcon] = useState(null);
-  const [originText, setOriginText] = useState([]);
+  const [selectCateogry, setSelectCateogry] = useState([]);
+  const [productPreview, setProductPreview] = useState(logo);
+
   const [updated, setUpdated] = useState(false);
   const [changed, setChanged] = useState(false);
   const [reset, setReset] = useState(false);
 
+  // 상품 등록 폼 상태태
+  const [productForm, setProductForm] = useState({
+    name: '',
+    category: '',
+    originPrice: '',
+    discountPrice: '',
+    photoUrl: null,
+  });
+  // 상품 등록 폼 핸들러
+  const onChangeForm = (value, type) => {
+    setProductForm({ ...productForm, [type]: value });
+  };
+
+  // 상품 이미지 변경
+  const changeProductImage = (e) => {
+    const file = e.target.files[0];
+    setProductForm({ ...productForm, photoUrl: file });
+    if (!file) return;
+
+    setProductPreview(URL.createObjectURL(file)); // 이미지 미리보기
+  };
+  // 상품 사진 삭제
+  const deleteProductImage = () => {
+    setProductPreview(logo);
+    setProductForm({ ...productForm, photo: null });
+  };
+  // 상품 업로드
+  const uploadProductHandler = async () => {
+    await uploadProduct(productForm)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // 카테고리 리스트 가져오기
   const getCategoryList = async () => {
     await getCategories()
       .then((res) => {
         if (Array.isArray(res.categories) && res.categories.length > 0) {
           setCategories(res.categories);
           setOriginCategories(res.categories);
-          console.log('res.categories', res.categories);
+
+          // select에 들어간 카테고리 배열
+          const arr = res.categories
+            .filter((category) => category.name !== '전체')
+            .map((el) => ({
+              value: el.name,
+              label: capitalizeJs(el.name),
+            }));
+
+          setSelectCateogry(arr);
         }
       })
       .catch((error) => {
@@ -50,7 +103,10 @@ const index = () => {
       (category, index) => category.name !== originCategories[index].name
     );
 
-    isChanged = categories.some((category, index) => category.upload_photo);
+    isChanged = categories.some(
+      (category, index) =>
+        category.upload_photo || category.upload_photo === null
+    );
 
     setChanged(isChanged); // 변경 여부 업데이트
     setUpdated(false);
@@ -61,12 +117,12 @@ const index = () => {
       (changeItem, index) =>
         // 기존 텍스트와 다른거나 (name업데이트), 사진 업로드 있을 시 (photo 업데이트)
         changeItem.name !== originCategories[index].name ||
-        changeItem.upload_photo
+        changeItem.upload_photo ||
+        changeItem.upload_photo === null
     );
 
     await updateCategories(changedArr)
       .then((res) => {
-        console.log(res);
         // 업데이트 성공시 다시 불러오기
         getCategoryList();
       })
@@ -135,15 +191,33 @@ const index = () => {
         <Col span={10}>
           <Row>
             <Col span={24} className="text-center">
-              <Image src={logo} width={300} preview={false} />
+              <Image src={productPreview} width={300} preview={false} />
             </Col>
             <Col span={24} className="text-center">
-              <Button onClick={() => clcikUpload()}>
+              <Button onClick={() => imageRef.current.click()}>
                 <CameraFilled /> 사진 올리기
-              </Button>{' '}
+              </Button>
+              <input
+                ref={imageRef}
+                hidden
+                type="file"
+                accept="image/*"
+                onChange={changeProductImage}
+              />
+            </Col>
+            <Col span={24} className="underline mt-1 text-center">
+              {productPreview && (
+                <Typography.Text
+                  className="cursor-pointer"
+                  onClick={deleteProductImage}
+                >
+                  현재 사진 삭제
+                </Typography.Text>
+              )}
             </Col>
             <Col span={24}>
               <Form
+                form={form}
                 className="form_container"
                 name="basic"
                 labelAlign="left"
@@ -168,7 +242,10 @@ const index = () => {
                     },
                   ]}
                 >
-                  <Input type="text" />
+                  <Input
+                    type="text"
+                    onChange={(e) => onChangeForm(e, 'name')}
+                  />
                 </Form.Item>
 
                 <Typography.Title level={5}>카테고리</Typography.Title>
@@ -181,7 +258,14 @@ const index = () => {
                     },
                   ]}
                 >
-                  <Input type="text" />
+                  <Select
+                    // defaultValue="전체"
+                    style={{ width: '100%' }}
+                    options={selectCateogry}
+                    onChange={(value) => {
+                      onChangeForm(value, 'category');
+                    }}
+                  />
                 </Form.Item>
                 <Typography.Title level={5}>기존 가격</Typography.Title>
                 <Form.Item
@@ -202,6 +286,7 @@ const index = () => {
                     }
                     parser={(value) => value.replace(/\D/g, '')}
                     controls={false}
+                    onChange={(e) => onChangeForm(e, 'originalPrice')}
                   />
                 </Form.Item>
                 <Typography.Title level={5}>할인된 가격</Typography.Title>
@@ -223,12 +308,18 @@ const index = () => {
                     }
                     parser={(value) => value.replace(/\D/g, '')}
                     controls={false}
+                    onChange={(e) => onChangeForm(e, 'discountPrice')}
                   />
                 </Form.Item>
               </Form>
             </Col>
             <Col span={24}>
-              <Button type="primary" htmlType="submit" className="w-full">
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="w-full"
+                onClick={uploadProductHandler}
+              >
                 상품 등록
               </Button>
             </Col>
