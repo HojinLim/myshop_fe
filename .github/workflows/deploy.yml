@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       VITE_BACK_URL: ${{ secrets.VITE_BACK_URL }}
+      VITE_BUCKET_URL: ${{ secrets.VITE_BUCKET_URL }}
 
     steps:
       - name: Checkout code
