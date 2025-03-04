@@ -6,6 +6,7 @@ import {
   Image,
   Input,
   InputNumber,
+  message,
   Row,
   Select,
   Typography,
@@ -31,6 +32,8 @@ const index = () => {
   const [updated, setUpdated] = useState(false);
   const [changed, setChanged] = useState(false);
   const [reset, setReset] = useState(false);
+
+  const [messageApi, contextHolder] = message.useMessage();
 
   // 상품 등록 폼 상태태
   const [productForm, setProductForm] = useState({
@@ -63,6 +66,25 @@ const index = () => {
     await uploadProduct(productForm)
       .then((res) => {
         console.log(res);
+
+        messageApi
+          .open({
+            type: 'success',
+            content: '상품 등록 완료 :)',
+            duration: 2,
+          })
+          .then(() => {
+            // 초기화
+            setProductForm({
+              name: '',
+              category: '',
+              originPrice: '',
+              discountPrice: '',
+              photoUrl: null,
+            });
+            form.resetFields();
+            setProductPreview(logo);
+          });
       })
       .catch((err) => {
         console.log(err);
@@ -140,6 +162,7 @@ const index = () => {
   }, [updated, categories]);
   return (
     <Content>
+      {contextHolder}
       <Row className={styles.product_page_container}>
         {/* 상품 리스트 디스플레이 영역 */}
         <Col span={14} className="border-r">
@@ -244,7 +267,7 @@ const index = () => {
                 >
                   <Input
                     type="text"
-                    onChange={(e) => onChangeForm(e, 'name')}
+                    onChange={(e) => onChangeForm(e.target.value, 'name')}
                   />
                 </Form.Item>
 
@@ -286,7 +309,7 @@ const index = () => {
                     }
                     parser={(value) => value.replace(/\D/g, '')}
                     controls={false}
-                    onChange={(e) => onChangeForm(e, 'originalPrice')}
+                    onChange={(e) => onChangeForm(e, 'originPrice')}
                   />
                 </Form.Item>
                 <Typography.Title level={5}>할인된 가격</Typography.Title>

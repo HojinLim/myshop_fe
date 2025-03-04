@@ -1,7 +1,7 @@
-import { getAllUsers } from '@/api';
 import { Table } from 'antd';
 import dayjs from '@/utils/dayjs'; // 경로는 프로젝트에 맞게 수정
 import React, { useEffect, useState } from 'react';
+import { getAllUsers } from '@/api/user';
 
 const UserTable = () => {
   const [data, setData] = useState([]);

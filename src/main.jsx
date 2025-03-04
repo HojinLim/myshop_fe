@@ -8,11 +8,17 @@ import App from './App.jsx';
 // 리덕스 툴킷 provider
 import { Provider } from 'react-redux';
 import { store } from '@/store';
+import { ConfigProvider } from 'antd';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <ConfigProvider
+      button={{ style: { width: '100%' } }}
+      layout={{ style: { backgroundColor: 'transparent' } }}
+    >
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ConfigProvider>
   </StrictMode>
 );

@@ -6,9 +6,14 @@ import { Avatar, Carousel, Col, Input, Row, Typography } from 'antd';
 import logo from '@/assets/images/logo.png';
 import { MenuItem } from '@/components/common/MenuItem';
 import { getCategories } from '@/api/category';
+import { getProducts } from '@/api/product';
+import { returnBucketUrl } from '@/functions';
+import { useNavigate } from 'react-router-dom';
 const index = () => {
   const { Text, Title } = Typography;
   const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
   const getCategoryList = async () => {
     await getCategories()
@@ -22,7 +27,17 @@ const index = () => {
         console.error(error);
       });
   };
+  const fetchProductsList = async () => {
+    await getProducts()
+      .then((res) => {
+        if (res.products && res.products.length > 0) {
+          setProducts(res.products);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
   useEffect(() => {
+    fetchProductsList();
     getCategoryList();
   }, []);
 
@@ -58,6 +73,7 @@ const index = () => {
             </Carousel>
           </Col>
         </Row>
+        {/* 카테고리 메뉴 */}
         <Row>
           <Col span={2}></Col>
           {categories.slice(0, 5).map((item, idx) => (
@@ -72,23 +88,23 @@ const index = () => {
           ))}
           <Col span={2}></Col>
         </Row>
+        {/* 전체 상품 리스트 */}
         <Row>
-          <Col span={12} className={styles.item_info}>
-            <img src={logo} width={'50%'} />
+          {products.map((product) => (
+            <Col
+              key={product.id}
+              span={12}
+              className={styles.item_info}
+              onClick={() => navigate(`/product/${product.id}`)}
+            >
+              <img src={returnBucketUrl(product.imageUrl)} width={'50%'} />
 
-            <Text strong>00% 00,000</Text>
-            <Text strong>쇼핑몰 이름</Text>
-            <Text>제품명</Text>
-            <Text>00명 찜</Text>
-          </Col>
-          <Col span={12} className={styles.item_info}>
-            <img src={logo} width={'50%'} />
-
-            <Text strong>00% 00,000</Text>
-            <Text strong>쇼핑몰 이름</Text>
-            <Text>제품명</Text>
-            <Text>00명 찜</Text>
-          </Col>
+              <Text strong>00% {product.discountPrice}</Text>
+              {/* <Text strong>쇼핑몰 이름</Text> */}
+              <Text>{product.name}</Text>
+              <Text>00명 찜</Text>
+            </Col>
+          ))}
         </Row>
       </Content>
     </>
