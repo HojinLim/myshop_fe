@@ -9,7 +9,9 @@ import {
   Flex,
   Image,
   Layout,
+  message,
   Row,
+  Tabs,
   Typography,
 } from 'antd';
 import MenuHeader from '@/components/common/MenuHeader';
@@ -17,10 +19,27 @@ import { Content, Footer } from 'antd/es/layout/layout';
 import { useParams } from 'react-router-dom';
 import { getProducts } from '@/api/product';
 import { returnBucketUrl } from '@/functions';
-import Loading from '@/components/common/Loading';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadingSlice';
+import ReviewLayout from './ReviewLayout';
 
+const items = [
+  {
+    key: '1',
+    label: '상품정보',
+    children: 'Content of Tab Pane 1',
+  },
+  {
+    key: '2',
+    label: '리뷰',
+    children: <ReviewLayout />,
+  },
+  {
+    key: '3',
+    label: '문의',
+    children: 'Content of Tab Pane 3',
+  },
+];
 const index = () => {
   const { id } = useParams();
   const dispath = useDispatch();
@@ -40,14 +59,19 @@ const index = () => {
   useEffect(() => {
     fetchProduct();
   }, []);
-  const contentStyle = {
-    margin: 0,
-    height: '160px',
-    color: '#fff',
-    lineHeight: '160px',
-    textAlign: 'center',
-    background: '#364d79',
+  const onChange = (key) => {
+    console.log(key);
   };
+
+  const copyUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      message.success('클립보드 복사 완료!');
+    } catch (error) {
+      message.success('복사 실패!');
+    }
+  };
+
   return (
     <Layout className={styles.layout}>
       <MenuHeader title="상품정보" />
@@ -72,6 +96,7 @@ const index = () => {
           <Col span={24}>
             <Typography.Text>{product.name}</Typography.Text>
           </Col>
+          {/* 상품 정보 */}
           <Col span={22}>
             <Flex vertical>
               <Typography.Text>{product.originPrice}원</Typography.Text>
@@ -81,10 +106,20 @@ const index = () => {
               </Flex>
             </Flex>
           </Col>
+          {/* 클립보드 복사 */}
           <Col span={2} className="self-center text-center cursor-pointer">
-            <ShareAltOutlined />
+            <ShareAltOutlined onClick={copyUrl} />
           </Col>
           <Divider />
+          {/* 상품 정보 탭 */}
+          <Col span={24}>
+            <Tabs
+              className={styles.tab}
+              defaultActiveKey="1"
+              items={items}
+              onChange={onChange}
+            />
+          </Col>
         </Row>
       </Content>
       <Footer className={styles.footer}>

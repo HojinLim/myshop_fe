@@ -33,7 +33,7 @@ const index = () => {
   const [changed, setChanged] = useState(false);
   const [reset, setReset] = useState(false);
 
-  const [messageApi, contextHolder] = message.useMessage();
+  // const [messageApi, contextHolder] = message.useMessage();
 
   // 상품 등록 폼 상태태
   const [productForm, setProductForm] = useState({
@@ -67,7 +67,7 @@ const index = () => {
       .then((res) => {
         console.log(res);
 
-        messageApi
+        message
           .open({
             type: 'success',
             content: '상품 등록 완료 :)',
@@ -162,7 +162,6 @@ const index = () => {
   }, [updated, categories]);
   return (
     <Content>
-      {contextHolder}
       <Row className={styles.product_page_container}>
         {/* 상품 리스트 디스플레이 영역 */}
         <Col span={14} className="border-r">

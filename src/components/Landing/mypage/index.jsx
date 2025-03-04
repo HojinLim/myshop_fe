@@ -16,7 +16,7 @@ const index = () => {
   useEffect(() => {
     if (user && user.id) {
     } else {
-      navigate('/login');
+      navigate('/login', { replace: 'true' });
     }
   }, [user]);
 

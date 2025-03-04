@@ -198,9 +198,7 @@ const SignupForm = () => {
             name="remember"
             valuePropName="checked"
             label={null}
-          >
-            <Checkbox>정보 저장</Checkbox>
-          </Form.Item>
+          ></Form.Item>
         </Form>
         <Row>
           <Col className="text-right w-full" span={24}>

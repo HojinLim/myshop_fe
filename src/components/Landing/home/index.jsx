@@ -9,18 +9,20 @@ import { getCategories } from '@/api/category';
 import { getProducts } from '@/api/product';
 import { returnBucketUrl } from '@/functions';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 const index = () => {
   const { Text, Title } = Typography;
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
-  const navigate = useNavigate();
+  const [profilePic, setProfilePic] = useState(logo);
 
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user.data);
   const getCategoryList = async () => {
     await getCategories()
       .then((res) => {
         if (Array.isArray(res.categories) && res.categories.length > 0) {
           setCategories(res.categories);
-          console.log('res.categories', res.categories);
         }
       })
       .catch((error) => {
@@ -40,6 +42,9 @@ const index = () => {
     fetchProductsList();
     getCategoryList();
   }, []);
+  useEffect(() => {
+    setProfilePic(returnBucketUrl(user.profileUrl));
+  }, [user]);
 
   return (
     <>
@@ -49,7 +54,13 @@ const index = () => {
             <Input prefix={<SearchOutlined />} allowClear></Input>
           </Col>
           <Col span={2}>
-            <Avatar src={logo} />
+            <Avatar
+              src={profilePic}
+              onError={() => {
+                setProfilePic(logo); // 기본 이미지 설정
+                return false; // Ant Design 기본 동작 방지
+              }}
+            />
           </Col>
         </Row>
       </Header>

@@ -19,3 +19,18 @@
     font-weight: 700;
   }
 }
+
+.tab {
+  & :global(.ant-tabs-nav-list) {
+    width: 100%;
+  }
+  & :global(.ant-tabs-tab) {
+    flex: 1 !important;
+    text-align: center;
+    width: 100%;
+
+    & :global(.ant-tabs-tab-btn) {
+      flex: 1;
+    }
+  }
+}

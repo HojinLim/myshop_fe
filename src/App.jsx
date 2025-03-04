@@ -27,13 +27,14 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from './store/slices/userSlice';
 import Loading from './components/common/Loading';
+import { message } from 'antd';
 
 function App() {
   const user = useSelector((state) => state.user.data);
   const login = useSelector((state) => state.login);
   const dispatch = useDispatch();
   const token = localStorage.getItem('token');
-
+  const [_, contextHolder] = message.useMessage();
   useEffect(() => {
     dispatch(fetchUserInfo());
   }, []);
@@ -43,8 +44,9 @@ function App() {
   // },[loading])
   return (
     <>
+      {contextHolder}
       {loading && <Loading />}
-      {/* // 라우터 */}
+      {/* 라우터 */}
       <Router>
         <Routes>
           <Route path="/" element={<HomeLanding />}>
