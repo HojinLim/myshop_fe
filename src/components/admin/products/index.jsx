@@ -20,6 +20,7 @@ import { AdminMenuItem } from '@/components/common/AdminMenuItem';
 import { getCategories, updateCategories } from '@/api/category';
 import { capitalizeJs } from '@/functions';
 import { uploadProduct } from '@/api/product';
+import EditProductModal from './EditProductModal';
 
 const index = () => {
   const [form] = Form.useForm();
@@ -348,6 +349,7 @@ const index = () => {
           </Row>
         </Col>
       </Row>
+      <EditProductModal />
     </Content>
   );
 };

@@ -6,10 +6,12 @@
   position: relative;
 }
 .footer {
-  position: absolute;
+  position: fixed;
+  width: 600px;
   bottom: 0;
   left: 0;
   right: 0;
+  justify-self: center;
   padding: 15px !important;
   background-color: transparent;
 
@@ -33,4 +35,43 @@
       flex: 1;
     }
   }
+}
+
+.drawer {
+  height: 40vh;
+  width: 600px;
+  justify-self: center;
+  background-color: white;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  right: 0;
+  bottom: -100%;
+  padding: 15px;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  overflow: hidden;
+
+  transition: bottom 0.3s ease-in-out;
+  & :global(.ant-select) {
+    width: 100% !important;
+    height: 50px;
+  }
+  .drawer_bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 5px 8px 15px 8px;
+
+    button {
+      height: 50px;
+      font-weight: 700;
+    }
+  }
+}
+.drawer.open {
+  bottom: 0;
+  opacity: 1;
+  visibility: visible;
 }

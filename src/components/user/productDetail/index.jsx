@@ -6,11 +6,13 @@ import {
   Carousel,
   Col,
   Divider,
+  Drawer,
   Flex,
   Image,
   Layout,
   message,
   Row,
+  Select,
   Tabs,
   Typography,
 } from 'antd';
@@ -43,6 +45,7 @@ const items = [
 const index = () => {
   const { id } = useParams();
   const dispath = useDispatch();
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [product, setProduct] = useState({});
   const fetchProduct = async () => {
     await getProducts('id', id)
@@ -71,6 +74,18 @@ const index = () => {
       message.success('복사 실패!');
     }
   };
+  useEffect(() => {
+    if (drawerOpen) {
+      document.body.style.overflow = 'hidden'; // 스크롤 비활성화
+    } else {
+      document.body.style.overflow = 'auto'; // 스크롤 활성화
+    }
+
+    // 컴포넌트가 unmount될 때 overflow 복원
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [drawerOpen]);
 
   return (
     <Layout className={styles.layout}>
@@ -122,6 +137,7 @@ const index = () => {
           </Col>
         </Row>
       </Content>
+
       <Footer className={styles.footer}>
         <Divider />
         <Row>
@@ -135,10 +151,42 @@ const index = () => {
             </Flex>
           </Col>
           <Col span={22}>
-            <Button>구매하기</Button>
+            <Button onClick={() => setDrawerOpen('drawer.open')}>
+              구매하기
+            </Button>
           </Col>
         </Row>
       </Footer>
+      {/* 상품 옵션 drawer */}
+      <Content className={`${styles.drawer} ${drawerOpen ? styles.open : ''}`}>
+        <Col span={24} className="mb-3">
+          <Select
+            // defaultValue="lucy"
+            // onChange={handleChange}
+            placeholder="색상 선택하기"
+            options={[
+              { value: 'black', label: '검정' },
+              { value: 'red', label: '빨강' },
+            ]}
+          />
+        </Col>
+        <Col span={24}>
+          <Select
+            // defaultValue="lucy"
+            // onChange={handleChange}
+            placeholder="사이즈 선택하기"
+            options={[
+              { value: 's', label: 'S' },
+              { value: 'm', label: 'M' },
+              { value: 'l', label: 'L' },
+            ]}
+          />
+        </Col>
+        <Col span={24} className={styles.drawer_bottom}>
+          <Divider />
+          <Button onClick={() => setDrawerOpen(false)}>옵션 선택 닫기</Button>
+        </Col>
+      </Content>
     </Layout>
   );
 };
