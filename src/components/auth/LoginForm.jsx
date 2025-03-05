@@ -153,6 +153,7 @@ const LoginForm = () => {
           >
             <Input.Password
               onChange={(e) => onChangeForm(e.target.value, 'password')}
+              onPressEnter={clickLogin}
             />
           </Form.Item>
 

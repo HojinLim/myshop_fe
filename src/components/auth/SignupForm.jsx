@@ -15,6 +15,7 @@ import theme from '@/assets/styles/theme';
 import FormHeader from './common/FormHeader';
 import { useNavigate } from 'react-router-dom';
 
+const back_url = import.meta.env.VITE_BACK_URL;
 const SignupForm = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const SignupForm = () => {
   const clickRegister = async () => {
     const stringForm = JSON.stringify(signupForm);
     try {
-      const response = await fetch('http://127.0.0.1:5000/auth/register', {
+      const response = await fetch(`${back_url}/auth/register`, {
         method: 'POST',
         body: stringForm,
 
@@ -190,6 +191,7 @@ const SignupForm = () => {
           >
             <Input.Password
               onChange={(e) => onChangeForm(e.target.value, 'password')}
+              onPressEnter={clickRegister}
             />
           </Form.Item>
 

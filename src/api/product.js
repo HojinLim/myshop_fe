@@ -45,26 +45,26 @@ const uploadProduct = async (params) => {
     console.error(' 오류 발생:', error);
   }
 };
-// 상품 옵션 생성성
+// 상품 옵션 생성
 const createProductOption = async (options) => {
   try {
     const response = await fetch(`${back_url}/product/create_options`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json', // JSON 형태로 보내기 위해 Content-Type 설정
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(options), // options 객체를 JSON 문자열로 변환
+      body: JSON.stringify(options),
     });
 
-    if (response.ok) {
-      const data = await response.json();
-
-      return data;
-    } else {
-      console.log('시스템 오류 발생.');
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || `HTTP 오류: ${response.status}`);
     }
+
+    return await response.json();
   } catch (error) {
-    console.error(' 오류 발생:', error);
+    console.error('⚠️ 오류 발생:', error.message); // 에러 로그 출력
+    throw error; // 에러를 다시 던져서 상위 함수에서 처리할 수 있게 함
   }
 };
 

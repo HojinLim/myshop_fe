@@ -35,12 +35,14 @@ const EditProductModal = () => {
   };
   const createOption = async () => {
     setLoading(true);
-    await createProductOption(form)
-      .then((res) => {
-        console.log(res);
-        message.success('옵션 생성 완료!');
-      })
-      .catch((e) => console.log(e));
+    try {
+      const res = await createProductOption(form);
+      console.log('✅ 응답 데이터:', res);
+      message.success('옵션 생성 완료!');
+    } catch (error) {
+      console.error('⚠️ 옵션 생성 실패:', error.message);
+      message.error(`옵션 생성 실패: ${error.message}`);
+    }
     setLoading(false);
   };
   const inputArray = [
