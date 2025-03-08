@@ -90,8 +90,8 @@ const EditProductModal = () => {
               <Input disabled value="상품 ID / 상품명" />
             </Col>
             {inputArray.map((input, idx) => (
-              <>
-                <Col key={idx} span={24}>
+              <Content key={idx}>
+                <Col span={24}>
                   <span>{input.label}</span>
                 </Col>
                 <Col span={24}>
@@ -101,7 +101,7 @@ const EditProductModal = () => {
                     maxLength={input.maxLength}
                   />
                 </Col>
-              </>
+              </Content>
             ))}
           </Row>
         </Content>

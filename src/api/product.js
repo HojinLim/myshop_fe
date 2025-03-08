@@ -67,5 +67,23 @@ const createProductOption = async (options) => {
     throw error; // 에러를 다시 던져서 상위 함수에서 처리할 수 있게 함
   }
 };
+// 상품 옵션 생성
+const searchProductOption = async (id) => {
+  try {
+    const response = await fetch(
+      `${back_url}/product/search_options?product_id=${id}`
+    );
 
-export { getProducts, uploadProduct, createProductOption };
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || `HTTP 오류: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('⚠️ 오류 발생:', error.message); // 에러 로그 출력
+    throw error; // 에러를 다시 던져서 상위 함수에서 처리할 수 있게 함
+  }
+};
+
+export { getProducts, uploadProduct, createProductOption, searchProductOption };

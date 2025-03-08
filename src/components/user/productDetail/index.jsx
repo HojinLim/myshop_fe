@@ -19,8 +19,8 @@ import {
 import MenuHeader from '@/components/common/MenuHeader';
 import { Content, Footer } from 'antd/es/layout/layout';
 import { useParams } from 'react-router-dom';
-import { getProducts } from '@/api/product';
-import { returnBucketUrl } from '@/functions';
+import { getProducts, searchProductOption } from '@/api/product';
+import { mapColors, returnBucketUrl } from '@/functions';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadingSlice';
 import ReviewLayout from './ReviewLayout';
@@ -47,6 +47,8 @@ const index = () => {
   const dispath = useDispatch();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [product, setProduct] = useState({});
+  const [colorOptions, setColorOptions] = useState([]);
+  const [sizeOptions, setSizeOptions] = useState([]);
   const fetchProduct = async () => {
     await getProducts('id', id)
       .then((res) => {
@@ -59,8 +61,39 @@ const index = () => {
         dispath(setLoading(false));
       });
   };
+  const fetchProductOptions = async () => {
+    await searchProductOption(id)
+      .then((res) => {
+        // 사이즈 값 적용
+        if (
+          Array.isArray(res.product_option) &&
+          res.product_option.length > 0
+        ) {
+          const sizeArr = [...new Set(res.product_option.map((el) => el.size))];
+          const newSizeArr = sizeArr.map((size) => ({
+            value: size,
+            label: size,
+          }));
+          setSizeOptions(newSizeArr);
+
+          // 칼라값을 select 속성에 맞는 형태로 변환 후 적용
+          const valueColorArr = [
+            ...new Set(res.product_option.map((el) => el.color)),
+          ];
+          const labelColorArr = mapColors(valueColorArr);
+
+          const mixedColorArr = valueColorArr.map((valueColor, idx) => ({
+            value: valueColor,
+            label: labelColorArr[idx],
+          }));
+          setColorOptions(mixedColorArr);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
   useEffect(() => {
     fetchProduct();
+    fetchProductOptions();
   }, []);
   const onChange = (key) => {
     console.log(key);
@@ -164,10 +197,7 @@ const index = () => {
             // defaultValue="lucy"
             // onChange={handleChange}
             placeholder="색상 선택하기"
-            options={[
-              { value: 'black', label: '검정' },
-              { value: 'red', label: '빨강' },
-            ]}
+            options={colorOptions}
           />
         </Col>
         <Col span={24}>
@@ -175,11 +205,7 @@ const index = () => {
             // defaultValue="lucy"
             // onChange={handleChange}
             placeholder="사이즈 선택하기"
-            options={[
-              { value: 's', label: 'S' },
-              { value: 'm', label: 'M' },
-              { value: 'l', label: 'L' },
-            ]}
+            options={sizeOptions}
           />
         </Col>
         <Col span={24} className={styles.drawer_bottom}>
