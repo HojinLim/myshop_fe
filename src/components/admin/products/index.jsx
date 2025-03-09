@@ -2,13 +2,18 @@ import {
   Avatar,
   Button,
   Col,
+  Flex,
   Form,
   Image,
   Input,
   InputNumber,
   message,
+  Popconfirm,
   Row,
   Select,
+  Space,
+  Table,
+  Tag,
   Typography,
 } from 'antd';
 import Layout, { Content } from 'antd/es/layout/layout';
@@ -161,11 +166,68 @@ const index = () => {
   useEffect(() => {
     compareDiff();
   }, [updated, categories]);
+
+  // 상품 테이블 관련
+  const columns = [
+    {
+      key: 'id',
+      title: '번호',
+      dataIndex: 'id',
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: '이미지',
+      key: 'action',
+      render: (_, record) => <Image src={logo} width="50px" />,
+    },
+    {
+      key: 'name',
+      title: '상품명',
+      dataIndex: 'name',
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      key: 'category',
+      title: '카테고리',
+      dataIndex: 'category',
+    },
+    {
+      title: '관리',
+      key: 'action',
+      render: (_, record) => (
+        <Space size="middle">
+          <a>이미지 관리</a>
+          <a>옵션 관리</a>
+          <Popconfirm
+            title={`${record.name}을(를) 정말 삭제합니까?`}
+            // onConfirm={() => handleDelete(record.key)}
+          >
+            {/* <a>Delete</a> */}
+            <a>상품 삭제</a>
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
+
+  const data = [
+    {
+      id: '1',
+      name: '갈색 셔츠',
+      category: '옷',
+    },
+    {
+      id: '2',
+      name: '영롱한 목걸이',
+      category: '악세사리',
+    },
+  ];
   return (
     <Content>
       <Row className={styles.product_page_container}>
         {/* 상품 리스트 디스플레이 영역 */}
         <Col span={14} className="border-r">
+          <h4>카테고리 관리</h4>
           <Row>
             <Col span={2}></Col>
             {categories.slice(0, 5).map((category, idx) => (
@@ -198,16 +260,36 @@ const index = () => {
             <Col span={2}></Col>
           </Row>
           <Col span={24}>
-            <Button className={styles.button} onClick={updateCategoriesHandler}>
-              업데이트
-            </Button>
-            <Button
-              className={styles.button}
-              onClick={resetHandler}
-              disabled={!changed}
-            >
-              초기화
-            </Button>
+            <Flex>
+              <Button
+                className={styles.button}
+                onClick={updateCategoriesHandler}
+              >
+                업데이트
+              </Button>
+              <Button
+                className={styles.button}
+                onClick={resetHandler}
+                disabled={!changed}
+              >
+                초기화
+              </Button>
+            </Flex>
+          </Col>
+          <Col span={24} className="mt-3">
+            <Flex justify="space-between">
+              <h4>상품 관리</h4>
+              <Select
+                // defaultValue="전체"
+                style={{ width: '50%' }}
+                options={selectCateogry}
+                onChange={(value) => {
+                  onChangeForm(value, 'category');
+                }}
+              />
+              {/* 상품 관리 테이블 */}
+            </Flex>
+            <Table columns={columns} dataSource={data} />
           </Col>
         </Col>
         {/* 상품 추가 영역 */}

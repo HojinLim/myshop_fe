@@ -1,6 +1,6 @@
 const back_url = import.meta.env.VITE_BACK_URL;
 
-// 상품 조회
+// 상품 조회 (type: 카테고리- 카테고리id에 따른, type: id에 따른)
 const getProducts = async (type = '', category = '') => {
   try {
     const response = await fetch(
