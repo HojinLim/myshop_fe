@@ -15,12 +15,13 @@ import {
   Table,
   Tag,
   Typography,
+  Upload,
 } from 'antd';
 import Layout, { Content } from 'antd/es/layout/layout';
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.module.css';
 import logo from '@/assets/images/logo.png';
-import { CameraFilled } from '@ant-design/icons';
+import { CameraFilled, PlusOutlined } from '@ant-design/icons';
 import { AdminMenuItem } from '@/components/common/AdminMenuItem';
 import { getCategories, updateCategories } from '@/api/category';
 import { capitalizeJs } from '@/functions';
@@ -38,6 +39,12 @@ const index = () => {
   const [updated, setUpdated] = useState(false);
   const [changed, setChanged] = useState(false);
   const [reset, setReset] = useState(false);
+
+  // 이미지 상태 관리
+  const [mainImages, setMainImages] = useState([]);
+  const [detailImages, setDetailImages] = useState([]);
+  const [mainFileList, setMainFileList] = useState([]);
+  const [detailFileList, setDetailFileList] = useState([]);
 
   // const [messageApi, contextHolder] = message.useMessage();
 
@@ -72,7 +79,6 @@ const index = () => {
     await uploadProduct(productForm)
       .then((res) => {
         console.log(res);
-
         message
           .open({
             type: 'success',
@@ -222,6 +228,14 @@ const index = () => {
       category: '악세사리',
     },
   ];
+  const UploadButton = () => {
+    return (
+      <button style={{ border: 0, background: 'none' }} type="button">
+        <PlusOutlined />
+        <div style={{ marginTop: 8 }}>Upload</div>
+      </button>
+    );
+  };
   return (
     <Content>
       <Row className={styles.product_page_container}>
@@ -298,28 +312,18 @@ const index = () => {
             <Col span={24} className="text-center">
               <Image src={productPreview} width={300} preview={false} />
             </Col>
-            <Col span={24} className="text-center">
-              <Button onClick={() => imageRef.current.click()}>
-                <CameraFilled /> 사진 올리기
-              </Button>
-              <input
-                ref={imageRef}
-                hidden
-                type="file"
-                accept="image/*"
-                onChange={changeProductImage}
-              />
+            <Col span={24}>
+              <Upload
+                action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
+                listType="picture-card"
+                fileList={mainFileList}
+                // onPreview={handlePreview}
+                // onChange={handleChange}
+              >
+                {mainFileList.length >= 8 ? null : <UploadButton />}
+              </Upload>
             </Col>
-            <Col span={24} className="underline mt-1 text-center">
-              {productPreview && (
-                <Typography.Text
-                  className="cursor-pointer"
-                  onClick={deleteProductImage}
-                >
-                  현재 사진 삭제
-                </Typography.Text>
-              )}
-            </Col>
+
             <Col span={24}>
               <Form
                 form={form}
