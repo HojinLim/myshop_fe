@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Breadcrumb,
   Button,
@@ -18,9 +18,11 @@ import { Content } from 'antd/es/layout/layout';
 import { RedoOutlined } from '@ant-design/icons';
 import { createProductOption } from '@/api/product';
 import logo from '@/assets/images/logo.png';
-const EditProductModal = () => {
+const EditProductModal = (props) => {
+  const { modalOpen, setModalOpen } = props;
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(modalOpen);
+
   const [form, setForm] = useState({
     product_id: '1',
     size: '',
@@ -28,8 +30,12 @@ const EditProductModal = () => {
     price: '',
     stock: '',
   });
+  useEffect(() => {
+    setOpen(modalOpen);
+  }, [modalOpen]);
   const showModal = () => {
     setOpen(true);
+    setModalOpen(true);
   };
 
   const handleOk = () => {
@@ -44,6 +50,7 @@ const EditProductModal = () => {
   };
   const handleCancel = () => {
     setOpen(false);
+    setModalOpen(false);
   };
   const onChangeForm = (e, type) => {
     setForm({ ...form, [type]: e.target.value });
@@ -154,10 +161,6 @@ const EditProductModal = () => {
 
   return (
     <>
-      <Button type="primary" onClick={showModal}>
-        Open Modal with customized footer
-      </Button>
-
       <Modal
         width="fit-content"
         open={open}

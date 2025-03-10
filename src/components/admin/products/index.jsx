@@ -39,11 +39,33 @@ const index = () => {
   const [updated, setUpdated] = useState(false);
   const [changed, setChanged] = useState(false);
   const [reset, setReset] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   // 이미지 상태 관리
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState('');
   const [mainImages, setMainImages] = useState([]);
   const [detailImages, setDetailImages] = useState([]);
-  const [mainFileList, setMainFileList] = useState([]);
+  const [mainFileList, setMainFileList] = useState([
+    {
+      uid: '-1',
+      name: 'image.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    },
+    {
+      uid: '-2',
+      name: 'image.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    },
+    {
+      uid: '-3',
+      name: 'image.png',
+      status: 'error',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    },
+  ]);
   const [detailFileList, setDetailFileList] = useState([]);
 
   // const [messageApi, contextHolder] = message.useMessage();
@@ -203,7 +225,13 @@ const index = () => {
       render: (_, record) => (
         <Space size="middle">
           <a>이미지 관리</a>
-          <a>옵션 관리</a>
+          <a
+            onClick={() => {
+              setModalOpen(true);
+            }}
+          >
+            옵션 관리
+          </a>
           <Popconfirm
             title={`${record.name}을(를) 정말 삭제합니까?`}
             // onConfirm={() => handleDelete(record.key)}
@@ -236,9 +264,19 @@ const index = () => {
       </button>
     );
   };
+
+  const handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+
+    setPreviewImage(file.url || file.preview);
+    setPreviewOpen(true);
+  };
   return (
     <Content>
       <Row className={styles.product_page_container}>
+        {/* <button onClick={test}>test</button> */}
         {/* 상품 리스트 디스플레이 영역 */}
         <Col span={14} className="border-r">
           <h4>카테고리 관리</h4>
@@ -309,19 +347,47 @@ const index = () => {
         {/* 상품 추가 영역 */}
         <Col span={10}>
           <Row>
-            <Col span={24} className="text-center">
-              <Image src={productPreview} width={300} preview={false} />
-            </Col>
             <Col span={24}>
+              <h4>상품 업로드</h4>
+              {/* 메인 사진 업로드 */}
+              <h5>- 메인 사진 업로드</h5>
               <Upload
                 action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
                 listType="picture-card"
                 fileList={mainFileList}
-                // onPreview={handlePreview}
-                // onChange={handleChange}
+                onPreview={handlePreview}
+                onChange={({ fileList }) => {
+                  setMainFileList(fileList);
+                }}
               >
                 {mainFileList.length >= 8 ? null : <UploadButton />}
               </Upload>
+
+              {/* 디테일 사진 업로드 */}
+              <h5>- 디테일 사진 업로드</h5>
+              <Upload
+                action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
+                listType="picture-card"
+                fileList={detailFileList}
+                onPreview={handlePreview}
+                onChange={({ fileList }) => {
+                  setDetailFileList(fileList);
+                }}
+              >
+                {mainFileList.length >= 8 ? null : <UploadButton />}
+              </Upload>
+              {previewImage && (
+                <Image
+                  wrapperStyle={{ display: 'none' }}
+                  preview={{
+                    visible: previewOpen,
+                    onVisibleChange: (visible) => setPreviewOpen(visible),
+                    afterOpenChange: (visible) =>
+                      !visible && setPreviewImage(''),
+                  }}
+                  src={previewImage}
+                />
+              )}
             </Col>
 
             <Col span={24}>
@@ -435,7 +501,7 @@ const index = () => {
           </Row>
         </Col>
       </Row>
-      <EditProductModal />
+      <EditProductModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </Content>
   );
 };
