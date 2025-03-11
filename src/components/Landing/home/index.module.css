@@ -1,7 +1,14 @@
 .header {
   padding: 0;
-  background-color: transparent;
+  margin: 0 auto;
+  background-color: white;
   text-align: center;
+  position: sticky !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  width: 100%;
 }
 
 .ad_contaier {

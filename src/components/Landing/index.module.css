@@ -1,12 +1,9 @@
 .layout {
   justify-self: center !important;
   background-color: transparent;
-  width: 70%;
-  height: calc(100vh - 100px);
-  overflow-y: auto;
-  overflow-x: hidden;
+  width: 100%;
+
   position: relative;
-  max-width: 600px;
 }
 
 .footer {
@@ -16,7 +13,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  width: 70%;
+  width: 100%;
   justify-self: center;
   max-width: 600px;
 }

@@ -6,8 +6,8 @@
   position: relative;
 }
 .footer {
-  position: fixed;
-  width: 600px;
+  position: sticky;
+  /* width: 600px; */
   bottom: 0;
   left: 0;
   right: 0;

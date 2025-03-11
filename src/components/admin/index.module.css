@@ -1,11 +1,37 @@
 .layout {
   width: 100vw !important;
   height: 100vh;
+  max-width: none !important; /* 관리자 페이지는 최대 너비 제한 해제 */
+  :global(body) {
+    max-width: none !important;
+  }
 }
 .sider {
-  width: 25%;
+  /* width: 25%; */
   height: 100%;
   background-color: white;
+  /* width: 10px !important; */
+  /* min-width: 50px !important;
+  max-width: 50px !important; */
+}
+@media (max-width: 1200px) {
+  .sider {
+    min-width: 50px !important;
+    max-width: 50px !important;
+    & :global(.ant-menu-item) {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    & :global(.ant-menu-title-content) {
+      content-visibility: hidden;
+    }
+    & :global(.ant-menu) {
+      border-inline-end: 0;
+    }
+  }
+  .sider_menu_container {
+    place-self: center;
+  }
 }
 .sider_info_container {
   height: 30%;

@@ -27,50 +27,21 @@ import { getCategories, updateCategories } from '@/api/category';
 import { capitalizeJs } from '@/functions';
 import { uploadProduct } from '@/api/product';
 import EditProductModal from './EditProductModal';
+import UploadProduct from './UploadLayout';
+import UploadLayout from './UploadLayout';
 
 const index = () => {
-  const [form] = Form.useForm();
   const imageRef = useRef(null);
   const [categories, setCategories] = useState([]);
   const [originCategories, setOriginCategories] = useState([]); // 처음 불러온 값
   const [selectCateogry, setSelectCateogry] = useState([]);
-  const [productPreview, setProductPreview] = useState(logo);
 
   const [updated, setUpdated] = useState(false);
   const [changed, setChanged] = useState(false);
   const [reset, setReset] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
-  // 이미지 상태 관리
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState('');
-  const [mainImages, setMainImages] = useState([]);
-  const [detailImages, setDetailImages] = useState([]);
-  const [mainFileList, setMainFileList] = useState([
-    {
-      uid: '-1',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
-    {
-      uid: '-2',
-      name: 'image.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
-    {
-      uid: '-3',
-      name: 'image.png',
-      status: 'error',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
-  ]);
-  const [detailFileList, setDetailFileList] = useState([]);
-
-  // const [messageApi, contextHolder] = message.useMessage();
-
-  // 상품 등록 폼 상태태
+  // 상품 등록 폼 상태
   const [productForm, setProductForm] = useState({
     name: '',
     category: '',
@@ -81,48 +52,6 @@ const index = () => {
   // 상품 등록 폼 핸들러
   const onChangeForm = (value, type) => {
     setProductForm({ ...productForm, [type]: value });
-  };
-
-  // 상품 이미지 변경
-  const changeProductImage = (e) => {
-    const file = e.target.files[0];
-    setProductForm({ ...productForm, photoUrl: file });
-    if (!file) return;
-
-    setProductPreview(URL.createObjectURL(file)); // 이미지 미리보기
-  };
-  // 상품 사진 삭제
-  const deleteProductImage = () => {
-    setProductPreview(logo);
-    setProductForm({ ...productForm, photo: null });
-  };
-  // 상품 업로드
-  const uploadProductHandler = async () => {
-    await uploadProduct(productForm)
-      .then((res) => {
-        console.log(res);
-        message
-          .open({
-            type: 'success',
-            content: '상품 등록 완료 :)',
-            duration: 2,
-          })
-          .then(() => {
-            // 초기화
-            setProductForm({
-              name: '',
-              category: '',
-              originPrice: '',
-              discountPrice: '',
-              photoUrl: null,
-            });
-            form.resetFields();
-            setProductPreview(logo);
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   // 카테고리 리스트 가져오기
@@ -256,23 +185,7 @@ const index = () => {
       category: '악세사리',
     },
   ];
-  const UploadButton = () => {
-    return (
-      <button style={{ border: 0, background: 'none' }} type="button">
-        <PlusOutlined />
-        <div style={{ marginTop: 8 }}>Upload</div>
-      </button>
-    );
-  };
 
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-
-    setPreviewImage(file.url || file.preview);
-    setPreviewOpen(true);
-  };
   return (
     <Content>
       <Row className={styles.product_page_container}>
@@ -345,161 +258,7 @@ const index = () => {
           </Col>
         </Col>
         {/* 상품 추가 영역 */}
-        <Col span={10}>
-          <Row>
-            <Col span={24}>
-              <h4>상품 업로드</h4>
-              {/* 메인 사진 업로드 */}
-              <h5>- 메인 사진 업로드</h5>
-              <Upload
-                action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-                listType="picture-card"
-                fileList={mainFileList}
-                onPreview={handlePreview}
-                onChange={({ fileList }) => {
-                  setMainFileList(fileList);
-                }}
-              >
-                {mainFileList.length >= 8 ? null : <UploadButton />}
-              </Upload>
-
-              {/* 디테일 사진 업로드 */}
-              <h5>- 디테일 사진 업로드</h5>
-              <Upload
-                action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-                listType="picture-card"
-                fileList={detailFileList}
-                onPreview={handlePreview}
-                onChange={({ fileList }) => {
-                  setDetailFileList(fileList);
-                }}
-              >
-                {mainFileList.length >= 8 ? null : <UploadButton />}
-              </Upload>
-              {previewImage && (
-                <Image
-                  wrapperStyle={{ display: 'none' }}
-                  preview={{
-                    visible: previewOpen,
-                    onVisibleChange: (visible) => setPreviewOpen(visible),
-                    afterOpenChange: (visible) =>
-                      !visible && setPreviewImage(''),
-                  }}
-                  src={previewImage}
-                />
-              )}
-            </Col>
-
-            <Col span={24}>
-              <Form
-                form={form}
-                className="form_container"
-                name="basic"
-                labelAlign="left"
-                labelCol={{
-                  span: 8,
-                }}
-                wrapperCol={{
-                  span: 24,
-                }}
-                initialValues={{
-                  remember: true,
-                }}
-                autoComplete="off"
-              >
-                <Typography.Title level={5}>상품명</Typography.Title>
-                <Form.Item
-                  name="name"
-                  rules={[
-                    {
-                      required: true,
-                      message: '폼을 입력해주세요!',
-                    },
-                  ]}
-                >
-                  <Input
-                    type="text"
-                    onChange={(e) => onChangeForm(e.target.value, 'name')}
-                  />
-                </Form.Item>
-
-                <Typography.Title level={5}>카테고리</Typography.Title>
-                <Form.Item
-                  name="category"
-                  rules={[
-                    {
-                      required: true,
-                      message: '폼을 입력해주세요!',
-                    },
-                  ]}
-                >
-                  <Select
-                    // defaultValue="전체"
-                    style={{ width: '100%' }}
-                    options={selectCateogry}
-                    onChange={(value) => {
-                      onChangeForm(value, 'category');
-                    }}
-                  />
-                </Form.Item>
-                <Typography.Title level={5}>기존 가격</Typography.Title>
-                <Form.Item
-                  name="originPrice"
-                  rules={[
-                    {
-                      required: true,
-                      message: '폼을 입력해주세요!',
-                    },
-                  ]}
-                >
-                  <InputNumber
-                    className={styles.inputNumber}
-                    type="text"
-                    suffix={<div className={styles.circle_icon}>원</div>}
-                    formatter={(value) =>
-                      value ? value.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : ''
-                    }
-                    parser={(value) => value.replace(/\D/g, '')}
-                    controls={false}
-                    onChange={(e) => onChangeForm(e, 'originPrice')}
-                  />
-                </Form.Item>
-                <Typography.Title level={5}>할인된 가격</Typography.Title>
-                <Form.Item
-                  name="discountPrice"
-                  rules={[
-                    {
-                      required: true,
-                      message: '폼을 입력해주세요!',
-                    },
-                  ]}
-                >
-                  <InputNumber
-                    className={styles.inputNumber}
-                    type="text"
-                    suffix={<div className={styles.circle_icon}>원</div>}
-                    formatter={(value) =>
-                      value ? value.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : ''
-                    }
-                    parser={(value) => value.replace(/\D/g, '')}
-                    controls={false}
-                    onChange={(e) => onChangeForm(e, 'discountPrice')}
-                  />
-                </Form.Item>
-              </Form>
-            </Col>
-            <Col span={24}>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="w-full"
-                onClick={uploadProductHandler}
-              >
-                상품 등록
-              </Button>
-            </Col>
-          </Row>
-        </Col>
+        <UploadLayout selectCateogry={selectCateogry} />
       </Row>
       <EditProductModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </Content>

@@ -46,6 +46,12 @@ const index = () => {
     setProfilePic(returnBucketUrl(user.profileUrl));
   }, [user]);
 
+  const logoHandler = () => {
+    if (user.id) {
+      navigate('/mypage/profile');
+    }
+  };
+
   return (
     <>
       <Header className={styles.header}>
@@ -55,6 +61,8 @@ const index = () => {
           </Col>
           <Col span={2}>
             <Avatar
+              className={user.id ? 'cursor-pointer' : ''}
+              onClick={logoHandler}
               src={profilePic}
               onError={() => {
                 setProfilePic(logo); // 기본 이미지 설정

@@ -162,7 +162,7 @@ const LoginForm = () => {
             name="remember"
             valuePropName="checked"
           >
-            <Checkbox>정보 저장</Checkbox>
+            {/* <Checkbox>정보 저장</Checkbox> */}
           </Form.Item>
         </Form>
 

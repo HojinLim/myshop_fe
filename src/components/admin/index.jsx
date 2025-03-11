@@ -18,6 +18,20 @@ const index = () => {
   const user = useSelector((state) => state.user.data);
   const location = useLocation();
 
+  const isAdmin = location.pathname.startsWith('/admin');
+
+  useEffect(() => {
+    if (isAdmin) {
+      document.body.style.maxWidth = '100%'; // 어드민일 때 너비 제한 해제
+    } else {
+      document.body.style.maxWidth = '600px'; // 일반 페이지는 600px
+    }
+
+    return () => {
+      document.body.style.maxWidth = ''; // 언마운트될 때 초기화
+    };
+  }, [isAdmin]);
+
   const [loading, setLoading] = useState(true);
   const [defaultMenu, setDefaultMenu] = useState('dashboard');
   const { Sider } = Layout;
