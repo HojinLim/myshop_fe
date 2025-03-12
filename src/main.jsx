@@ -8,12 +8,12 @@ import App from './App.jsx';
 // 리덕스 툴킷 provider
 import { Provider } from 'react-redux';
 import { store } from '@/store';
-import { ConfigProvider } from 'antd';
+import { ConfigProvider, theme } from 'antd';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ConfigProvider
-      theme={{ algorithm: 'default' }}
+      theme={{ algorithm: theme.defaultAlgorithm }}
       wave={{ disabled: true }}
       typography={{ style: { margin: '0 !important', padding: 0 } }}
       layout={{ style: { backgroundColor: 'transparent' } }}
