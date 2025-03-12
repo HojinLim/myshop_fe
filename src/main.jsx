@@ -13,7 +13,9 @@ import { ConfigProvider } from 'antd';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ConfigProvider
-      // button={{ style: { width: '100%' } }}
+      theme={{ algorithm: 'default' }}
+      wave={{ disabled: true }}
+      typography={{ style: { margin: '0 !important', padding: 0 } }}
       layout={{ style: { backgroundColor: 'transparent' } }}
     >
       <Provider store={store}>

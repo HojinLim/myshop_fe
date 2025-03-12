@@ -1,4 +1,4 @@
-import { Col, ConfigProvider, Input, Layout, Row, Typography } from 'antd';
+import { Col, Input, Layout, Row, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './index.module.css';
@@ -51,28 +51,23 @@ const Landing = () => {
     <>
       <Layout className={styles.layout}>
         <Outlet />
-        <ConfigProvider
-          wave={{ disabled: true }}
-          typography={{ style: { margin: '0 !important', padding: 0 } }}
-        >
-          <Footer className={styles.footer}>
-            <Row className="text-center">
-              {menuList.map((value, index) => (
-                <Col
-                  className={`${styles.icon} ${
-                    index === selectedId ? 'selected' : ''
-                  }`}
-                  span={6}
-                  key={index}
-                  onClick={() => clickMenu(index)}
-                >
-                  {value.icon}
-                  <Title level={5}>{value.text}</Title>
-                </Col>
-              ))}
-            </Row>
-          </Footer>
-        </ConfigProvider>
+        <Footer className={styles.footer}>
+          <Row className="text-center">
+            {menuList.map((value, index) => (
+              <Col
+                className={`${styles.icon} ${
+                  index === selectedId ? 'selected' : ''
+                }`}
+                span={6}
+                key={index}
+                onClick={() => clickMenu(index)}
+              >
+                {value.icon}
+                <Title level={5}>{value.text}</Title>
+              </Col>
+            ))}
+          </Row>
+        </Footer>
       </Layout>
     </>
   );
