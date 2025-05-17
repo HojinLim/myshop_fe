@@ -21,7 +21,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { uploadProduct } from '@/api/product';
 
 const UploadLayout = (props) => {
-  const { selectCateogry } = props;
+  const { selectCateogry, fetchProduct } = props;
   const [form] = Form.useForm();
 
   // 이미지 상태 관리
@@ -58,6 +58,8 @@ const UploadLayout = (props) => {
       .then((res) => {
         console.log(res);
         message.success('상품 등록 완료 ');
+        // ✅ 상품 목록 다시 불러오기
+        fetchProduct();
         // 초기화
         setProductForm({
           name: '',
@@ -91,15 +93,25 @@ const UploadLayout = (props) => {
           {/* 메인 사진 업로드 */}
           <h5>- 메인 사진 업로드</h5>
           <Upload
-            // action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
             listType="picture-card"
-            // onPreview={handlePreview}
+            type="file"
+            accept="image/*"
+            // onChange={({ fileList }) => {
+            //   onChangeForm(fileList, 'mainFiles');
+            // }}
             onChange={({ fileList }) => {
-              onChangeForm(fileList, 'mainFiles');
+              setProductForm((prev) => ({
+                ...prev,
+                mainFiles: fileList, // ✅ 업데이트된 fileList를 그대로 반영
+              }));
             }}
-            beforeUpload={() => {
-              return false;
-            }} // 자동 업로드 방지
+            beforeUpload={(file) => {
+              setProductForm((prev) => ({
+                ...prev,
+                mainFiles: [...prev.mainFiles, file], // ✅ File 객체 저장
+              }));
+              return false; // 자동 업로드 방지
+            }}
             fileList={productForm.mainFiles} // 선택한 파일 리스트 관리
             onRemove={(file) =>
               setProductForm((prev) => ({
@@ -110,22 +122,31 @@ const UploadLayout = (props) => {
               }))
             }
           >
-            {productForm.mainFiles.length >= 5 ? null : <UploadButton />}
+            {productForm.mainFiles &&
+            productForm.mainFiles.length >= 5 ? null : (
+              <UploadButton />
+            )}
           </Upload>
 
           {/* 디테일 사진 업로드 */}
           <h5>- 디테일 사진 업로드</h5>
           <Upload
-            // action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
             listType="picture-card"
             fileList={productForm.detailFiles}
             onPreview={handlePreview}
             onChange={({ fileList }) => {
-              setProductForm(fileList, 'detailFiles');
+              setProductForm((prev) => ({
+                ...prev,
+                detailFiles: fileList, // ✅ 업데이트된 fileList를 그대로 반영
+              }));
             }}
-            beforeUpload={() => {
-              return false;
-            }} // 자동 업로드 방지
+            beforeUpload={(file) => {
+              setProductForm((prev) => ({
+                ...prev,
+                detailFiles: [...prev.detailFiles, file], // ✅ File 객체 저장
+              }));
+              return false; // 자동 업로드 방지
+            }}
             onRemove={(file) =>
               setProductForm((prev) => ({
                 ...prev,
@@ -135,7 +156,10 @@ const UploadLayout = (props) => {
               }))
             }
           >
-            {productForm.detailFiles.length >= 5 ? null : <UploadButton />}
+            {productForm.detailFiles &&
+            productForm.detailFiles.length >= 5 ? null : (
+              <UploadButton />
+            )}
           </Upload>
           {previewImage && (
             <Image

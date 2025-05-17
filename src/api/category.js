@@ -39,11 +39,16 @@ const updateCategories = async (params) => {
       formData.append('categoryImages', category.upload_photo); // ✅ 개별 추가
     });
 
+  for (const [key, value] of formData.entries()) {
+    console.log(`Key: ${key}, Value:`, value);
+  }
+
   try {
     const response = await fetch(`${back_url}/category/update_categories`, {
       method: 'POST',
       body: formData,
     });
+    console.log(formData);
 
     if (response.ok) {
       const data = await response.json();

@@ -127,7 +127,7 @@ const SignupForm = () => {
               },
             ]}
           >
-            <Input onChange={(e) => onChangeForm(e.target.value, 'username')} />
+            <Input onChange={(e) => (e.target.value, 'username')} />
           </Form.Item>
           <Typography.Title level={5}>이메일</Typography.Title>
           <Form.Item

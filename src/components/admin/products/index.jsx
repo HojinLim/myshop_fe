@@ -1,45 +1,41 @@
 import {
-  Avatar,
   Button,
   Col,
   Flex,
-  Form,
   Image,
-  Input,
-  InputNumber,
-  message,
   Popconfirm,
   Row,
   Select,
   Space,
   Table,
-  Tag,
-  Typography,
-  Upload,
 } from 'antd';
 import Layout, { Content } from 'antd/es/layout/layout';
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.module.css';
 import logo from '@/assets/images/logo.png';
-import { CameraFilled, PlusOutlined } from '@ant-design/icons';
 import { AdminMenuItem } from '@/components/common/AdminMenuItem';
 import { getCategories, updateCategories } from '@/api/category';
 import { capitalizeJs } from '@/functions';
-import { uploadProduct } from '@/api/product';
+import { deleteProduct, getProducts, uploadProduct } from '@/api/product';
 import EditProductModal from './EditProductModal';
 import UploadProduct from './UploadLayout';
 import UploadLayout from './UploadLayout';
+import { setLoading } from '@/store/slices/loadingSlice';
+import { useDispatch } from 'react-redux';
 
 const index = () => {
-  const imageRef = useRef(null);
+  const dispath = useDispatch();
   const [categories, setCategories] = useState([]);
   const [originCategories, setOriginCategories] = useState([]); // 처음 불러온 값
   const [selectCateogry, setSelectCateogry] = useState([]);
-
   const [updated, setUpdated] = useState(false);
   const [changed, setChanged] = useState(false);
   const [reset, setReset] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [products, setProducts] = useState([]);
+
+  // 상품 관리- 클릭한 상품 정보
+  const [productInfo, setProductInfo] = useState('');
 
   // 상품 등록 폼 상태
   const [productForm, setProductForm] = useState({
@@ -64,12 +60,12 @@ const index = () => {
 
           // select에 들어간 카테고리 배열
           const arr = res.categories
-            .filter((category) => category.name !== '전체')
+            // .filter((category) => category.name !== '전체')
             .map((el) => ({
               value: el.name,
               label: capitalizeJs(el.name),
             }));
-
+          arr.unshift({ value: '', label: '전체' });
           setSelectCateogry(arr);
         }
       })
@@ -115,10 +111,53 @@ const index = () => {
         console.log(err);
       });
   };
+  const fetchProduct = async () => {
+    await getProducts('category', productForm.category)
+      .then((res) => {
+        dispath(setLoading(true));
+        if (res.products && res.products.length > 0) {
+          const productArr = res.products.map((product, index) => {
+            const { id, category, ProductImages, name, discountPrice } =
+              product; // ✅ 객체 구조 분해 할당
+
+            return {
+              index: index + 1,
+              id,
+              category,
+              imageUrl: ProductImages?.[0].imageUrl || null, // ✅ 첫 번째 이미지가 없으면 `null` 반환
+              name,
+              discountPrice,
+            };
+          });
+
+          setProducts(productArr);
+        } else {
+          setProducts([]);
+        }
+      })
+      .finally(() => {
+        dispath(setLoading(false));
+      });
+  };
+  const handleDelete = async (id) => {
+    await deleteProduct(id)
+      .then((res) => {
+        dispath(setLoading(true));
+        fetchProduct();
+        console.log(res);
+      })
+      .finally(() => {
+        dispath(setLoading(false));
+      });
+  };
 
   useEffect(() => {
     getCategoryList();
+    fetchProduct();
   }, []);
+  useEffect(() => {
+    fetchProduct();
+  }, [productForm.category]);
 
   useEffect(() => {
     compareDiff();
@@ -127,8 +166,14 @@ const index = () => {
   // 상품 테이블 관련
   const columns = [
     {
+      key: 'index',
+      title: '인덱스',
+      dataIndex: 'index',
+      render: (text) => <a>{text}</a>,
+    },
+    {
       key: 'id',
-      title: '번호',
+      title: '고유 번호',
       dataIndex: 'id',
       render: (text) => <a>{text}</a>,
     },
@@ -157,15 +202,15 @@ const index = () => {
           <a
             onClick={() => {
               setModalOpen(true);
+              setProductInfo(record);
             }}
           >
             옵션 관리
           </a>
           <Popconfirm
             title={`${record.name}을(를) 정말 삭제합니까?`}
-            // onConfirm={() => handleDelete(record.key)}
+            onConfirm={() => handleDelete(record.id)}
           >
-            {/* <a>Delete</a> */}
             <a>상품 삭제</a>
           </Popconfirm>
         </Space>
@@ -175,11 +220,13 @@ const index = () => {
 
   const data = [
     {
+      index: '1',
       id: '1',
       name: '갈색 셔츠',
       category: '옷',
     },
     {
+      index: '2',
       id: '2',
       name: '영롱한 목걸이',
       category: '악세사리',
@@ -189,7 +236,6 @@ const index = () => {
   return (
     <Content>
       <Row className={styles.product_page_container}>
-        {/* <button onClick={test}>test</button> */}
         {/* 상품 리스트 디스플레이 영역 */}
         <Col span={14} className="border-r">
           <h4>카테고리 관리</h4>
@@ -245,7 +291,7 @@ const index = () => {
             <Flex justify="space-between">
               <h4>상품 관리</h4>
               <Select
-                // defaultValue="전체"
+                defaultValue="전체"
                 style={{ width: '50%' }}
                 options={selectCateogry}
                 onChange={(value) => {
@@ -254,13 +300,21 @@ const index = () => {
               />
               {/* 상품 관리 테이블 */}
             </Flex>
-            <Table columns={columns} dataSource={data} />
+            <Table columns={columns} dataSource={products} />
           </Col>
         </Col>
         {/* 상품 추가 영역 */}
-        <UploadLayout selectCateogry={selectCateogry} />
+        <UploadLayout
+          selectCateogry={selectCateogry}
+          fetchProduct={fetchProduct}
+        />
       </Row>
-      <EditProductModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
+      <EditProductModal
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        productInfo={productInfo}
+        setProductInfo={setProductInfo}
+      />
     </Content>
   );
 };

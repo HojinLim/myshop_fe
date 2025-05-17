@@ -34,10 +34,12 @@ const index = () => {
       .then((res) => {
         if (res.products && res.products.length > 0) {
           setProducts(res.products);
+          console.log(res.products);
         }
       })
       .catch((err) => console.log(err));
   };
+  // console.log(products[0]?.category);
   useEffect(() => {
     fetchProductsList();
     getCategoryList();
@@ -116,7 +118,10 @@ const index = () => {
               className={styles.item_info}
               onClick={() => navigate(`/product/${product.id}`)}
             >
-              <img src={returnBucketUrl(product.imageUrl)} width={'50%'} />
+              <img
+                src={returnBucketUrl(product.ProductImages[0].imageUrl)}
+                width={'50%'}
+              />
 
               <Text strong>00% {product.discountPrice}</Text>
               {/* <Text strong>쇼핑몰 이름</Text> */}

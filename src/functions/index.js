@@ -10,6 +10,7 @@ const colorMap = {
 // rds 사진 url + aws url로 리턴
 const returnBucketUrl = (imageUrl) => {
   const fixUrl = `${bucket_url}/${imageUrl}`;
+
   return fixUrl;
 };
 

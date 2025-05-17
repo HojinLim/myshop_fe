@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.module.css';
-import { ShareAltOutlined, HeartTwoTone } from '@ant-design/icons';
+import {
+  ShareAltOutlined,
+  HeartTwoTone,
+  CloseOutlined,
+} from '@ant-design/icons';
 import {
   Button,
   Carousel,
   Col,
   Divider,
-  Drawer,
   Flex,
   Image,
   Layout,
@@ -19,29 +22,13 @@ import {
 import MenuHeader from '@/components/common/MenuHeader';
 import { Content, Footer } from 'antd/es/layout/layout';
 import { useParams } from 'react-router-dom';
-import { getProducts, searchProductOption } from '@/api/product';
+import { getProducts, getProductOption } from '@/api/product';
 import { mapColors, returnBucketUrl } from '@/functions';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadingSlice';
 import ReviewLayout from './ReviewLayout';
+import ProductSelectItem from './ProductSelectItem';
 
-const items = [
-  {
-    key: '1',
-    label: '상품정보',
-    children: 'Content of Tab Pane 1',
-  },
-  {
-    key: '2',
-    label: '리뷰',
-    children: <ReviewLayout />,
-  },
-  {
-    key: '3',
-    label: '문의',
-    children: 'Content of Tab Pane 3',
-  },
-];
 const index = () => {
   const { id } = useParams();
   const dispath = useDispatch();
@@ -49,6 +36,19 @@ const index = () => {
   const [product, setProduct] = useState({});
   const [colorOptions, setColorOptions] = useState([]);
   const [sizeOptions, setSizeOptions] = useState([]);
+  const [options, setOptions] = useState([]);
+  const [selectedOption, setSelectedOption] = useState({
+    color: null,
+    size: null,
+  });
+  const [cart, setCart] = useState([]);
+
+  // color: null,
+  // size: null,
+  // price: "",
+  // quantity: 0,
+  const [selectMode, setSelectMode] = useState(true);
+
   const fetchProduct = async () => {
     await getProducts('id', id)
       .then((res) => {
@@ -62,19 +62,15 @@ const index = () => {
       });
   };
   const fetchProductOptions = async () => {
-    await searchProductOption(id)
+    await getProductOption(id)
       .then((res) => {
         // 사이즈 값 적용
         if (
           Array.isArray(res.product_option) &&
           res.product_option.length > 0
         ) {
-          const sizeArr = [...new Set(res.product_option.map((el) => el.size))];
-          const newSizeArr = sizeArr.map((size) => ({
-            value: size,
-            label: size,
-          }));
-          setSizeOptions(newSizeArr);
+          // 전체값 적용
+          setOptions(res.product_option);
 
           // 칼라값을 select 속성에 맞는 형태로 변환 후 적용
           const valueColorArr = [
@@ -95,6 +91,45 @@ const index = () => {
     fetchProduct();
     fetchProductOptions();
   }, []);
+
+  const DetailProductLayout = ({ product }) => {
+    return (
+      <div>
+        {product.ProductImages &&
+          Array.isArray(product.ProductImages) &&
+          product.ProductImages.filter((image) => image.type === 'detail').map(
+            (item, key) => (
+              <Image
+                key={key}
+                width="100%"
+                height={'30vh'}
+                preview={false}
+                src={returnBucketUrl(item.imageUrl)}
+                style={{ objectFit: 'contain' }}
+              />
+            )
+          )}
+      </div>
+    );
+  };
+  const items = [
+    {
+      key: '1',
+      label: '상품정보',
+      children: <DetailProductLayout product={product} />,
+    },
+    {
+      key: '2',
+      label: '리뷰',
+      children: <ReviewLayout />,
+    },
+    {
+      key: '3',
+      label: '문의',
+      children: 'Content of Tab Pane 3',
+    },
+  ];
+
   const onChange = (key) => {
     console.log(key);
   };
@@ -119,25 +154,110 @@ const index = () => {
       document.body.style.overflow = 'auto';
     };
   }, [drawerOpen]);
+  const handleColorChange = (value) => {
+    const sizeArr = options
+      .filter((el) => el.color === value)
+      .map((item) => ({
+        value: item.size,
+        label: (
+          <span className="flex justify-between">
+            <span>{item.size}</span>
+            <span>{item.price} 원</span>
+          </span>
+        ),
+      }));
 
+    setSelectedOption({ color: value, size: null }); // ✅ `null`로 설정하여 placeholder 유지
+    setSizeOptions(sizeArr);
+  };
+
+  const handleSizeChange = (value) => {
+    setSelectedOption((prev) => ({ ...prev, size: value }));
+    handleAddToCart(selectedOption.color, value);
+
+    setSelectedOption({ color: null, size: null });
+    setSelectMode(false);
+  };
+
+  const handleAddToCart = (color, size) => {
+    const selectedProduct = options.find(
+      (item) => item.color === color && item.size === size
+    );
+
+    if (!selectedProduct) return; // ✅ 선택한 옵션이 없으면 종료
+
+    setCart((prevCart) => {
+      const existingItem = prevCart.find(
+        (item) => item.color === color && item.size === size
+      );
+
+      if (existingItem) {
+        return prevCart.map((item) =>
+          item.color === color && item.size === size
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+
+      return [...prevCart, { ...selectedProduct, quantity: 1 }];
+    });
+  };
+  const handleQuantityChange = (color, size, type) => {
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.color === color && item.size === size
+          ? {
+              ...item,
+              quantity:
+                type === 'increase'
+                  ? item.quantity + 1
+                  : Math.max(1, item.quantity - 1),
+            }
+          : item
+      )
+    );
+  };
+  const deleteFromCart = (color, size) => {
+    const selectedProduct = options.find(
+      (item) => item.color === color && item.size === size
+    );
+
+    if (!selectedProduct) return; // ✅ 선택한 옵션이 없으면 종료
+
+    setCart((prevCart) => {
+      return prevCart.filter(
+        (item) => !(item.color === color && item.size === size)
+      );
+    });
+  };
+
+  // 총 가격
+  const totalPrice = cart.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+
+  // 총 수량
+  const totalQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
   return (
     <Layout className={styles.layout}>
       <MenuHeader title="상품정보" />
-      <Content>
+      <Content style={{ height: '80%' }}>
         <Row>
           <Col span={24}>
-            {/* 슬라이더 아이템 */}
+            {/* 슬라이더 아이템 */}상품정보
             <Carousel arrows infinite={false} adaptiveHeight>
-              <Image
-                width="100%"
-                src={returnBucketUrl(product.imageUrl)}
-                style={{ objectFit: 'contain' }}
-              ></Image>
-              <Image
-                width="100%"
-                src={returnBucketUrl(product.imageUrl)}
-                style={{ objectFit: 'contain' }}
-              ></Image>
+              {product.ProductImages &&
+                Array.isArray(product.ProductImages) &&
+                product.ProductImages.map((item, key) => (
+                  <Image
+                    key={key}
+                    width="100%"
+                    height={'30vh'}
+                    src={returnBucketUrl(item.imageUrl)}
+                    style={{ objectFit: 'contain' }}
+                  />
+                ))}
             </Carousel>
           </Col>
           <Divider />
@@ -147,7 +267,9 @@ const index = () => {
           {/* 상품 정보 */}
           <Col span={22}>
             <Flex vertical>
-              <Typography.Text>{product.originPrice}원</Typography.Text>
+              <Typography.Text className="line-through">
+                {product.originPrice}원
+              </Typography.Text>
               <Flex>
                 <Typography.Text>50%</Typography.Text>
                 <Typography.Text>{product.discountPrice}원</Typography.Text>
@@ -192,25 +314,84 @@ const index = () => {
       </Footer>
       {/* 상품 옵션 drawer */}
       <Content className={`${styles.drawer} ${drawerOpen ? styles.open : ''}`}>
-        <Col span={24} className="mb-3">
-          <Select
-            // defaultValue="lucy"
-            // onChange={handleChange}
-            placeholder="색상 선택하기"
-            options={colorOptions}
-          />
-        </Col>
-        <Col span={24}>
-          <Select
-            // defaultValue="lucy"
-            // onChange={handleChange}
-            placeholder="사이즈 선택하기"
-            options={sizeOptions}
-          />
-        </Col>
-        <Col span={24} className={styles.drawer_bottom}>
+        {/* 선택 모드 */}
+        {selectMode ? (
+          <>
+            <Col span={24} className="mb-3">
+              <Select
+                onChange={handleColorChange}
+                placeholder="색상 선택하기"
+                options={colorOptions}
+                // value={selectedOption.color}
+              />
+            </Col>
+            <Col span={24}>
+              <Select
+                onChange={handleSizeChange}
+                placeholder="사이즈 선택하기"
+                options={sizeOptions}
+                value={selectedOption.size} // ✅ 실제 선택된 값 반영
+              />
+            </Col>
+          </>
+        ) : (
+          <>
+            <Button
+              className={styles.select_drawer_button}
+              onClick={() => {
+                setSelectMode(true);
+              }}
+            >
+              옵션 선택하기
+            </Button>
+
+            {/* 선택한 상품 목록- 카트 */}
+            {cart.map((item, idx) => (
+              <ProductSelectItem
+                key={idx}
+                product={item}
+                deleteFromCart={deleteFromCart}
+                handleQuantityChange={handleQuantityChange}
+              />
+            ))}
+          </>
+        )}
+
+        {/* 드로어 footer */}
+        <Col span={24} className={styles.drawer_footer}>
           <Divider />
-          <Button onClick={() => setDrawerOpen(false)}>옵션 선택 닫기</Button>
+          {selectMode ? (
+            <Button
+              className="w-full"
+              onClick={() => {
+                setDrawerOpen(false);
+                setSelectMode(false);
+              }}
+            >
+              옵션 선택 닫기
+            </Button>
+          ) : (
+            <>
+              <Flex className="justify-between">
+                <span className="text-lg">{totalQuantity}개 선택</span>
+                <div>
+                  <span className="text-lg">총</span>
+                  <span className="text-lg font-bold text-red-500">
+                    {Number(totalPrice).toLocaleString()}원
+                  </span>
+                </div>
+              </Flex>
+              <Divider />
+              <Flex className="gap-3">
+                <Button className="w-full" disabled={cart.length <= 0}>
+                  장바구니
+                </Button>
+                <Button className="w-full" disabled={cart.length <= 0}>
+                  구매하기
+                </Button>
+              </Flex>
+            </>
+          )}
         </Col>
       </Content>
     </Layout>
