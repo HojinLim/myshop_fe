@@ -17,7 +17,6 @@ import {
   DownOutlined,
   InfoCircleOutlined,
 } from '@ant-design/icons';
-import logo from '@/assets/images/logo.png';
 const index = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { Text } = Typography;

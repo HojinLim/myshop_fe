@@ -230,6 +230,10 @@ const index = () => {
       );
     });
   };
+  // 장바구니 담기 클릭 후
+  const clcikAddToCart = () => {
+    message.success('장바구니에 상품을 담았습니다.');
+  };
 
   // 총 가격
   const totalPrice = cart.reduce(
@@ -383,7 +387,11 @@ const index = () => {
               </Flex>
               <Divider />
               <Flex className="gap-3">
-                <Button className="w-full" disabled={cart.length <= 0}>
+                <Button
+                  className="w-full"
+                  disabled={cart.length <= 0}
+                  onClick={clcikAddToCart}
+                >
                   장바구니
                 </Button>
                 <Button className="w-full" disabled={cart.length <= 0}>

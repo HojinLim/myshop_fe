@@ -20,6 +20,9 @@ import Category from '@/components/category';
 
 import ProductDetail from '@/components/user/productDetail';
 
+// 카트
+import Cart from '@/components/cart';
+
 // 결제
 import Payment from '@/components/payment';
 
@@ -71,6 +74,8 @@ function App() {
           <Route path="/category/:category" element={<Category />}></Route>
           {/* 결제 */}
           <Route path="/payment" element={<Payment />}></Route>
+          {/* 카트 */}
+          <Route path="/cart" element={<Cart />}></Route>
 
           <Route path="/signup" element={<SignupForm />} />
           <Route path="/login" element={<LoginForm />} />
