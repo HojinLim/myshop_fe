@@ -24,14 +24,16 @@ import { Content, Footer } from 'antd/es/layout/layout';
 import { useParams } from 'react-router-dom';
 import { getProducts, getProductOption } from '@/api/product';
 import { mapColors, returnBucketUrl } from '@/functions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from '@/store/slices/loadingSlice';
 import ReviewLayout from './ReviewLayout';
 import ProductSelectItem from './ProductSelectItem';
+import { updateCartOption } from '@/api/cart';
 
 const index = () => {
   const { id } = useParams();
   const dispath = useDispatch();
+  const user = useSelector((state) => state.user.data);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [product, setProduct] = useState({});
   const [colorOptions, setColorOptions] = useState([]);
@@ -160,11 +162,16 @@ const index = () => {
       .map((item) => ({
         value: item.size,
         label: (
-          <span className="flex justify-between">
-            <span>{item.size}</span>
-            <span>{item.price} 원</span>
+          <span className="flex justify-between items-center">
+            <div className="flex flex-col ">
+              <span>{item.size}</span>
+              {/* stock이 0이면 품절 */}
+              <span>{item.stock <= 0 ? '품절' : ''}</span>
+            </div>
+            <span>{item.price}원</span>
           </span>
         ),
+        disabled: item.stock <= 0 ? true : false,
       }));
 
     setSelectedOption({ color: value, size: null }); // ✅ `null`로 설정하여 placeholder 유지
@@ -231,8 +238,35 @@ const index = () => {
     });
   };
   // 장바구니 담기 클릭 후
-  const clcikAddToCart = () => {
-    message.success('장바구니에 상품을 담았습니다.');
+  const clickAddToCart = async () => {
+    if (!cart || cart.length <= 0) return;
+
+    try {
+      const promises = cart.map(async (item) => {
+        let params = {
+          user_id: user.id,
+          product_option_id: item.id,
+          quantity: item.quantity,
+        };
+
+        try {
+          await updateCartOption(params);
+        } catch (err) {
+          console.log(err);
+          message.error(err.message);
+        }
+      });
+
+      await Promise.all(promises); // ✅ 모든 요청을 병렬 처리!
+      message.success('모든 상품이 성공적으로 장바구니에 추가됨!');
+      // 장바구니 초기화
+      setCart([]);
+
+      // Drawer닫기
+      setDrawerOpen(false);
+    } catch (error) {
+      console.error('❌ 장바구니 추가 중 오류 발생:', error);
+    }
   };
 
   // 총 가격
@@ -240,6 +274,7 @@ const index = () => {
     (acc, item) => acc + item.price * item.quantity,
     0
   );
+  console.log(cart);
 
   // 총 수량
   const totalQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
@@ -257,7 +292,7 @@ const index = () => {
                   <Image
                     key={key}
                     width="100%"
-                    height={'30vh'}
+                    height="30vh"
                     src={returnBucketUrl(item.imageUrl)}
                     style={{ objectFit: 'contain' }}
                   />
@@ -390,7 +425,7 @@ const index = () => {
                 <Button
                   className="w-full"
                   disabled={cart.length <= 0}
-                  onClick={clcikAddToCart}
+                  onClick={clickAddToCart}
                 >
                   장바구니
                 </Button>

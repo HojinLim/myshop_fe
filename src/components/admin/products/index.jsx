@@ -218,21 +218,6 @@ const index = () => {
     },
   ];
 
-  const data = [
-    {
-      index: '1',
-      id: '1',
-      name: '갈색 셔츠',
-      category: '옷',
-    },
-    {
-      index: '2',
-      id: '2',
-      name: '영롱한 목걸이',
-      category: '악세사리',
-    },
-  ];
-
   return (
     <Content>
       <Row className={styles.product_page_container}>
