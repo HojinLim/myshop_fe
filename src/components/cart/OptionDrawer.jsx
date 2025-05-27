@@ -4,6 +4,7 @@ import { Content } from 'antd/es/layout/layout';
 import { Button, Col, Divider, Flex, message, Select } from 'antd';
 import { updateCartOption } from '@/api/cart';
 import { useSelector } from 'react-redux';
+import { getNonMemberId } from '@/utils';
 
 const OptionDrawer = (props) => {
   const {
@@ -107,7 +108,7 @@ const OptionDrawer = (props) => {
     console.log(selectedCart);
 
     const params = {
-      user_id: user.id,
+      user_id: user.id || getNonMemberId(),
       product_option_id: option_id,
       cart_id: selectedCart.id,
     };

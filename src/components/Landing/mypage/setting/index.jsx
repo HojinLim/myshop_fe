@@ -1,11 +1,6 @@
 import { Content } from 'antd/es/layout/layout';
 import React, { useEffect } from 'react';
-import {
-  LeftOutlined,
-  RightOutlined,
-  SettingOutlined,
-  ShoppingOutlined,
-} from '@ant-design/icons';
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { Col, Row, Typography } from 'antd';
 import styles from './index.module.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,27 +19,34 @@ const index = () => {
       navigate('/login', { replace: 'true' });
     }
   }, [user]);
-  const items = () => {
-    return (
-      <>
-        <SettingOutlined
-          className="text-xl mr-2"
-          onClick={() => {
-            navigate('/mypage/setting');
-          }}
-        />
-        <ShoppingOutlined
-          className="text-xl"
-          onClick={() => {
-            navigate('/cart');
-          }}
-        />
-      </>
-    );
-  };
   return (
     <Content>
-      <MenuHeader title="회원 정보 수정" rightItems={items()} />
+      <MenuHeader title="마이 페이지" />
+
+      <Row
+        className={styles.menu_container}
+        onClick={() => {
+          navigate('/mypage/profile');
+        }}
+      >
+        <Col span={22}>
+          <Text>회원 정보 수정</Text>
+        </Col>
+        <Col span={2}>
+          <RightOutlined />
+        </Col>
+      </Row>
+      <Row
+        className={styles.menu_container}
+        onClick={() => {
+          dispatch(logout());
+          navigate('/');
+        }}
+      >
+        <Col span={24}>
+          <Text>로그아웃</Text>
+        </Col>
+      </Row>
     </Content>
   );
 };

@@ -23,7 +23,7 @@ const Landing = () => {
   const menuList = [
     { icon: <HomeOutlined />, text: '홈', value: '/' },
     { icon: <UnorderedListOutlined />, text: '전체보기', value: '/' },
-    { icon: <SearchOutlined />, text: '검색', value: '/' },
+    // { icon: <SearchOutlined />, text: '검색', value: '/' },
     { icon: <UserOutlined />, text: '마이페이지', value: '/mypage' },
   ];
 
@@ -58,7 +58,7 @@ const Landing = () => {
                 className={`${styles.icon} ${
                   index === selectedId ? 'selected' : ''
                 }`}
-                span={6}
+                span={8}
                 key={index}
                 onClick={() => clickMenu(index)}
               >

@@ -7,7 +7,7 @@ import {
   CheckOutlined,
 } from '@ant-design/icons';
 import logo from '@/assets/images/logo.png';
-import { returnBucketUrl } from '@/functions';
+import { returnBucketUrl } from '@/utils';
 
 export const AdminMenuItem = (props) => {
   const { category, categories, setCategories, setUpdated, reset, setReset } =

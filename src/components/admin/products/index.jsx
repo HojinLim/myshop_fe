@@ -15,7 +15,7 @@ import styles from './index.module.css';
 import logo from '@/assets/images/logo.png';
 import { AdminMenuItem } from '@/components/common/AdminMenuItem';
 import { getCategories, updateCategories } from '@/api/category';
-import { capitalizeJs } from '@/functions';
+import { capitalizeJs } from '@/utils';
 import { deleteProduct, getProducts, uploadProduct } from '@/api/product';
 import EditProductModal from './EditProductModal';
 import UploadProduct from './UploadLayout';

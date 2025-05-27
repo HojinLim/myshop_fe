@@ -26,7 +26,7 @@ import { Content, Footer, Header } from 'antd/es/layout/layout';
 import { useNavigate } from 'react-router-dom';
 import { deleteCart, getCarts, updateCartQuantity } from '@/api/cart';
 import { useSelector } from 'react-redux';
-import { returnBucketUrl } from '@/functions';
+import { returnBucketUrl, getNonMemberId } from '@/utils';
 import OptionDrawer from './OptionDrawer';
 const index = () => {
   const navi = useNavigate();
@@ -44,7 +44,7 @@ const index = () => {
   }, [user]);
 
   const fetchCart = async () => {
-    await getCarts(user.id)
+    await getCarts(user.id || getNonMemberId())
       .then((res) => {
         console.log(res);
         setCarts(res.cartItems);
@@ -74,7 +74,7 @@ const index = () => {
     const { product_option_id, quantity } = item;
     let updateQuantity = quantity;
     const params = {
-      user_id: user.id,
+      user_id: user.id || getNonMemberId(),
       product_option_id,
       quantity: type === 'minus' ? --updateQuantity : ++updateQuantity,
     };
@@ -166,6 +166,7 @@ const index = () => {
   // useEffect(() => {
   //   console.log(selectedCarts);
   // }, [selectedCarts]);
+  console.log('carts', carts);
 
   return (
     <Layout className={styles.layout}>

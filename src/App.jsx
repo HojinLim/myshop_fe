@@ -4,8 +4,10 @@ import SignupForm from '@/components/auth/SignupForm';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomeLanding from '@/components/Landing';
 import Home from '@/components/Landing/home';
+// 마이페이지
 import Mypage from '@/components/Landing/mypage';
 import Profile from '@/components/Landing/mypage/profile';
+import MyPageSetting from '@/components/Landing/mypage/setting';
 // 어드민
 import AdminLanding from '@/components/admin';
 import Dashboard from '@/components/admin/dashboard';
@@ -55,8 +57,8 @@ function App() {
           <Route path="/" element={<HomeLanding />}>
             <Route path="/" element={<Home />} index />
             <Route path="/mypage" element={<Mypage />} />
-
             <Route path="/mypage/profile" element={<Profile />} />
+            <Route path="/mypage/setting" element={<MyPageSetting />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

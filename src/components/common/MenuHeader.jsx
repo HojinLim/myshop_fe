@@ -5,7 +5,7 @@ import Title from 'antd/es/typography/Title';
 import { useNavigate } from 'react-router-dom';
 
 const MenuHeader = (props) => {
-  const { title } = props;
+  const { title, rightItems } = props;
   const navigate = useNavigate();
   return (
     <Row className="py-6 h-full max-h-3">
@@ -22,7 +22,7 @@ const MenuHeader = (props) => {
           {title}
         </Title>
       </Col>
-      <Col span={2}></Col>
+      <Col span={4}>{rightItems}</Col>
     </Row>
   );
 };

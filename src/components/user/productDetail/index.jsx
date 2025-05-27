@@ -23,12 +23,12 @@ import MenuHeader from '@/components/common/MenuHeader';
 import { Content, Footer } from 'antd/es/layout/layout';
 import { useParams } from 'react-router-dom';
 import { getProducts, getProductOption } from '@/api/product';
-import { mapColors, returnBucketUrl } from '@/functions';
+import { mapColors, returnBucketUrl, getNonMemberId } from '@/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from '@/store/slices/loadingSlice';
 import ReviewLayout from './ReviewLayout';
 import ProductSelectItem from './ProductSelectItem';
-import { updateCartOption } from '@/api/cart';
+import { addCart, updateCartOption } from '@/api/cart';
 
 const index = () => {
   const { id } = useParams();
@@ -244,13 +244,13 @@ const index = () => {
     try {
       const promises = cart.map(async (item) => {
         let params = {
-          user_id: user.id,
+          user_id: user.id || getNonMemberId(),
           product_option_id: item.id,
           quantity: item.quantity,
         };
 
         try {
-          await updateCartOption(params);
+          await addCart(params);
         } catch (err) {
           console.log(err);
           message.error(err.message);

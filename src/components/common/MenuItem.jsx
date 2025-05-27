@@ -2,7 +2,7 @@ import { Col } from 'antd';
 import Title from 'antd/es/typography/Title';
 import React, { useEffect, useState } from 'react';
 import logo from '@/assets/images/logo.png';
-import { returnBucketUrl } from '@/functions';
+import { returnBucketUrl } from '@/utils';
 import { useNavigate } from 'react-router-dom';
 
 export const MenuItem = (props) => {

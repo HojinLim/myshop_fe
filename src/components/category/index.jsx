@@ -14,7 +14,7 @@ import MenuHeader from '../common/MenuHeader';
 import { Content } from 'antd/es/layout/layout';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getProducts } from '@/api/product';
-import { returnBucketUrl } from '@/functions';
+import { returnBucketUrl } from '@/utils';
 const index = () => {
   const { category } = useParams(); // URL에서 category 값 가져오기
   const navigate = useNavigate();

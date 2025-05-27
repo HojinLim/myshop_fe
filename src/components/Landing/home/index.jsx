@@ -1,23 +1,60 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.module.css';
 import { Content, Header } from 'antd/es/layout/layout';
-import { SearchOutlined } from '@ant-design/icons';
-import { Avatar, Carousel, Col, Input, Row, Typography } from 'antd';
+import { SearchOutlined, ShoppingOutlined } from '@ant-design/icons';
+import {
+  Avatar,
+  Badge,
+  Carousel,
+  Col,
+  Input,
+  message,
+  Row,
+  Typography,
+} from 'antd';
 import logo from '@/assets/images/logo.png';
 import { MenuItem } from '@/components/common/MenuItem';
 import { getCategories } from '@/api/category';
 import { getProducts } from '@/api/product';
-import { returnBucketUrl } from '@/functions';
+import { getNonMemberId, returnBucketUrl } from '@/utils';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { getCarts, transferCart } from '@/api/cart';
+import CONSTANTS from '@/constants';
 const index = () => {
   const { Text, Title } = Typography;
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [profilePic, setProfilePic] = useState(logo);
+  const [cartNum, setCartNum] = useState(0);
 
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.data);
+
+  const transferMyCart = async () => {
+    // ✅ 장바구니 이동 (user.id가 정상적으로 업데이트된 후 실행)
+    const non_user_id = localStorage.getItem(CONSTANTS.NON_MEMBER);
+
+    if (non_user_id && user.id) {
+      console.log('user.id', user.id);
+
+      const params = { user_id: user.id, non_user_id };
+
+      try {
+        const res = await transferCart(params);
+        console.log(res);
+        localStorage.removeItem(CONSTANTS.NON_MEMBER);
+      } catch (err) {
+        message.error(err.message);
+      }
+    }
+  };
+  useEffect(() => {
+    if (user) {
+      transferMyCart();
+    }
+  }, [user]);
+
   const getCategoryList = async () => {
     await getCategories()
       .then((res) => {
@@ -29,6 +66,7 @@ const index = () => {
         console.error(error);
       });
   };
+
   const fetchProductsList = async () => {
     await getProducts()
       .then((res) => {
@@ -48,11 +86,23 @@ const index = () => {
     setProfilePic(returnBucketUrl(user.profileUrl));
   }, [user]);
 
-  const logoHandler = () => {
-    if (user.id) {
-      navigate('/mypage/profile');
-    }
+  // 카트에 담긴 아이템 수 리턴
+  const getCartsLength = async () => {
+    await getCarts(user.id || getNonMemberId())
+      .then((res) => {
+        console.log(res);
+        if (res.cartItems && res.cartItems.length > 0) {
+          setCartNum(res.cartItems.length);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        message.error(err.message);
+      });
   };
+  useEffect(() => {
+    getCartsLength();
+  }, [user]);
 
   return (
     <>
@@ -61,8 +111,8 @@ const index = () => {
           <Col span={22}>
             <Input prefix={<SearchOutlined />} allowClear></Input>
           </Col>
-          <Col span={2}>
-            <Avatar
+          <Col span={2} className={styles.header_right}>
+            {/* <Avatar
               className={user.id ? 'cursor-pointer' : ''}
               onClick={logoHandler}
               src={profilePic}
@@ -70,7 +120,15 @@ const index = () => {
                 setProfilePic(logo); // 기본 이미지 설정
                 return false; // Ant Design 기본 동작 방지
               }}
-            />
+            /> */}
+            <Badge count={cartNum} color="red">
+              <ShoppingOutlined
+                className={styles.shop_icon}
+                onClick={() => {
+                  navigate('/cart');
+                }}
+              />
+            </Badge>
           </Col>
         </Row>
       </Header>

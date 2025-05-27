@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 const bucket_url = import.meta.env.VITE_BUCKET_URL;
 
 const colorMap = {
@@ -26,4 +28,16 @@ function mapColors(colors) {
   return colors.map((color) => colorMap[color] || color); // 매핑이 없으면 원래 값 유지
 }
 
-export { capitalizeJs, returnBucketUrl, mapColors };
+// 비회원이면 비회원 id 리턴
+// 없으면 새로 저장 후 리턴
+const getNonMemberId = () => {
+  // 비회원
+  let uid = localStorage.getItem('non_member_uid');
+  if (!uid) {
+    uid = uuidv4(); // ✅ 새 UID 생성
+    localStorage.setItem('non_member_uid', uid); // ✅ 저장
+  }
+  return uid;
+};
+
+export { capitalizeJs, returnBucketUrl, mapColors, getNonMemberId };
