@@ -4,8 +4,12 @@ import {
   ShareAltOutlined,
   HeartTwoTone,
   CloseOutlined,
+  SettingOutlined,
+  ShoppingOutlined,
+  HomeOutlined,
 } from '@ant-design/icons';
 import {
+  Badge,
   Button,
   Carousel,
   Col,
@@ -21,18 +25,19 @@ import {
 } from 'antd';
 import MenuHeader from '@/components/common/MenuHeader';
 import { Content, Footer } from 'antd/es/layout/layout';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getProducts, getProductOption } from '@/api/product';
 import { mapColors, returnBucketUrl, getNonMemberId } from '@/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from '@/store/slices/loadingSlice';
 import ReviewLayout from './ReviewLayout';
 import ProductSelectItem from './ProductSelectItem';
-import { addCart, updateCartOption } from '@/api/cart';
+import { addCart, getCarts, updateCartOption } from '@/api/cart';
+import { fetchCartLength } from '@/store/slices/cartSlice';
 
 const index = () => {
   const { id } = useParams();
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user.data);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [product, setProduct] = useState({});
@@ -44,6 +49,7 @@ const index = () => {
     size: null,
   });
   const [cart, setCart] = useState([]);
+  const navigate = useNavigate();
 
   // color: null,
   // size: null,
@@ -54,13 +60,13 @@ const index = () => {
   const fetchProduct = async () => {
     await getProducts('id', id)
       .then((res) => {
-        dispath(setLoading(true));
+        dispatch(setLoading(true));
         if (res.products && res.products.length > 0) {
           setProduct(res.products[0]);
         }
       })
       .finally(() => {
-        dispath(setLoading(false));
+        dispatch(setLoading(false));
       });
   };
   const fetchProductOptions = async () => {
@@ -274,13 +280,42 @@ const index = () => {
     (acc, item) => acc + item.price * item.quantity,
     0
   );
-  console.log(cart);
+
+  // 비동기 redux로 카트 정보 가져오기
+  const { cartNum, loading, error } = useSelector((state) => state.cart);
+  useEffect(() => {
+    dispatch(fetchCartLength());
+  }, [dispatch]);
+
+  // 우측 엘리멘트
+  const RightItems = () => {
+    return (
+      <>
+        <HomeOutlined
+          className="text-xl mr-2"
+          onClick={() => {
+            navigate('/');
+          }}
+        />
+        <Badge count={cartNum} color="red">
+          <ShoppingOutlined
+            className="text-xl"
+            onClick={() => {
+              navigate('/cart');
+            }}
+          />
+        </Badge>
+      </>
+    );
+  };
 
   // 총 수량
   const totalQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
   return (
     <Layout className={styles.layout}>
-      <MenuHeader title="상품정보" />
+      <div>
+        <MenuHeader title="상품정보" rightItems={RightItems()} />
+      </div>
       <Content style={{ height: '80%' }}>
         <Row>
           <Col span={24}>

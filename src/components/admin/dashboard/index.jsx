@@ -4,7 +4,6 @@ import styles from './index.module.css';
 
 import { Line } from '@ant-design/charts';
 import { Pie } from '@ant-design/plots';
-import { AppstoreOutlined } from '@ant-design/icons';
 
 const index = () => {
   const { Header, Content } = Layout;

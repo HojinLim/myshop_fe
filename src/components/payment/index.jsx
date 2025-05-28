@@ -18,7 +18,7 @@ import {
   InfoCircleOutlined,
 } from '@ant-design/icons';
 const index = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(true);
   const { Text } = Typography;
   return (
     <Content className={styles.payment_container}>
@@ -69,7 +69,7 @@ const index = () => {
               <h4>배송지 정보</h4>
               <span className="text-blue-500 cursor-pointer">입력하기</span>
             </Flex>
-            <div>배송지를 입력해주세요.</div>
+            <div className="text-gray-400">배송지를 입력해주세요.</div>
           </Col>
         </Content>
         <Divider />
@@ -77,14 +77,16 @@ const index = () => {
         <Col span={24}>
           <h4>쿠폰 / 포인트</h4>
         </Col>
+        {/* 쿠폰 input */}
         <Col span={20}>
-          <Input />
+          <Input variant="underlined" placeholder="쿠폰" />
         </Col>
         <Col span={4}>
           <Button>쿠폰 선택</Button>
         </Col>
+
         <Col span={20}>
-          <Input />
+          <Input variant="underlined" placeholder="포인트" />
         </Col>
         <Col span={4}>
           <Button>모두 사용</Button>
@@ -110,6 +112,7 @@ const index = () => {
         </Col>
       </Row>
       <div className={styles.bottom_container} span={24}>
+        <Divider />
         <Button>56,900원 결제하기</Button>
       </div>
     </Content>

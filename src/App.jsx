@@ -6,8 +6,8 @@ import HomeLanding from '@/components/Landing';
 import Home from '@/components/Landing/home';
 // 마이페이지
 import Mypage from '@/components/Landing/mypage';
-import Profile from '@/components/Landing/mypage/profile';
-import MyPageSetting from '@/components/Landing/mypage/setting';
+import Profile from '@/components/Landing/mypage/Profile';
+import MyPageSetting from '@/components/Landing/mypage/Setting';
 // 어드민
 import AdminLanding from '@/components/admin';
 import Dashboard from '@/components/admin/dashboard';

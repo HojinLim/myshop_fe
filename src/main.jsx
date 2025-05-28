@@ -7,8 +7,10 @@ import App from './App.jsx';
 
 // 리덕스 툴킷 provider
 import { Provider } from 'react-redux';
-import { store } from '@/store';
+import { persistor } from '@/store';
+import store from '@/store';
 import { ConfigProvider, theme } from 'antd';
+import { PersistGate } from 'redux-persist/integration/react';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -19,7 +21,9 @@ createRoot(document.getElementById('root')).render(
       layout={{ style: { backgroundColor: 'transparent' } }}
     >
       <Provider store={store}>
-        <App />
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+        </PersistGate>
       </Provider>
     </ConfigProvider>
   </StrictMode>

@@ -18,16 +18,17 @@ import { getCategories } from '@/api/category';
 import { getProducts } from '@/api/product';
 import { getNonMemberId, returnBucketUrl } from '@/utils';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getCarts, transferCart } from '@/api/cart';
 import CONSTANTS from '@/constants';
+import { fetchCartLength } from '@/store/slices/cartSlice';
 const index = () => {
   const { Text, Title } = Typography;
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [profilePic, setProfilePic] = useState(logo);
-  const [cartNum, setCartNum] = useState(0);
-
+  // const [cartNum, setCartNum] = useState(0);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.data);
 
@@ -49,11 +50,6 @@ const index = () => {
       }
     }
   };
-  useEffect(() => {
-    if (user) {
-      transferMyCart();
-    }
-  }, [user]);
 
   const getCategoryList = async () => {
     await getCategories()
@@ -77,7 +73,6 @@ const index = () => {
       })
       .catch((err) => console.log(err));
   };
-  // console.log(products[0]?.category);
   useEffect(() => {
     fetchProductsList();
     getCategoryList();
@@ -86,23 +81,13 @@ const index = () => {
     setProfilePic(returnBucketUrl(user.profileUrl));
   }, [user]);
 
-  // 카트에 담긴 아이템 수 리턴
-  const getCartsLength = async () => {
-    await getCarts(user.id || getNonMemberId())
-      .then((res) => {
-        console.log(res);
-        if (res.cartItems && res.cartItems.length > 0) {
-          setCartNum(res.cartItems.length);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        message.error(err.message);
-      });
-  };
+  const { cartNum, loading, error } = useSelector((state) => state.cart);
+
   useEffect(() => {
-    getCartsLength();
-  }, [user]);
+    dispatch(fetchCartLength()); // ✅ 비동기 API 호출
+  }, [dispatch]);
+
+  console.log(cartNum);
 
   return (
     <>

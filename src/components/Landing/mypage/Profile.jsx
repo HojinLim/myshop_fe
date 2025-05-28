@@ -11,7 +11,7 @@ import { fetchUserInfo } from '@/store/slices/userSlice';
 
 const backURL = import.meta.env.VITE_BACK_URL;
 
-const index = () => {
+const Profile = () => {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const user = useSelector((state) => state.user.data);
@@ -153,4 +153,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Profile;

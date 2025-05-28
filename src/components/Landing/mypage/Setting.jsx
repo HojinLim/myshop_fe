@@ -1,5 +1,5 @@
 import { Content } from 'antd/es/layout/layout';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { Col, Row, Typography } from 'antd';
 import styles from './index.module.css';
@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import MenuHeader from '@/components/common/MenuHeader';
 import { logout } from '@/store/slices/userSlice';
-const index = () => {
+const Setting = () => {
   const { Title, Text } = Typography;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,6 +19,7 @@ const index = () => {
       navigate('/login', { replace: 'true' });
     }
   }, [user]);
+
   return (
     <Content>
       <MenuHeader title="마이 페이지" />
@@ -51,4 +52,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Setting;

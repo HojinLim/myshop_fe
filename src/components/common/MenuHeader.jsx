@@ -8,7 +8,7 @@ const MenuHeader = (props) => {
   const { title, rightItems } = props;
   const navigate = useNavigate();
   return (
-    <Row className="py-6 h-full max-h-3">
+    <Row className="py-6 h-full">
       <Col span={4}>
         <LeftOutlined
           // 뒤로가기
