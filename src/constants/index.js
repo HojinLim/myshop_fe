@@ -8,6 +8,8 @@ const CONSTANTS = {
   //   THEME: 'dark_mode',
   //   LANGUAGE: 'ko',
   // },
+  KAKAO_PG: 'kakaopay.TC0ONETIME',
+  KG_PG: 'html5_inicis',
 };
 
 export default CONSTANTS;

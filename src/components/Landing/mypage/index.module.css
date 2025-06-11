@@ -14,3 +14,60 @@
     padding: 20px;
   }
 }
+.items_container {
+  border-radius: 10px;
+  border: 1px solid #cccccc;
+  width: 100%;
+  padding: 1.5rem 1rem;
+  margin-top: 0.7rem;
+  justify-content: space-evenly;
+
+  div {
+    align-items: center;
+
+    & span:first-child {
+      font-size: 24px;
+    }
+    p:nth-child(2) {
+      margin: 0.8rem 0 0.4rem;
+      color: gray;
+    }
+    p:nth-child(3) {
+      font-weight: 600;
+    }
+  }
+}
+
+/* 포인트 */
+.point_list_container {
+  max-height: 10px !important;
+  .point_item {
+    height: 50px;
+    width: 100%;
+    p:first-child {
+      width: 10%;
+      font-size: large;
+      color: gray;
+    }
+    div {
+      width: 70%;
+      p {
+        width: 100% !important;
+      }
+      p:first-child {
+        font-size: larger;
+        font-weight: 700;
+        color: black;
+      }
+      p:nth-child(2) {
+        color: gray;
+        font-weight: 500;
+      }
+    }
+    p:last-child {
+      width: 20%;
+      font-size: larger;
+      font-weight: 700;
+    }
+  }
+}

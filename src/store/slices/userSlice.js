@@ -34,6 +34,7 @@ const initialState = {
     username: '',
     role: '',
     profileUrl: '',
+    points: 0,
   },
   loading: false,
   error: null,

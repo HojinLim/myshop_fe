@@ -1,6 +1,6 @@
 .payment_container {
   position: relative;
-  height: 100vh;
+  height: 100%;
 }
 .menu_container {
   h4 {
@@ -23,14 +23,26 @@
     width: 100%;
     padding: 1.3rem 0 !important;
   }
+
+  button:focus {
+    background-color: #56667d;
+    color: white;
+  }
+  .button {
+    background-color: white !important; /* 일반 hover 시에는 흰색 */
+    color: black !important;
+  }
 }
 
 .bottom_container {
-  position: absolute;
+  position: sticky;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 15px 0;
+  padding: 0;
+  background-color: white;
+  max-height: 80px;
+  height: 100%;
 
   button {
     width: 100%;
@@ -38,5 +50,12 @@
     background-color: rgb(250, 108, 108);
     padding: 20px;
     font-weight: 600;
+  }
+}
+
+.product_item {
+  margin: 1.2rem 0;
+  &::selection {
+    background-color: transparent;
   }
 }

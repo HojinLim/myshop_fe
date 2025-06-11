@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.module.css';
 import { Content, Header } from 'antd/es/layout/layout';
-import { SearchOutlined, ShoppingOutlined } from '@ant-design/icons';
+import {
+  HeartFilled,
+  SearchOutlined,
+  ShoppingOutlined,
+} from '@ant-design/icons';
 import {
   Avatar,
   Badge,
   Carousel,
   Col,
   Input,
+  Layout,
   message,
   Row,
   Typography,
@@ -16,7 +21,7 @@ import logo from '@/assets/images/logo.png';
 import { MenuItem } from '@/components/common/MenuItem';
 import { getCategories } from '@/api/category';
 import { getProducts } from '@/api/product';
-import { getNonMemberId, returnBucketUrl } from '@/utils';
+import { discountPercent, getNonMemberId, returnBucketUrl } from '@/utils';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCarts, transferCart } from '@/api/cart';
@@ -79,33 +84,19 @@ const index = () => {
   }, []);
   useEffect(() => {
     setProfilePic(returnBucketUrl(user.profileUrl));
+    dispatch(fetchCartLength()); // ✅ 비동기 API 호출
   }, [user]);
 
   const { cartNum, loading, error } = useSelector((state) => state.cart);
 
-  useEffect(() => {
-    dispatch(fetchCartLength()); // ✅ 비동기 API 호출
-  }, [dispatch]);
-
-  console.log(cartNum);
-
   return (
-    <>
+    <Layout className={styles.layout_except_footer}>
       <Header className={styles.header}>
         <Row>
           <Col span={22}>
             <Input prefix={<SearchOutlined />} allowClear></Input>
           </Col>
           <Col span={2} className={styles.header_right}>
-            {/* <Avatar
-              className={user.id ? 'cursor-pointer' : ''}
-              onClick={logoHandler}
-              src={profilePic}
-              onError={() => {
-                setProfilePic(logo); // 기본 이미지 설정
-                return false; // Ant Design 기본 동작 방지
-              }}
-            /> */}
             <Badge count={cartNum} color="red">
               <ShoppingOutlined
                 className={styles.shop_icon}
@@ -118,6 +109,7 @@ const index = () => {
         </Row>
       </Header>
 
+      {/* 메인 배너 */}
       <Content>
         <Row>
           <Col span={24}>
@@ -153,7 +145,7 @@ const index = () => {
           <Col span={2}></Col>
         </Row>
         {/* 전체 상품 리스트 */}
-        <Row>
+        <Row className="flex-row">
           {products.map((product) => (
             <Col
               key={product.id}
@@ -161,20 +153,25 @@ const index = () => {
               className={styles.item_info}
               onClick={() => navigate(`/product/${product.id}`)}
             >
-              <img
-                src={returnBucketUrl(product.ProductImages[0].imageUrl)}
-                width={'50%'}
-              />
+              <div className="aspect-square overflow-hidden w-32">
+                <img src={returnBucketUrl(product.ProductImages[0].imageUrl)} />
+              </div>
 
-              <Text strong>00% {product.discountPrice}</Text>
-              {/* <Text strong>쇼핑몰 이름</Text> */}
+              <Text strong>
+                {discountPercent(product.originPrice, product.discountPrice)}%{' '}
+                {Number(product.discountPrice).toLocaleString()}원
+              </Text>
               <Text>{product.name}</Text>
-              <Text>00명 찜</Text>
+
+              <div className="text-red-500">
+                <HeartFilled />
+                <span className="ml-1">1</span>
+              </div>
             </Col>
           ))}
         </Row>
       </Content>
-    </>
+    </Layout>
   );
 };
 

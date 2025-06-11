@@ -15,7 +15,7 @@ import styles from './index.module.css';
 import logo from '@/assets/images/logo.png';
 import { AdminMenuItem } from '@/components/common/AdminMenuItem';
 import { getCategories, updateCategories } from '@/api/category';
-import { capitalizeJs } from '@/utils';
+import { capitalizeJs, returnBucketUrl } from '@/utils';
 import { deleteProduct, getProducts, uploadProduct } from '@/api/product';
 import EditProductModal from './EditProductModal';
 import UploadProduct from './UploadLayout';
@@ -178,9 +178,12 @@ const index = () => {
       render: (text) => <a>{text}</a>,
     },
     {
+      key: 'image',
       title: '이미지',
       key: 'action',
-      render: (_, record) => <Image src={logo} width="50px" />,
+      render: (_, record) => (
+        <Image src={returnBucketUrl(record.imageUrl)} width="50px" />
+      ),
     },
     {
       key: 'name',
@@ -228,7 +231,7 @@ const index = () => {
             <Col span={2}></Col>
             {categories.slice(0, 5).map((category, idx) => (
               <AdminMenuItem
-                key={idx}
+                key={category.id}
                 category={category}
                 categories={categories}
                 setCategories={setCategories}
@@ -285,7 +288,7 @@ const index = () => {
               />
               {/* 상품 관리 테이블 */}
             </Flex>
-            <Table columns={columns} dataSource={products} />
+            <Table rowKey="id" columns={columns} dataSource={products} />
           </Col>
         </Col>
         {/* 상품 추가 영역 */}

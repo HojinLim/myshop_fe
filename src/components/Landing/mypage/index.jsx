@@ -1,10 +1,15 @@
 import { Content } from 'antd/es/layout/layout';
 import React, { useEffect, useState } from 'react';
 import {
-  LeftOutlined,
-  RightOutlined,
+  ContainerTwoTone,
+  EditTwoTone,
+  HeartOutlined,
+  HeartTwoTone,
+  MessageTwoTone,
   SettingOutlined,
   ShoppingOutlined,
+  SmileTwoTone,
+  TagsTwoTone,
 } from '@ant-design/icons';
 import { Avatar, Badge, Col, Flex, message, Row, Typography } from 'antd';
 import styles from './index.module.css';
@@ -12,10 +17,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import MenuHeader from '@/components/common/MenuHeader';
 import { logout } from '@/store/slices/userSlice';
-import { getNonMemberId, returnBucketUrl } from '@/utils';
+import { getNonMemberId, returnBucketUrl, toWon } from '@/utils';
 import { getCarts } from '@/api/cart';
 import logo from '/logo.png';
 import { fetchCartLength } from '@/store/slices/cartSlice';
+import { myFavorite } from '@/api/favorite';
 const index = () => {
   const { Title, Text } = Typography;
   const dispatch = useDispatch();
@@ -40,29 +46,54 @@ const index = () => {
     setProfilePic(returnBucketUrl(user.profileUrl));
   }, [user]);
 
-  const RightItems = () => {
-    return (
-      <>
-        <SettingOutlined
-          className="text-xl mr-2"
-          onClick={() => {
-            navigate('/mypage/setting');
-          }}
-        />
-        <Badge count={cartNum} color="red">
-          <ShoppingOutlined
-            className="text-xl"
-            onClick={() => {
-              navigate('/cart');
-            }}
-          />
-        </Badge>
-      </>
-    );
-  };
+  // 마이페이지- 메뉴 아이템들
+  const menuItems = [
+    {
+      icon: <ContainerTwoTone />,
+      title: '주문내역',
+      content: '0',
+      handler: () => {
+        navigate('/mypage/orderList');
+      },
+    },
+    {
+      icon: <HeartTwoTone />,
+      title: '찜목록',
+      content: '0',
+      handler: () => {
+        navigate('/mypage/favorite');
+      },
+    },
+    {
+      icon: <EditTwoTone />,
+      title: '리뷰',
+      content: '0',
+      handler: () => {},
+    },
+    {
+      icon: <MessageTwoTone />,
+      title: '문의',
+      content: '0',
+      handler: () => {},
+    },
+    {
+      icon: <TagsTwoTone />,
+      title: '쿠폰',
+      content: '0장',
+      handler: () => {},
+    },
+    {
+      icon: <SmileTwoTone />,
+      title: '포인트',
+      content: `${toWon(user.points)}원`,
+      handler: () => {
+        navigate('/mypage/points');
+      },
+    },
+  ];
   return (
     <Content>
-      <MenuHeader title="회원 정보 수정" rightItems={RightItems()} />
+      <MenuHeader title="마이 페이지" />
       <Flex className="items-center">
         <Avatar
           size={48}
@@ -77,6 +108,20 @@ const index = () => {
           }}
         />
         <p className="font-bold ml-2">{user.username || '비회원'}</p>
+      </Flex>
+      <Flex className={styles.items_container}>
+        {menuItems.map((item, idx) => (
+          <Flex
+            key={idx}
+            vertical
+            className="cursor-pointer"
+            onClick={item.handler}
+          >
+            {item.icon}
+            <p>{item.title}</p>
+            <p>{item.content}</p>
+          </Flex>
+        ))}
       </Flex>
     </Content>
   );

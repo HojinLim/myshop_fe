@@ -4,6 +4,7 @@
 :root {
   /* 전역 변수 */
   --max-width: 600px;
+  --footer-height: 100px;
 }
 
 #root {

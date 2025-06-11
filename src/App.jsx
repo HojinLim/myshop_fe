@@ -7,7 +7,10 @@ import Home from '@/components/Landing/home';
 // 마이페이지
 import Mypage from '@/components/Landing/mypage';
 import Profile from '@/components/Landing/mypage/Profile';
+import Points from '@/components/Landing/mypage/Points';
 import MyPageSetting from '@/components/Landing/mypage/Setting';
+import OrderList from '@/components/Landing/mypage/OrderList';
+import Favorite from '@/components/Landing/mypage/Favorite';
 // 어드민
 import AdminLanding from '@/components/admin';
 import Dashboard from '@/components/admin/dashboard';
@@ -44,9 +47,7 @@ function App() {
     dispatch(fetchUserInfo());
   }, []);
   const loading = useSelector((state) => state.Loading);
-  // useEffect(()=>{
 
-  // },[loading])
   return (
     <>
       {contextHolder}
@@ -58,7 +59,10 @@ function App() {
             <Route path="/" element={<Home />} index />
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/mypage/profile" element={<Profile />} />
+            <Route path="/mypage/Points" element={<Points />} />
             <Route path="/mypage/setting" element={<MyPageSetting />} />
+            <Route path="/mypage/orderList" element={<OrderList />} />
+            <Route path="/mypage/favorite" element={<Favorite />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

@@ -7,6 +7,7 @@ import Icon, {
   HomeOutlined,
   UnorderedListOutlined,
   UserOutlined,
+  HeartOutlined,
 } from '@ant-design/icons';
 
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -22,8 +23,8 @@ const Landing = () => {
 
   const menuList = [
     { icon: <HomeOutlined />, text: '홈', value: '/' },
-    { icon: <UnorderedListOutlined />, text: '전체보기', value: '/' },
-    // { icon: <SearchOutlined />, text: '검색', value: '/' },
+    { icon: <SearchOutlined />, text: '검색', value: '/' },
+    { icon: <HeartOutlined />, text: '찜', value: '/mypage/favorite' },
     { icon: <UserOutlined />, text: '마이페이지', value: '/mypage' },
   ];
 
@@ -58,7 +59,7 @@ const Landing = () => {
                 className={`${styles.icon} ${
                   index === selectedId ? 'selected' : ''
                 }`}
-                span={8}
+                span={6}
                 key={index}
                 onClick={() => clickMenu(index)}
               >

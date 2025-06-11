@@ -2,8 +2,9 @@
   justify-self: center !important;
   background-color: transparent;
   width: 100%;
-
+  height: calc(100% - var(--footer-height)) !important;
   position: relative;
+  overflow: auto;
 }
 
 .footer {
@@ -16,6 +17,7 @@
   width: 100%;
   justify-self: center;
   max-width: 600px;
+  height: var(--footer-height);
 }
 
 .icon {

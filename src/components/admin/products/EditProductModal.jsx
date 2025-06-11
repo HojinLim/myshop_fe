@@ -275,7 +275,13 @@ const EditProductModal = ({
           setProductInfo({});
         }}
         footer={[
-          <Button key="back" onClick={() => setOpen(false)}>
+          <Button
+            key="back"
+            onClick={() => {
+              setOpen(false);
+              setModalOpen(false);
+            }}
+          >
             나중에 하기
           </Button>,
           <Button
@@ -289,6 +295,7 @@ const EditProductModal = ({
         ]}
       >
         <Table
+          rowKey="id"
           columns={columns}
           dataSource={formList}
           footer={() => inputFieldMemo}

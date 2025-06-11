@@ -12,7 +12,6 @@ const colorMap = {
 // rds 사진 url + aws url로 리턴
 const returnBucketUrl = (imageUrl) => {
   const fixUrl = `${bucket_url}/${imageUrl}`;
-
   return fixUrl;
 };
 
@@ -39,5 +38,24 @@ const getNonMemberId = () => {
   }
   return uid;
 };
+// 원화로변경
+const toWon = (value) => {
+  return Number(value).toLocaleString();
+};
+// 할인율 구하기
+const discountPercent = (originPrice, discountPrice) => {
+  const origin = Number(originPrice);
+  const discount = Number(discountPrice);
+  let result = 0;
+  result = Math.floor(((origin - discount) / origin) * 100);
+  return result;
+};
 
-export { capitalizeJs, returnBucketUrl, mapColors, getNonMemberId };
+export {
+  capitalizeJs,
+  returnBucketUrl,
+  mapColors,
+  getNonMemberId,
+  toWon,
+  discountPercent,
+};

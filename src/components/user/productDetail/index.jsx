@@ -7,6 +7,8 @@ import {
   SettingOutlined,
   ShoppingOutlined,
   HomeOutlined,
+  HeartFilled,
+  HeartOutlined,
 } from '@ant-design/icons';
 import {
   Badge,
@@ -27,13 +29,25 @@ import MenuHeader from '@/components/common/MenuHeader';
 import { Content, Footer } from 'antd/es/layout/layout';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getProducts, getProductOption } from '@/api/product';
-import { mapColors, returnBucketUrl, getNonMemberId } from '@/utils';
+import {
+  mapColors,
+  returnBucketUrl,
+  getNonMemberId,
+  toWon,
+  discountPercent,
+} from '@/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from '@/store/slices/loadingSlice';
 import ReviewLayout from './ReviewLayout';
 import ProductSelectItem from './ProductSelectItem';
 import { addCart, getCarts, updateCartOption } from '@/api/cart';
 import { fetchCartLength } from '@/store/slices/cartSlice';
+import {
+  checkFavorite,
+  countFavorite,
+  createFavorite,
+  deleteFavorite,
+} from '@/api/favorite';
 
 const index = () => {
   const { id } = useParams();
@@ -49,12 +63,11 @@ const index = () => {
     size: null,
   });
   const [cart, setCart] = useState([]);
+  const [productLikeCount, setProductLikeCount] = useState(0);
+  const [productLike, setProductLike] = useState(0);
+
   const navigate = useNavigate();
 
-  // color: null,
-  // size: null,
-  // price: "",
-  // quantity: 0,
   const [selectMode, setSelectMode] = useState(true);
 
   const fetchProduct = async () => {
@@ -68,6 +81,49 @@ const index = () => {
       .finally(() => {
         dispatch(setLoading(false));
       });
+
+    // 상품의 좋아요 수 가져오기
+    await countFavorite(id)
+      .then((res) => {
+        console.log(res);
+        setProductLikeCount(res.count);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    await checkFavorite(user.id, id)
+      .then((res) => {
+        setProductLike(res.isFavorite);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // 상품 좋아요 클릭 핸들러
+  const clickProductLike = async () => {
+    if (productLike) {
+      // 좋아요 취소
+      await deleteFavorite(user.id, id)
+        .then(() => {
+          setProductLike(false);
+          fetchProduct();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      // 좋아요 추가
+      await createFavorite(user.id, id)
+        .then(() => {
+          setProductLike(true);
+          fetchProduct();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
   const fetchProductOptions = async () => {
     await getProductOption(id)
@@ -102,20 +158,26 @@ const index = () => {
 
   const DetailProductLayout = ({ product }) => {
     return (
-      <div>
+      <div className="w-full">
         {product.ProductImages &&
           Array.isArray(product.ProductImages) &&
           product.ProductImages.filter((image) => image.type === 'detail').map(
             (item, key) => (
-              <Image
+              <img
+                className="w-full h-full object-contain"
                 key={key}
-                width="100%"
-                height={'30vh'}
                 preview={false}
                 src={returnBucketUrl(item.imageUrl)}
-                style={{ objectFit: 'contain' }}
               />
             )
+          )}
+        {product.ProductImages &&
+          product.ProductImages.filter((image) => image.type === 'detail')
+            .length <= 0 && (
+            <img
+              className="w-full h-full object-cover"
+              src="https://picsum.photos/600/1200"
+            />
           )}
       </div>
     );
@@ -128,7 +190,7 @@ const index = () => {
     },
     {
       key: '2',
-      label: '리뷰',
+      label: '리뷰 3',
       children: <ReviewLayout />,
     },
     {
@@ -174,7 +236,7 @@ const index = () => {
               {/* stock이 0이면 품절 */}
               <span>{item.stock <= 0 ? '품절' : ''}</span>
             </div>
-            <span>{item.price}원</span>
+            <span>{toWon(item.price)}원</span>
           </span>
         ),
         disabled: item.stock <= 0 ? true : false,
@@ -308,6 +370,11 @@ const index = () => {
       </>
     );
   };
+  // 클릭 구매 버튼
+  const clickBuyHandler = () => {
+    navigate('/payment', { state: cart });
+  };
+  console.log('product', product);
 
   // 총 수량
   const totalQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
@@ -316,21 +383,25 @@ const index = () => {
       <div>
         <MenuHeader title="상품정보" rightItems={RightItems()} />
       </div>
-      <Content style={{ height: '80%' }}>
+      <Content>
         <Row>
           <Col span={24}>
-            {/* 슬라이더 아이템 */}상품정보
+            {/* 슬라이더 아이템 */}
             <Carousel arrows infinite={false} adaptiveHeight>
               {product.ProductImages &&
                 Array.isArray(product.ProductImages) &&
-                product.ProductImages.map((item, key) => (
-                  <Image
+                product.ProductImages.filter(
+                  (item) => item.type === 'main'
+                ).map((item, key) => (
+                  <div
                     key={key}
-                    width="100%"
-                    height="30vh"
-                    src={returnBucketUrl(item.imageUrl)}
-                    style={{ objectFit: 'contain' }}
-                  />
+                    className="aspect-square overflow-hidden w-32 h-64"
+                  >
+                    <img
+                      src={returnBucketUrl(item.imageUrl)}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
                 ))}
             </Carousel>
           </Col>
@@ -341,12 +412,16 @@ const index = () => {
           {/* 상품 정보 */}
           <Col span={22}>
             <Flex vertical>
-              <Typography.Text className="line-through">
-                {product.originPrice}원
-              </Typography.Text>
+              <p className="line-through text-lg text-gray-400">
+                {toWon(product.originPrice)}원
+              </p>
               <Flex>
-                <Typography.Text>50%</Typography.Text>
-                <Typography.Text>{product.discountPrice}원</Typography.Text>
+                <p className="mr-1 font-bold text-lg text-red-500">
+                  {discountPercent(product.originPrice, product.discountPrice)}%
+                </p>
+                <p className="font-bold text-lg">
+                  {toWon(product.discountPrice)}원
+                </p>
               </Flex>
             </Flex>
           </Col>
@@ -371,16 +446,21 @@ const index = () => {
         <Divider />
         <Row>
           <Col span={2}>
-            <Flex vertical align="center">
-              <HeartTwoTone
-                className="text-center cursor-pointer"
-                twoToneColor="#FF5160"
-              />
-              <span className="text-center">1.0만</span>
+            <Flex vertical align="center" className="items-center text-center">
+              <div
+                className="text-red-500 cursor-pointer"
+                onClick={clickProductLike}
+              >
+                {productLike ? <HeartFilled /> : <HeartOutlined />}
+                <p>{productLikeCount}</p>
+              </div>
             </Flex>
           </Col>
           <Col span={22}>
-            <Button onClick={() => setDrawerOpen('drawer.open')}>
+            <Button
+              className="w-full"
+              onClick={() => setDrawerOpen('drawer.open')}
+            >
               구매하기
             </Button>
           </Col>
@@ -464,7 +544,11 @@ const index = () => {
                 >
                   장바구니
                 </Button>
-                <Button className="w-full" disabled={cart.length <= 0}>
+                <Button
+                  className="w-full"
+                  disabled={cart.length <= 0}
+                  onClick={clickBuyHandler}
+                >
                   구매하기
                 </Button>
               </Flex>

@@ -29,7 +29,7 @@ import { useSelector } from 'react-redux';
 import { returnBucketUrl, getNonMemberId } from '@/utils';
 import OptionDrawer from './OptionDrawer';
 const index = () => {
-  const navi = useNavigate();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user.data);
   const [carts, setCarts] = useState([]);
   const [drawerOpen, setDrawer] = useState(false);
@@ -38,6 +38,7 @@ const index = () => {
 
   // 선택한 카트들 상태관리
   const [selectedCarts, setSelectedCarts] = useState([]);
+  console.log(selectedCarts);
 
   useEffect(() => {
     fetchCart();
@@ -163,10 +164,14 @@ const index = () => {
     ).toLocaleString();
   };
 
-  // useEffect(() => {
-  //   console.log(selectedCarts);
-  // }, [selectedCarts]);
-  console.log('carts', carts);
+  // 구매 버튼 핸들러
+  const buyHandler = () => {
+    const newArr = selectedCarts.map((item, idx) => ({
+      ...item.product_option,
+      quantity: item.quantity,
+    }));
+    navigate('/payment', { state: newArr });
+  };
 
   return (
     <Layout className={styles.layout}>
@@ -178,13 +183,13 @@ const index = () => {
         <div className={styles.navi_icon_container}>
           <HomeOutlined
             onClick={() => {
-              navi('/');
+              navigate('/');
             }}
           />
           <UserOutlined
             className="ml-3"
             onClick={() => {
-              navi('/mypage');
+              navigate('/mypage');
             }}
           />
         </div>
@@ -229,14 +234,15 @@ const index = () => {
               />
               <Flex vertical className="w-full">
                 <Flex>
-                  <Image
-                    height={76}
-                    width={76}
-                    src={returnBucketUrl(
-                      item.product_option.Product.ProductImages[0].imageUrl
-                    )}
-                  />
-                  <p>{item.product_option.Product.name}</p>
+                  <div className="aspect-square overflow-hidden rounded-md w-20">
+                    <img
+                      className="w-full h-full object-fit"
+                      src={returnBucketUrl(
+                        item.product_option.Product.ProductImages[0].imageUrl
+                      )}
+                    />
+                  </div>
+                  <p className="ml-1">{item.product_option.Product.name}</p>
                   <Popconfirm
                     title="삭제"
                     description="선택한 상품을 삭제하시겠어요?"
@@ -343,6 +349,7 @@ const index = () => {
           className={styles.buy_button}
           disabled={selectedCarts.length <= 0}
           color="blue"
+          onClick={buyHandler}
         >
           {totalPrice() == 0 ? '' : `${totalPrice()}원`} 주문하기
         </Button>
