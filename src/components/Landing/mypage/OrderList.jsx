@@ -1,7 +1,16 @@
 import { Content } from 'antd/es/layout/layout';
 import React, { useEffect, useState } from 'react';
 import { SettingOutlined, ShoppingOutlined } from '@ant-design/icons';
-import { Avatar, Badge, Col, Flex, message, Row, Typography } from 'antd';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Col,
+  Flex,
+  message,
+  Row,
+  Typography,
+} from 'antd';
 import styles from './index.module.css';
 import MenuHeader from '@/components/common/MenuHeader';
 import { useNavigate } from 'react-router-dom';
@@ -22,8 +31,6 @@ const OrderList = () => {
           const filterd = res.data.filter((el) => el.order_items.length > 0);
 
           setOrderList(filterd);
-
-          console.log(orderList.flatMap((order) => order.order_items));
         }
       })
       .catch(() => {});
@@ -64,6 +71,16 @@ const OrderList = () => {
                   </p>
                 </Flex>
               </Flex>
+              <Button
+                className="w-full"
+                onClick={() => {
+                  navigate('/mypage/review/upload', {
+                    state: item,
+                  });
+                }}
+              >
+                리뷰 작성
+              </Button>
             </div>
           ))}
       </Flex>
