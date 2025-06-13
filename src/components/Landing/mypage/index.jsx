@@ -68,7 +68,9 @@ const index = () => {
       icon: <EditTwoTone />,
       title: '리뷰',
       content: '0',
-      handler: () => {},
+      handler: () => {
+        navigate('/mypage/review');
+      },
     },
     {
       icon: <MessageTwoTone />,

@@ -33,7 +33,7 @@ const Points = () => {
       {/* 포인트 전체 내역 */}
       <Flex vertical className={styles.point_list_container}>
         {points.map((point, idx) => (
-          <div>
+          <div key={idx}>
             <Flex className={styles.point_item}>
               <p>{dayjs(point.createdAt).format('MM.DD')}</p>
               <div className="flex flex-col">

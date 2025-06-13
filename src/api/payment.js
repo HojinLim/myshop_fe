@@ -47,6 +47,7 @@ const testPayment = async (
 
         if (result.success) {
           alert('결제 성공!');
+          window.location.href = '/mypage/orderList';
           console.log(rsp);
         } else {
           alert('결제 검증 실패');

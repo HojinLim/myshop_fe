@@ -1,0 +1,17 @@
+.menu_outer {
+  position: relative;
+  z-index: 1000;
+  user-select: none;
+}
+.menu_inner {
+  user-select: none;
+  position: absolute;
+  right: 0;
+  padding: 0.3rem;
+  border: 1px solid #ccc;
+  width: fit-content;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}

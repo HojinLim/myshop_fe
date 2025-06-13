@@ -11,6 +11,7 @@ import Points from '@/components/Landing/mypage/Points';
 import MyPageSetting from '@/components/Landing/mypage/Setting';
 import OrderList from '@/components/Landing/mypage/OrderList';
 import Favorite from '@/components/Landing/mypage/Favorite';
+import ReviewList from '@/components/Landing/mypage/ReviewList';
 import UploadReview from '@/components/Landing/mypage/UploadReview';
 // 어드민
 import AdminLanding from '@/components/admin';
@@ -64,6 +65,7 @@ function App() {
             <Route path="/mypage/setting" element={<MyPageSetting />} />
             <Route path="/mypage/orderList" element={<OrderList />} />
             <Route path="/mypage/favorite" element={<Favorite />} />
+            <Route path="/mypage/review" element={<ReviewList />} />
             <Route path="/mypage/review/upload" element={<UploadReview />} />
           </Route>
 

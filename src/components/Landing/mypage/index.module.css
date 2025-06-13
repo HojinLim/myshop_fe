@@ -135,3 +135,15 @@
   width: 100%;
   padding: 1.5rem;
 }
+.review_gender_btn {
+  &.clicked {
+    border-color: black;
+  }
+
+  &:focus,
+  &:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: none;
+  }
+}

@@ -2,19 +2,29 @@ import React, { useState } from 'react';
 import styles from './index.module.css';
 import { Content, Footer } from 'antd/es/layout/layout';
 import MenuHeader from '@/components/common/MenuHeader';
-import { Button, Divider, Flex, Input, Rate } from 'antd';
-import { useLocation, useParams } from 'react-router-dom';
+import { Button, Divider, Flex, Input, message, Rate } from 'antd';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { returnBucketUrl } from '@/utils';
 import NotFound from '@/components/notfound';
+import { uploadReview } from '@/api/review';
+import { useSelector } from 'react-redux';
 
-const MAX_IMAGES = 10;
+const MAX_IMAGES = 3;
 
 const UploadReview = () => {
+  const navigate = useNavigate();
   const [clear, setClear] = useState(true);
   const [rate, setRate] = useState(null);
   const [images, setImages] = useState([]);
   const [content, setContent] = useState('');
+  const [userInfo, setUserInfo] = useState({
+    gender: null,
+    height: null,
+    weight: null,
+    infoSave: false,
+  });
   const location = useLocation();
+  const user = useSelector((state) => state.user.data);
   const item = location.state;
 
   if (!item) return <NotFound />;
@@ -42,13 +52,50 @@ const UploadReview = () => {
 
     Promise.all(readers).then((imageData) => {
       setImages((prev) => [...prev, ...imageData]);
+      e.target.value = ''; // 다시 중복된 사진 올려도 값 변하게끔
     });
   };
 
   const handleDeleteImage = (index) => {
     setImages(images.filter((_, i) => i !== index));
   };
-  const clickUploadReview = async () => {};
+  const clickUploadReview = async () => {
+    const { id: option_id } = item.product_option;
+    const { id: prodcut_id } = item.product_option.Product;
+
+    if (!rate) {
+      message.warning('평가는 필수입니다!');
+      return;
+    }
+
+    const userData = {
+      user_id: user.id,
+      product_id: prodcut_id,
+      option_id: option_id,
+      rating: rate,
+      content: content || null,
+      gender: userInfo['gender'] || null,
+      height: userInfo['height'] || null,
+      weight: userInfo['weight'] || null,
+    };
+    try {
+      await uploadReview(userData, images);
+      message.success('리뷰 업로드 완료!');
+      navigate('/mypage/review');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // 유저 신체 정보 상태 핸들러
+  const setUserInfoHandler = (e) => {
+    const { name, value, type, checked } = e.target;
+
+    setUserInfo((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
 
   return (
     <Content className={styles.review_layout}>
@@ -83,7 +130,7 @@ const UploadReview = () => {
       </Flex>
       <Divider />
       <p className="text-xl !mb-3">어떤 점이 좋았나요?</p>
-      <p className="font-semibold !mb-2">본문 입력(필수)</p>
+      <p className="font-semibold !mb-2">본문 입력(선택)</p>
       <textarea
         className={styles.review_textArea}
         onChange={(e) => setContent(e.target.value)}
@@ -103,34 +150,75 @@ const UploadReview = () => {
           </div>
         ))}
         {/* 사진 추가 */}
-        <label className={styles.review_photo_add}>
-          +
-          <div className="text-gray-400">
-            {images.length}/{MAX_IMAGES}
-          </div>
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={handleAddImage}
-          />
-        </label>
+        {images.length < MAX_IMAGES && (
+          <label className={styles.review_photo_add}>
+            +
+            <div className="text-gray-400">
+              {images.length}/{MAX_IMAGES}
+            </div>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleAddImage}
+            />
+          </label>
+        )}
       </Flex>
       <Divider />
-      <p className="text-xl !mb-3">내 체형정보를 입력해주세요 (필수)</p>
+      <p className="text-xl !mb-3">내 체형정보를 입력해주세요 (선택)</p>
       <Flex className="gap-3 !my-3" vertical>
         <p>성별</p>
         <div className="flex">
-          <button>남성</button>
-          <button>여성</button>
+          <button
+            className={`${styles.review_gender_btn} ${
+              userInfo.gender === 'male' ? styles.clicked : ''
+            }`}
+            name="gender"
+            value="male"
+            onClick={setUserInfoHandler}
+          >
+            남성
+          </button>
+          <button
+            name="gender"
+            value="female"
+            className={`${styles.review_gender_btn} ${
+              userInfo.gender === 'female' ? styles.clicked : ''
+            }`}
+            onClick={setUserInfoHandler}
+          >
+            여성
+          </button>
         </div>
         <label>키</label>
-        <Input suffix="cm" placeholder="키를 입력해주세요" allowClear />
+        <Input
+          suffix="cm"
+          placeholder="키를 입력해주세요"
+          allowClear
+          name="height"
+          maxLength={5}
+          value={userInfo.height}
+          onChange={setUserInfoHandler}
+        />
         <label>몸무게</label>
-        <Input suffix="kg" placeholder="키를 입력해주세요" allowClear />
+        <Input
+          suffix="kg"
+          placeholder="키를 입력해주세요"
+          allowClear
+          name="weight"
+          maxLength={5}
+          value={userInfo.weight}
+          onChange={setUserInfoHandler}
+        />
       </Flex>
       <Flex>
-        <input type="checkbox" />
+        <input
+          type="checkbox"
+          name="infoSave"
+          value={userInfo.infoSave}
+          onChange={setUserInfoHandler}
+        />
         <p className="!ml-2">나의 신체정보에 업데이트</p>
       </Flex>
 
