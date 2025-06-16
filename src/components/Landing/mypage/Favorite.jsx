@@ -72,17 +72,6 @@ const Favorite = () => {
         });
     }
   };
-  const addFavorite = async (product) => {
-    console.log(product);
-    // 좋아요 추가
-    await createFavorite(user.id, product.Product.id)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   useEffect(() => {
     fetchMyFavorite();
@@ -99,8 +88,14 @@ const Favorite = () => {
       <Flex className="flex-wrap">
         {/* 찜 상품 낱개 */}
         {favorites.map((product, index) => (
-          <div key={index} className="flex flex-col mr-5">
-            <div className="aspect-square overflow-hidden rounded-xl w-32 relative">
+          <div key={index} className="flex flex-col mr-5 cursor-pointer">
+            <div
+              className="aspect-square overflow-hidden rounded-xl w-32 relative"
+              onClick={(event) => {
+                event.stopPropagation(); // 부모 div의 onClick 방지
+                navigate(`/product/${product.Product.id}`);
+              }}
+            >
               <img
                 src={returnBucketUrl(product.Product.ProductImages[0].imageUrl)}
                 alt={product.Product.name}
@@ -112,9 +107,18 @@ const Favorite = () => {
                     ? '찜 목록에 다시 추가합니까?'
                     : '찜 목록에서 삭제합니까?'
                 }`}
-                onConfirm={() => clickFavorite(product)}
+                onConfirm={(event) => {
+                  event.stopPropagation(); // 부모 div의 onClick 방지
+                  clickFavorite(product);
+                }}
+                onCancel={(event) => {
+                  event.stopPropagation();
+                }}
               >
-                <div className="text-red-500 absolute top-0 right-0 p-2 cursor-pointer">
+                <div
+                  className="text-red-500 absolute top-0 right-0 p-2 cursor-pointer"
+                  onClick={(event) => event.stopPropagation()}
+                >
                   {product.delete ? <HeartOutlined /> : <HeartFilled />}
                 </div>
               </Popconfirm>

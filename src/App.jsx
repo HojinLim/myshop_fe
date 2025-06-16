@@ -26,6 +26,7 @@ import NotFound from '@/components/notfound';
 import Category from '@/components/category';
 
 import ProductDetail from '@/components/user/productDetail';
+import SearchProduct from '@/components/user/SearchProduct';
 
 // 카트
 import Cart from '@/components/cart';
@@ -69,7 +70,6 @@ function App() {
             <Route path="/mypage/review/upload" element={<UploadReview />} />
           </Route>
 
-          <Route path="*" element={<NotFound />} />
           {/* 어드민 부모 라우터*/}
           <Route path="/admin" element={<AdminLanding />}>
             {/* 어드민 자식 라우터*/}
@@ -86,9 +86,13 @@ function App() {
           <Route path="/payment" element={<Payment />}></Route>
           {/* 카트 */}
           <Route path="/cart" element={<Cart />}></Route>
+          {/* 검색 */}
+          <Route path="/search/:keyword" element={<SearchProduct />}></Route>
+          <Route path="/search/*" element={<SearchProduct />}></Route>
 
           <Route path="/signup" element={<SignupForm />} />
           <Route path="/login" element={<LoginForm />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </>

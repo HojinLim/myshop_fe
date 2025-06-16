@@ -31,7 +31,9 @@ export const MenuItem = (props) => {
       span={4}
       onClick={clickMenu}
     >
-      <img src={preview} />
+      <div className="aspect-square overflow-hidden w-full rounded-xl place-content-center p-2">
+        <img src={preview} className="w-full h-full object-fit" />
+      </div>
       <Title level={5}>{category}</Title>
     </Col>
   );

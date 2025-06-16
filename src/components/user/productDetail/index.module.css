@@ -1,8 +1,10 @@
 .layout {
+  --detail-footer-height: 50px;
+
   max-width: 600px;
   justify-self: center !important;
   width: 100%;
-  height: 100%;
+  height: calc(100% - var(--detail-footer-height));
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
@@ -10,14 +12,14 @@
 .footer {
   position: fixed;
   width: 600px;
-
+  height: var(--detail-footer-height);
   bottom: 0;
   left: 0;
   right: 0;
   justify-self: center;
-  padding: 15px !important;
+  padding: 0px !important;
   background-color: white;
-
+  align-items: center !important;
   button {
     color: white;
     background-color: black;
@@ -96,4 +98,10 @@
   padding: 18px;
   height: fit-content;
   margin: 10px 0;
+}
+
+.review_layout {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
 }

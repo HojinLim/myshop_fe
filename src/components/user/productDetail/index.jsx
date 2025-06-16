@@ -27,7 +27,7 @@ import {
 } from 'antd';
 import MenuHeader from '@/components/common/MenuHeader';
 import { Content, Footer } from 'antd/es/layout/layout';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { getProducts, getProductOption } from '@/api/product';
 import {
   mapColors,
@@ -50,7 +50,9 @@ import {
 } from '@/api/favorite';
 
 const index = () => {
-  const { id } = useParams();
+  const { pathname } = useLocation();
+  const id = pathname.split('/').pop();
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.data);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -166,7 +168,6 @@ const index = () => {
               <img
                 className="w-full h-full object-contain"
                 key={key}
-                preview={false}
                 src={returnBucketUrl(item.imageUrl)}
               />
             )
@@ -191,12 +192,7 @@ const index = () => {
     {
       key: '2',
       label: '리뷰 3',
-      children: <ReviewLayout />,
-    },
-    {
-      key: '3',
-      label: '문의',
-      children: 'Content of Tab Pane 3',
+      children: <ReviewLayout productId={id} />,
     },
   ];
 
@@ -374,7 +370,6 @@ const index = () => {
   const clickBuyHandler = () => {
     navigate('/payment', { state: cart });
   };
-  console.log('product', product);
 
   // 총 수량
   const totalQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
@@ -443,8 +438,8 @@ const index = () => {
       </Content>
 
       <Footer className={styles.footer}>
-        <Divider />
-        <Row>
+        {/* <Divider /> */}
+        <Row className="h-full items-center">
           <Col span={2}>
             <Flex vertical align="center" className="items-center text-center">
               <div

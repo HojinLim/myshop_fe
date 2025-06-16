@@ -84,13 +84,15 @@ export const AdminMenuItem = (props) => {
         className="cursor-pointer right-0 absolute"
         onClick={removePhotoHandler}
       />
-      <img
-        src={preview}
-        className="cursor-pointer"
-        onClick={() => {
-          imageRef.current.click();
-        }}
-      />
+      <div className="aspect-square overflow-hidden w-full rounded-xl place-content-center p-2">
+        <img
+          src={preview}
+          className="cursor-pointer w-full h-full object-fit"
+          onClick={() => {
+            imageRef.current.click();
+          }}
+        />
+      </div>
       <input
         ref={imageRef}
         hidden

@@ -6,6 +6,7 @@ import {
   Badge,
   Button,
   Col,
+  Divider,
   Flex,
   message,
   Row,
@@ -43,6 +44,7 @@ const OrderList = () => {
   return (
     <Content>
       <MenuHeader title="주문내역" />
+      <Divider className="!my-2" />
       <Flex vertical>
         {/* 주문 아이템 */}
         {orderList

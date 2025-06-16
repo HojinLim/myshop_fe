@@ -27,34 +27,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCarts, transferCart } from '@/api/cart';
 import CONSTANTS from '@/constants';
 import { fetchCartLength } from '@/store/slices/cartSlice';
+import { searchProduct } from '@/api/search';
 const index = () => {
   const { Text, Title } = Typography;
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [profilePic, setProfilePic] = useState(logo);
-  // const [cartNum, setCartNum] = useState(0);
+  const [keyword, setKeyword] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.data);
-
-  const transferMyCart = async () => {
-    // ✅ 장바구니 이동 (user.id가 정상적으로 업데이트된 후 실행)
-    const non_user_id = localStorage.getItem(CONSTANTS.NON_MEMBER);
-
-    if (non_user_id && user.id) {
-      console.log('user.id', user.id);
-
-      const params = { user_id: user.id, non_user_id };
-
-      try {
-        const res = await transferCart(params);
-        console.log(res);
-        localStorage.removeItem(CONSTANTS.NON_MEMBER);
-      } catch (err) {
-        message.error(err.message);
-      }
-    }
-  };
 
   const getCategoryList = async () => {
     await getCategories()
@@ -89,12 +71,28 @@ const index = () => {
 
   const { cartNum, loading, error } = useSelector((state) => state.cart);
 
+  const moveWithKeyword = () => {
+    navigate(`/search/${keyword}`);
+  };
+
   return (
     <Layout className={styles.layout_except_footer}>
       <Header className={styles.header}>
         <Row>
+          {/* 검색 */}
           <Col span={22}>
-            <Input prefix={<SearchOutlined />} allowClear></Input>
+            <Input
+              suffix={
+                <SearchOutlined
+                  className="cursor-pointer"
+                  onClick={moveWithKeyword}
+                />
+              }
+              allowClear
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+              onPressEnter={moveWithKeyword}
+            ></Input>
           </Col>
           <Col span={2} className={styles.header_right}>
             <Badge count={cartNum} color="red">

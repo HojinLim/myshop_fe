@@ -50,6 +50,11 @@ const discountPercent = (originPrice, discountPrice) => {
   result = Math.floor(((origin - discount) / origin) * 100);
   return result;
 };
+// 닉네임 익명성화
+const anonymizeNickname = (nickname) => {
+  const visiblePart = nickname.slice(0, 2); // 앞 두 글자 추출
+  return visiblePart + '***'; // 나머지는 ***로 고정
+};
 
 export {
   capitalizeJs,
@@ -58,4 +63,5 @@ export {
   getNonMemberId,
   toWon,
   discountPercent,
+  anonymizeNickname,
 };

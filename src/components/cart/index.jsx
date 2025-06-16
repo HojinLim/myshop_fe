@@ -236,7 +236,7 @@ const index = () => {
                 <Flex>
                   <div className="aspect-square overflow-hidden rounded-md w-20">
                     <img
-                      className="w-full h-full object-fit"
+                      className="w-full h-full object-contain"
                       src={returnBucketUrl(
                         item.product_option.Product.ProductImages[0].imageUrl
                       )}

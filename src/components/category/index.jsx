@@ -14,7 +14,8 @@ import MenuHeader from '../common/MenuHeader';
 import { Content } from 'antd/es/layout/layout';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getProducts } from '@/api/product';
-import { returnBucketUrl } from '@/utils';
+import { discountPercent, returnBucketUrl } from '@/utils';
+import NotFound from '@/components/notfound';
 const index = () => {
   const { category } = useParams(); // URL에서 category 값 가져오기
   const navigate = useNavigate();
@@ -33,45 +34,39 @@ const index = () => {
   const clickProduct = (id) => {
     navigate(`/product/${id}`);
   };
+
   return (
     <Layout className={styles.layout}>
       <MenuHeader title={category} />
       <Divider />
       <Content>
+        {products.length <= 0 && (
+          <NotFound
+            title="제품 없음"
+            subTitle="해당 카테고리 제품이 없습니다"
+            // type="noBtn"
+          />
+        )}
         <Row className={styles.row}>
-          <Col span={24}>
-            <Select
-              defaultValue="lucy"
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'lucy', label: 'Lucy' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-                { value: 'disabled', label: 'Disabled', disabled: true },
-              ]}
-            />
-            <Select
-              defaultValue="lucy"
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'lucy', label: 'Lucy' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-                { value: 'disabled', label: 'Disabled', disabled: true },
-              ]}
-            />
-          </Col>
-          <Divider />
           {products.map((product) => (
             <Col key={product.id} span={12}>
-              <Image
-                preview={false}
-                className={styles.image}
-                src={returnBucketUrl(product.imageUrl)}
-                onClick={() => clickProduct(product.id)}
-              />
+              <div
+                className="aspect-square overflow-hidden w-full rounded-xl place-content-center p-3 cursor-pointer"
+                onClick={() => {
+                  clickProduct(product.id);
+                }}
+              >
+                <img
+                  className="w-full h-full object-cover"
+                  src={returnBucketUrl(product.ProductImages[0].imageUrl)}
+                />
+              </div>
               <Flex>
-                <Typography.Text>50%</Typography.Text>
+                <p>
+                  {discountPercent(product.originPrice, product.discountPrice)}%
+                </p>
                 <Typography.Text level={5}>
-                  {product.discountPrice}
+                  {Number(product.discountPrice).toLocaleString() + '원'}
                 </Typography.Text>
               </Flex>
               <div>{product.name}</div>
