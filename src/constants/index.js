@@ -12,4 +12,9 @@ const CONSTANTS = {
   KG_PG: 'html5_inicis',
 };
 
-export default CONSTANTS;
+const QUERY_KEYS = {
+  PRODUCTS: ['products'],
+  PRODUCT_DETAILS: (id) => ['product', id],
+};
+
+export { CONSTANTS, QUERY_KEYS };

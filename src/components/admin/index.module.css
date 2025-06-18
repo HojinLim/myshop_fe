@@ -1,5 +1,5 @@
 .layout {
-  width: 100vw !important;
+  width: 100% !important;
   height: 100vh;
   max-width: none !important; /* 관리자 페이지는 최대 너비 제한 해제 */
   :global(body) {

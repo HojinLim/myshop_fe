@@ -19,6 +19,21 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+/*  라이트로 강제 고정 */
+@media (prefers-color-scheme: dark) {
+  html,
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+
+  * {
+    background-color: white !important;
+    color: black !important;
+    border-color: #ccc !important;
+  }
+}
+
 .form_outer_container {
   width: 100%;
   height: fit-content;

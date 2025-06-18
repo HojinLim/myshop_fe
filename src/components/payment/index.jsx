@@ -22,7 +22,7 @@ import { useLocation } from 'react-router-dom';
 import { returnBucketUrl, toWon } from '@/utils';
 import { useSelector } from 'react-redux';
 import { testPayment } from '@/api/payment';
-import CONSTANTS from '@/constants';
+import { CONSTANTS } from '@/constants';
 const index = () => {
   const [menuOpen, setMenuOpen] = useState(true);
   const [point, setPoint] = useState(null);

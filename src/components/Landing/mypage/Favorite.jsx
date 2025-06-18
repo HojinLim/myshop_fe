@@ -85,10 +85,12 @@ const Favorite = () => {
         <Result icon={<FrownTwoTone />} title="찜한 상품이 없습니다" />
       )}
       {/* 찜 상품 배열 */}
-      <Flex className="flex-wrap">
+
+      {/* <Flex className="flex-wrap !px-8  gap-x-4 gap-y-6"> */}
+      <Flex className="!grid grid-cols-[repeat(auto-fill,minmax(140px,1fr))] gap-4">
         {/* 찜 상품 낱개 */}
         {favorites.map((product, index) => (
-          <div key={index} className="flex flex-col mr-5 cursor-pointer">
+          <div key={index} className="flex flex-col mr-4 mb-4 cursor-pointer">
             <div
               className="aspect-square overflow-hidden rounded-xl w-32 relative"
               onClick={(event) => {

@@ -64,7 +64,12 @@ const Landing = () => {
                 onClick={() => clickMenu(index)}
               >
                 {value.icon}
-                <Title level={5}>{value.text}</Title>
+                <Title
+                  level={5}
+                  className="overflow-ellipsis whitespace-nowrap overflow-hidden"
+                >
+                  {value.text}
+                </Title>
               </Col>
             ))}
           </Row>

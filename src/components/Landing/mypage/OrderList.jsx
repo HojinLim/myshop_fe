@@ -42,7 +42,7 @@ const OrderList = () => {
   }, []);
 
   return (
-    <Content>
+    <Content className="overflow-x-hidden overflow-y-auto">
       <MenuHeader title="주문내역" />
       <Divider className="!my-2" />
       <Flex vertical>

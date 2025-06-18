@@ -25,7 +25,7 @@ const Points = () => {
       .catch(() => {});
   };
   return (
-    <Content>
+    <Content className="overflow-x-hidden overflow-y-auto">
       <MenuHeader title="포인트" />
       <p className="text-gray-400 text-lg">현재 포인트</p>
       <p className="text-2xl font-bold">Ⓟ {toWon(user.points)}원</p>
@@ -35,7 +35,9 @@ const Points = () => {
         {points.map((point, idx) => (
           <div key={idx}>
             <Flex className={styles.point_item}>
-              <p>{dayjs(point.createdAt).format('MM.DD')}</p>
+              <p className="min-w-12">
+                {dayjs(point.createdAt).format('MM.DD')}
+              </p>
               <div className="flex flex-col">
                 <p>관리자의 선물</p>
                 <p>{dayjs(point.createdAt).format('HH:MM')}</p>

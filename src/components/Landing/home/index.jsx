@@ -25,7 +25,7 @@ import { discountPercent, getNonMemberId, returnBucketUrl } from '@/utils';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCarts, transferCart } from '@/api/cart';
-import CONSTANTS from '@/constants';
+
 import { fetchCartLength } from '@/store/slices/cartSlice';
 import { searchProduct } from '@/api/search';
 const index = () => {
@@ -80,7 +80,7 @@ const index = () => {
       <Header className={styles.header}>
         <Row>
           {/* 검색 */}
-          <Col span={22}>
+          <Col span={22} className="px-1">
             <Input
               suffix={
                 <SearchOutlined
@@ -95,7 +95,7 @@ const index = () => {
             ></Input>
           </Col>
           <Col span={2} className={styles.header_right}>
-            <Badge count={cartNum} color="red">
+            <Badge count={cartNum} color="red" size="small">
               <ShoppingOutlined
                 className={styles.shop_icon}
                 onClick={() => {

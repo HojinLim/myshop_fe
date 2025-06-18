@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './index.module.css';
 import { Content, Footer } from 'antd/es/layout/layout';
 import MenuHeader from '@/components/common/MenuHeader';
 import { Button, Divider, Flex, Input, message, Rate } from 'antd';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { returnBucketUrl } from '@/utils';
 import NotFound from '@/components/notfound';
-import { uploadReview } from '@/api/review';
+import { updateReview, uploadReview } from '@/api/review';
 import { useSelector } from 'react-redux';
 
 const MAX_IMAGES = 3;
@@ -23,6 +23,7 @@ const UploadReview = () => {
     weight: null,
     infoSave: false,
   });
+  const [deleteImageIds, setDeleteImageIds] = useState([]);
   const location = useLocation();
   const user = useSelector((state) => state.user.data);
   const item = location.state;
@@ -35,6 +36,27 @@ const UploadReview = () => {
     3: '괜찮아요',
     4: '좋아요',
     5: '최고예요',
+  };
+
+  // 초기화
+  const init = () => {
+    if (item.type === 'update') {
+      setRate(item.rating);
+      setUserInfo({
+        gender: item.gender,
+        height: item.height,
+        weight: item.weight,
+        infoSave: false,
+      });
+      setContent(item.content);
+      if (item.review_images && item.review_images.length) {
+        const existingImages = item.review_images.map((img) => ({
+          url: returnBucketUrl(img.imageUrl),
+          file: null, // 서버에서 온 이미지는 File 객체가 없으므로 null
+        }));
+        setImages(existingImages);
+      }
+    }
   };
 
   const handleAddImage = (e) => {
@@ -57,9 +79,14 @@ const UploadReview = () => {
   };
 
   const handleDeleteImage = (index) => {
-    setImages(images.filter((_, i) => i !== index));
+    setImages((prev) => prev.filter((_, i) => i !== index));
+
+    // file이 존재하지 않는 수정의 경우 id를 따로 저장해둠(향후 삭제를 위해)
+    if (images[index]['file'] === null) {
+      setDeleteImageIds((prev) => [...prev, item.review_images[index].id]);
+    }
   };
-  const clickUploadReview = async () => {
+  const clickHandleReview = async () => {
     const { id: option_id } = item.product_option;
     const { id: prodcut_id } = item.product_option.Product;
 
@@ -68,7 +95,7 @@ const UploadReview = () => {
       return;
     }
 
-    const userData = {
+    const data = {
       user_id: user.id,
       product_id: prodcut_id,
       option_id: option_id,
@@ -79,9 +106,17 @@ const UploadReview = () => {
       weight: userInfo['weight'] || null,
     };
     try {
-      await uploadReview(userData, images);
+      // 리뷰 업데이트
+      if (item.type === 'update') {
+        const updateData = { ...data, deleteImageIds };
+        await updateReview(item.id, updateData, images);
+      } else {
+        // 리뷰 생성
+
+        await uploadReview(data, images);
+      }
       message.success('리뷰 업로드 완료!');
-      navigate('/mypage/review');
+      // navigate('/mypage/review');
     } catch (err) {
       console.log(err);
     }
@@ -96,6 +131,9 @@ const UploadReview = () => {
       [name]: type === 'checkbox' ? checked : value,
     }));
   };
+  useEffect(() => {
+    init();
+  }, []);
 
   return (
     <Content className={styles.review_layout}>
@@ -119,6 +157,7 @@ const UploadReview = () => {
           allowHalf={false}
           allowClear={clear}
           defaultValue={0}
+          value={rate}
           onChange={(e) => {
             setRate(e);
           }}
@@ -222,10 +261,9 @@ const UploadReview = () => {
         <p className="!ml-2">나의 신체정보에 업데이트</p>
       </Flex>
 
-      <Button className={styles.review_upload_btn} onClick={clickUploadReview}>
-        업로드
+      <Button className={styles.review_upload_btn} onClick={clickHandleReview}>
+        {item.type === 'update' ? '수정하기' : '업로드'}
       </Button>
-      {/* <Footer className={styles.review_footer} /> */}
     </Content>
   );
 };

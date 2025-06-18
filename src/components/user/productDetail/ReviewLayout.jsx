@@ -14,14 +14,32 @@ import { useLocation } from 'react-router-dom';
 import dayjs from '@/utils/dayjs';
 
 import NotFound from '@/components/notfound';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  countReviewLike,
+  createReviewLike,
+  deleteReviewLike,
+} from '@/api/reviewLike';
+import { useSelector } from 'react-redux';
 const ReviewLayout = (props) => {
   const { pathname } = useLocation();
   const productId = pathname.split('/').pop();
+  const user = useSelector((state) => state.user.data);
 
   const [reviews, setReviews] = useState({ averageRating: 0, reviews: [] });
 
+  // const { data, isLoading, error } = useQuery({
+  //   queryKey: ['countReviewLike', reviewId],
+  //   queryFn: (reviewId) => countReviewLike(reviewId),
+  // });
+
+  const { mutate: mutateCreateReviewLike, isSuccess: reviewLikeSuccess } =
+    useMutation({
+      mutationFn: ({ userId, reviewId }) => createReviewLike(userId, reviewId),
+    });
+
   const fetchReview = async () => {
-    await getProductReviews(productId)
+    await getProductReviews(user.id, productId)
       .then((res) => {
         setReviews(res);
       })
@@ -31,17 +49,43 @@ const ReviewLayout = (props) => {
   useEffect(() => {
     fetchReview();
   }, []);
-  console.log(reviews.averageRating);
+  useEffect(() => {
+    fetchReview();
+  }, [reviewLikeSuccess]);
+
+  const clickReviewLikeHandler = async (review) => {
+    console.log(review.isLiked);
+
+    if (review.isLiked) {
+      console.log('hi');
+
+      await deleteReviewLike(user.id, review.id)
+        .then(() => {
+          fetchReview();
+        })
+        .catch(() => {});
+    } else {
+      console.log('hi2');
+      mutateCreateReviewLike({
+        userId: user.id,
+        reviewId: review.id,
+      });
+    }
+  };
 
   return (
     <Content className={styles.review_layout}>
       <Flex>
         <p className="font-bold">전체 {reviews?.reviews?.length}개</p>
-        <Rate value={reviews.averageRating} className="!mx-3" disabled={true} />
-        <p className="font-bold">{Number(reviews.averageRating) || ''}</p>
+        <Rate
+          value={reviews?.averageRating}
+          className="!mx-3"
+          disabled={true}
+        />
+        <p className="font-bold">{Number(reviews?.averageRating) || ''}</p>
       </Flex>
       <Flex className="!my-3 gap-3">
-        {reviews.reviews
+        {reviews?.reviews
           ?.flatMap((review) =>
             review.review_images?.map((img) => img.imageUrl)
           ) // URL 배열로 평탄화
@@ -59,7 +103,7 @@ const ReviewLayout = (props) => {
 
       <hr className="divider_bold" />
       <Flex vertical>
-        {reviews.reviews.length <= 0 && (
+        {reviews?.reviews.length <= 0 && (
           <NotFound title="등록된 리뷰가 없습니다" subTitle=" " type="noBtn" />
         )}
         {reviews?.reviews?.map((review, idx) => (
@@ -69,13 +113,18 @@ const ReviewLayout = (props) => {
                 {anonymizeNickname(review.User.username)} |{' '}
                 {dayjs(review.createdAt).format('YYYY.MM.DD')}
               </p>
-              <div className="flex gap-2 text-gray-400">
-                <p>3</p>
-                <LikeFilled />
+              <div
+                className={`flex gap-2 ${
+                  review.isLiked ? 'text-blue-500' : 'text-gray-400'
+                }`}
+              >
+                <p>{review.likeCount}</p>
+
+                <LikeFilled onClick={() => clickReviewLikeHandler(review)} />
               </div>
             </Flex>
             <Flex>
-              {review.review_images.map((image, idx) => (
+              {review?.review_images.map((image, idx) => (
                 <div
                   key={idx}
                   className="aspect-square w-24 overflow-hidden rounded-xl content-center my-3 !mr-3"
@@ -84,7 +133,7 @@ const ReviewLayout = (props) => {
                 </div>
               ))}
             </Flex>
-            <Rate value={review.rating} className="!mx-3" disabled={true} />
+            <Rate value={review?.rating} className="!mx-3" disabled={true} />
             <p className="!my-3">{review.content}</p>
             {review.weight && review.height && (
               <Flex>

@@ -42,6 +42,46 @@ const getMyReviews = async (userId) => {
     return null; // ✅ 오류 발생 시 `null` 반환
   }
 };
+const updateReview = async (reviewId, data, imageFiles) => {
+  try {
+    const formData = new FormData();
+
+    // 텍스트 데이터 추가
+    formData.append('content', data.content);
+    formData.append('rating', data.rating);
+    formData.append('gender', data.gender);
+    formData.append('weight', data.weight);
+    formData.append('height', data.height);
+    formData.append('deleteImageIds', JSON.stringify(data.deleteImageIds));
+
+    // 이미지 파일들 추가
+    imageFiles.forEach((item) => {
+      formData.append('reviewImage', item.file); // 다중 파일 허용
+    });
+
+    console.log(imageFiles); // 콘솔에서 확인
+    // 각각의 item이 File 또는 Blob 인스턴스인지 확인
+
+    imageFiles.forEach((file) => {
+      console.log(file.file instanceof File); // true 나와야 정상
+    });
+
+    const response = await fetch(`${back_url}/review/update/${reviewId}`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error(`리뷰 수정 실패: ${response.status}`);
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('리뷰 수정 중 오류 발생:', error);
+    return null;
+  }
+};
 
 const deleteReview = async (reviewId) => {
   try {
@@ -61,9 +101,11 @@ const deleteReview = async (reviewId) => {
     console.error(' 오류 발생:', error);
   }
 };
-const getProductReviews = async (productId) => {
+const getProductReviews = async (userId, productId) => {
   try {
-    const response = await fetch(`${back_url}/review/${productId}`);
+    const response = await fetch(
+      `${back_url}/review?userId=${userId}&productId=${productId}`
+    );
     if (!response.ok) throw new Error('시스템 오류 발생.');
 
     return await response.json();
@@ -73,4 +115,10 @@ const getProductReviews = async (productId) => {
   }
 };
 
-export { uploadReview, getMyReviews, deleteReview, getProductReviews };
+export {
+  uploadReview,
+  updateReview,
+  getMyReviews,
+  deleteReview,
+  getProductReviews,
+};

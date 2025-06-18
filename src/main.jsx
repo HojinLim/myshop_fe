@@ -12,19 +12,26 @@ import store from '@/store';
 import { ConfigProvider, theme } from 'antd';
 import { PersistGate } from 'redux-persist/integration/react';
 
+// react query
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ConfigProvider
-      theme={{ algorithm: theme.defaultAlgorithm }}
-      wave={{ disabled: true }}
-      typography={{ style: { margin: '0 !important', padding: 0 } }}
-      layout={{ style: { backgroundColor: 'transparent' } }}
-    >
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <App />
-        </PersistGate>
-      </Provider>
-    </ConfigProvider>
+    <QueryClientProvider client={queryClient}>
+      <ConfigProvider
+        theme={{ algorithm: theme.defaultAlgorithm }}
+        wave={{ disabled: true }}
+        typography={{ style: { margin: '0 !important', padding: 0 } }}
+        layout={{ style: { backgroundColor: 'transparent' } }}
+      >
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <App />
+          </PersistGate>
+        </Provider>
+      </ConfigProvider>
+    </QueryClientProvider>
   </StrictMode>
 );

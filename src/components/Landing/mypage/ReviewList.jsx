@@ -10,11 +10,12 @@ import dayjs from '@/utils/dayjs';
 import { returnBucketUrl } from '@/utils';
 import MenuDrawer from '@/components/common/MenuDrawer';
 import Item from 'antd/es/list/Item';
+import { useNavigate } from 'react-router-dom';
 
 const ReviewList = () => {
   const [reviews, setReviews] = useState([]);
   const user = useSelector((state) => state.user.data);
-
+  const navigate = useNavigate();
   const fetchMyReviews = async () => {
     await getMyReviews(user.id)
       .then((res) => {
@@ -40,6 +41,17 @@ const ReviewList = () => {
       console.error(err);
     }
   };
+  const moveToUploadReviewHandler = (review) => {
+    console.log(review);
+
+    const newData = {
+      ...review,
+      product_option: { ...review.product_option, Product: review.Product },
+      type: 'update',
+    };
+
+    navigate('/mypage/review/upload', { state: newData });
+  };
 
   return (
     <Content>
@@ -49,10 +61,16 @@ const ReviewList = () => {
         {reviews.map((review, index) => (
           <div key={index} className="!mb-2">
             <Flex justify="space-between">
-              <Rate allowClear={false} disabled value={review.rating} />
+              <div className="flex">
+                <Rate allowClear={false} disabled value={review.rating} />
+                <p className="ml-2">{dayjs(review.createdAt).fromNow()}</p>
+              </div>
               <MenuDrawer
                 menuItems={[
-                  { text: '수정하기', handler: () => console.log('수정') },
+                  {
+                    text: '수정하기',
+                    handler: () => moveToUploadReviewHandler(review),
+                  },
                   {
                     text: '삭제하기',
                     handler: () => deleteReviewHandler(review.id), // reviewId는 해당 리뷰의 ID
