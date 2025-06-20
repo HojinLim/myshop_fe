@@ -22,17 +22,32 @@ const Landing = () => {
   const navigate = useNavigate();
 
   const menuList = [
-    { icon: <HomeOutlined />, text: '홈', value: '/' },
-    { icon: <SearchOutlined />, text: '검색', value: '/' },
-    { icon: <HeartOutlined />, text: '찜', value: '/mypage/favorite' },
-    { icon: <UserOutlined />, text: '마이페이지', value: '/mypage' },
+    { icon: <HomeOutlined />, text: '홈', value: '/', option: {} },
+    {
+      icon: <SearchOutlined />,
+      text: '검색',
+      value: '/search',
+      option: { state: true },
+    },
+    {
+      icon: <HeartOutlined />,
+      text: '찜',
+      value: '/mypage/favorite',
+      option: {},
+    },
+    {
+      icon: <UserOutlined />,
+      text: '마이페이지',
+      value: '/mypage',
+      option: {},
+    },
   ];
 
-  const clickMenu = (id) => {
+  const clickMenu = (id, option = {}) => {
     setSelectedId(id);
 
     const routeName = menuList[id]['value'];
-    navigate(routeName);
+    navigate(routeName, option);
   };
   // 주소창 path 변경마다 메뉴 인덱스 상태 변경
   useEffect(() => {
@@ -61,7 +76,7 @@ const Landing = () => {
                 }`}
                 span={6}
                 key={index}
-                onClick={() => clickMenu(index)}
+                onClick={() => clickMenu(index, value.option)}
               >
                 {value.icon}
                 <Title

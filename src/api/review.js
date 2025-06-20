@@ -114,6 +114,23 @@ const getProductReviews = async (userId, productId) => {
     return null; // ✅ 오류 발생 시 `null` 반환
   }
 };
+const countReview = async (userId) => {
+  try {
+    const response = await fetch(`${back_url}/review/count?userId=${userId}`, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+
+      return data;
+    } else {
+      console.log('시스템 오류 발생.');
+    }
+  } catch (error) {
+    console.error(' 오류 발생:', error);
+  }
+};
 
 export {
   uploadReview,
@@ -121,4 +138,5 @@ export {
   getMyReviews,
   deleteReview,
   getProductReviews,
+  countReview,
 };

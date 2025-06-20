@@ -234,15 +234,15 @@ const index = () => {
               />
               <Flex vertical className="w-full">
                 <Flex>
-                  <div className="aspect-square overflow-hidden rounded-md w-20">
+                  <div className="aspect-square overflow-hidden rounded-md w-20 mx-2">
                     <img
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-contain "
                       src={returnBucketUrl(
                         item.product_option.Product.ProductImages[0].imageUrl
                       )}
                     />
                   </div>
-                  <p className="ml-1">{item.product_option.Product.name}</p>
+                  <p>{item.product_option.Product.name}</p>
                   <Popconfirm
                     title="삭제"
                     description="선택한 상품을 삭제하시겠어요?"

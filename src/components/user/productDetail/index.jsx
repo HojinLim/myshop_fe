@@ -44,7 +44,7 @@ import { addCart, getCarts, updateCartOption } from '@/api/cart';
 import { fetchCartLength } from '@/store/slices/cartSlice';
 import {
   checkFavorite,
-  countFavorite,
+  countProductFavorite,
   createFavorite,
   deleteFavorite,
 } from '@/api/favorite';
@@ -85,7 +85,7 @@ const index = () => {
       });
 
     // 상품의 좋아요 수 가져오기
-    await countFavorite(id)
+    await countProductFavorite(id)
       .then((res) => {
         console.log(res);
         setProductLikeCount(res.count);

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.module.css';
 import { Col, Flex, Input, message, Rate, Row } from 'antd';
 import { ArrowLeftOutlined, SearchOutlined } from '@ant-design/icons';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { searchProduct } from '@/api/search';
 import { Content } from 'antd/es/layout/layout';
 import NotFound from '@/components/notfound';
@@ -11,6 +11,8 @@ const SearchProduct = () => {
   const { keyword } = useParams();
   const navigate = useNavigate();
   const [result, setResult] = useState([]);
+  const myRef = useRef(null);
+  const location = useLocation();
 
   const [searchKeyword, setSearchKeyword] = useState(keyword || null);
 
@@ -37,11 +39,14 @@ const SearchProduct = () => {
     fetchSearchProduct();
   };
   useEffect(() => {
+    myRef.current.focus();
     fetchSearchProduct();
   }, [keyword]);
+  useEffect(() => {}, []);
   return (
     <Content>
       <Input
+        ref={myRef}
         size="large"
         variant="underlined"
         prefix={
@@ -63,7 +68,7 @@ const SearchProduct = () => {
         onChange={(e) => setSearchKeyword(e.target.value)}
         onPressEnter={moveWithKeyword}
       />
-      {result?.length <= 0 && (
+      {!location.state && result?.length <= 0 && (
         <NotFound
           title="검색 결과가 없습니다."
           subTitle="다른 검색어를 입력하시거나

@@ -75,10 +75,30 @@ const checkFavorite = async (userId, productId) => {
     console.error(' 오류 발생:', error);
   }
 };
-const countFavorite = async (productId) => {
+const countProductFavorite = async (productId) => {
   try {
     const response = await fetch(
-      `${back_url}/favorite/count?productId=${productId}`,
+      `${back_url}/favorite/product_count?productId=${productId}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+
+      return data;
+    } else {
+      console.log('시스템 오류 발생.');
+    }
+  } catch (error) {
+    console.error(' 오류 발생:', error);
+  }
+};
+const countFavorite = async (userId) => {
+  try {
+    const response = await fetch(
+      `${back_url}/favorite/count?userId=${userId}`,
       {
         headers: { 'Content-Type': 'application/json' },
       }
@@ -101,5 +121,6 @@ export {
   deleteFavorite,
   myFavorite,
   checkFavorite,
+  countProductFavorite,
   countFavorite,
 };
