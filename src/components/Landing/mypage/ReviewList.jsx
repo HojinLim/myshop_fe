@@ -3,7 +3,11 @@ import React, { useEffect, useState } from 'react';
 import styles from './index.module.css';
 import MenuHeader from '@/components/common/MenuHeader';
 import { Divider, Flex, Rate } from 'antd';
-import { EllipsisOutlined, HeartOutlined } from '@ant-design/icons';
+import {
+  EllipsisOutlined,
+  HeartFilled,
+  HeartOutlined,
+} from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { deleteReview, getMyReviews } from '@/api/review';
 import dayjs from '@/utils/dayjs';
@@ -98,7 +102,8 @@ const ReviewList = () => {
             </div>
             <p>{review.content}</p>
             <div className="flex gap-1 !mt-2">
-              <HeartOutlined />0
+              <HeartFilled className="!text-blue-400" />
+              {review.likeCount}
             </div>
             <Flex className="!mt-3 gap-1.5">
               {review.review_images &&

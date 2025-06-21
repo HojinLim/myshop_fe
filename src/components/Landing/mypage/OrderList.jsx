@@ -9,6 +9,7 @@ import {
   Divider,
   Flex,
   message,
+  Pagination,
   Row,
   Typography,
 } from 'antd';
@@ -24,14 +25,19 @@ const OrderList = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.data);
   const [orderList, setOrderList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageInfo, setPageInfo] = useState({ limit: 5, totalCount: 10 });
 
   const fetchOrderList = async () => {
-    await getOrderList(user.id)
+    console.log(currentPage);
+
+    await getOrderList(user.id, currentPage)
       .then((res) => {
         if (Array.isArray(res.data) && res.data.length > 0) {
           const filterd = res.data.filter((el) => el.order_items.length > 0);
 
           setOrderList(filterd);
+          setPageInfo({ limit: res.limit, totalCount: res.totalCount });
         }
       })
       .catch(() => {});
@@ -39,10 +45,11 @@ const OrderList = () => {
 
   useEffect(() => {
     fetchOrderList();
-  }, []);
+  }, [currentPage]);
+  console.log(pageInfo);
 
   return (
-    <Content className="overflow-x-hidden overflow-y-auto">
+    <Content className="overflow-x-hidden overflow-y-auto ">
       <MenuHeader title="주문내역" />
       <Divider className="!my-2" />
       <Flex vertical>
@@ -50,7 +57,7 @@ const OrderList = () => {
         {orderList
           .flatMap((order) => order.order_items)
           .map((item, idx) => (
-            <div key={idx}>
+            <div key={idx} className="mb-6">
               <p className="font-bold text-lg">
                 {dayjs(item.createdAt).format('YYYY.MM.DD')}
               </p>
@@ -85,6 +92,18 @@ const OrderList = () => {
               </Button>
             </div>
           ))}
+        <Pagination
+          align="center"
+          defaultCurrent={1}
+          total={pageInfo.totalCount}
+          pageSize={pageInfo.limit}
+          current={currentPage}
+          onChange={(page) => {
+            setCurrentPage(page);
+
+            // fetchOrderList();
+          }}
+        />
       </Flex>
     </Content>
   );

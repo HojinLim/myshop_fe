@@ -33,6 +33,7 @@ import Cart from '@/components/cart';
 
 // 결제
 import Payment from '@/components/payment';
+import PaymentSuccess from './components/payment/PaymentSuccess';
 
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -84,6 +85,7 @@ function App() {
           <Route path="/category/:category" element={<Category />}></Route>
           {/* 결제 */}
           <Route path="/payment" element={<Payment />}></Route>
+          <Route path="/payment_success" element={<PaymentSuccess />}></Route>
           {/* 카트 */}
           <Route path="/cart" element={<Cart />}></Route>
           {/* 검색 */}

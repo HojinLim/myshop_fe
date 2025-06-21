@@ -48,7 +48,7 @@ const UploadReview = () => {
         weight: item.weight,
         infoSave: false,
       });
-      setContent(item.content);
+      setContent(item.content || '');
       if (item.review_images && item.review_images.length) {
         const existingImages = item.review_images.map((img) => ({
           url: returnBucketUrl(img.imageUrl),

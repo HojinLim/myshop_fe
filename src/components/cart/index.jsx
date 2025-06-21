@@ -97,7 +97,6 @@ const index = () => {
         message.error(err.message);
       });
   };
-  console.log(selectedCarts);
 
   // 장바구니에서 해당 상품을 삭제
   const confirmDeleteCart = async (item) => {
@@ -176,7 +175,11 @@ const index = () => {
   return (
     <Layout className={styles.layout}>
       <Header className={styles.header}>
-        <LeftOutlined />
+        <LeftOutlined
+          onClick={() => {
+            navigate(-1);
+          }}
+        />
         <div className={styles.title_container}>
           <p>장바구니</p>
         </div>

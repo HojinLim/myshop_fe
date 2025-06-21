@@ -2,9 +2,15 @@ import { v4 as uuidv4 } from 'uuid';
 
 const back_url = import.meta.env.VITE_BACK_URL;
 
-const getOrderList = async (user_id) => {
+const getOrderList = async (user_id, page) => {
+  console.log(page);
+
   try {
-    const response = await fetch(`${back_url}/order?userId=${user_id}`);
+    const response = await fetch(`${back_url}/order?userId=${user_id}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ page: page }),
+    });
 
     return await response.json();
   } catch (error) {

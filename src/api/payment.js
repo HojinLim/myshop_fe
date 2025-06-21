@@ -59,4 +59,24 @@ const testPayment = async (
   );
 };
 
-export { testPayment };
+const payWithoutMoney = async (userId, totalPrice, usedPoint, order_items) => {
+  try {
+    const response = await fetch(`${back_url}/payments/without_money`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId: userId,
+        totalPrice: totalPrice,
+        usedPoint: usedPoint,
+        order_items: order_items,
+      }),
+    });
+
+    return await response.json();
+  } catch (error) {
+    console.error('오류 발생:', error);
+    return null; // ✅ 오류 발생 시 `null` 반환
+  }
+};
+
+export { testPayment, payWithoutMoney };

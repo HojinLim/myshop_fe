@@ -18,11 +18,12 @@ import {
   DownOutlined,
   InfoCircleOutlined,
 } from '@ant-design/icons';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { returnBucketUrl, toWon } from '@/utils';
 import { useSelector } from 'react-redux';
-import { testPayment } from '@/api/payment';
+import { payWithoutMoney, testPayment } from '@/api/payment';
 import { CONSTANTS } from '@/constants';
+import NotFound from '@/components/notfound';
 const index = () => {
   const [menuOpen, setMenuOpen] = useState(true);
   const [point, setPoint] = useState(null);
@@ -31,6 +32,10 @@ const index = () => {
   const items = location.state || [];
   const user = useSelector((state) => state.user.data);
   const [buttonIdx, setButtonIdx] = useState(null);
+  const navigate = useNavigate();
+
+  // 거래할 상품 정보 없음 처리
+  if (!location.state) return <NotFound />;
 
   // 상품의 총 갯수
   const getProductNum = () => {
@@ -69,6 +74,18 @@ const index = () => {
   };
   // 결제 수행 핸들러
   const onClickPayment = async () => {
+    // 포인트로만 결제 시 자사몰 내부적 처리
+    if (totalPrice() - point === 0) {
+      await payWithoutMoney(user.id, totalPrice(), point, items)
+        .then((res) => {
+          navigate('/payment_success', { state: res });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      return;
+    }
+
     await testPayment(
       CONSTANTS.KAKAO_PG,
       point,
@@ -77,7 +94,7 @@ const index = () => {
       totalPrice() - point
     )
       .then((res) => {
-        console.log(res);
+        navigate('/payment_success', { state: res });
       })
       .catch((err) => {
         console.log(err);
