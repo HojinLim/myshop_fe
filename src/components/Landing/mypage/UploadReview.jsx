@@ -8,6 +8,7 @@ import { returnBucketUrl } from '@/utils';
 import NotFound from '@/components/notfound';
 import { updateReview, uploadReview } from '@/api/review';
 import { useSelector } from 'react-redux';
+import UploadPhotoContainer from '@/components/common/UploadPhotoContainer';
 
 const MAX_IMAGES = 3;
 
@@ -142,9 +143,13 @@ const UploadReview = () => {
       <Flex>
         <div className="aspect-square overflow-hidden w-32">
           <img
-            src={returnBucketUrl(
-              item.product_option.Product.ProductImages[0].imageUrl
-            )}
+            src={
+              item.product_option.Product?.ProductImages[0]
+                ? returnBucketUrl(
+                    item.product_option.Product.ProductImages[0].imageUrl
+                  )
+                : '/none_logo.png'
+            }
           />
         </div>
         <div className="flex flex-col justify-end p-2">
@@ -180,30 +185,12 @@ const UploadReview = () => {
       <p className="text-right text-gray-400">0/500</p>
 
       <p>사진 첨부</p>
-      <Flex className={styles.review_photo_container}>
-        {/* 사진 아이템 */}
-        {images.map((img, index) => (
-          <div key={index} className={styles.review_photo_item}>
-            <img src={img.url} />
-            <p onClick={() => handleDeleteImage(index)}>x</p>
-          </div>
-        ))}
-        {/* 사진 추가 */}
-        {images.length < MAX_IMAGES && (
-          <label className={styles.review_photo_add}>
-            +
-            <div className="text-gray-400">
-              {images.length}/{MAX_IMAGES}
-            </div>
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleAddImage}
-            />
-          </label>
-        )}
-      </Flex>
+      <UploadPhotoContainer
+        images={images}
+        handleAddImage={handleAddImage}
+        handleDeleteImage={handleDeleteImage}
+        MAX_IMAGES={MAX_IMAGES}
+      />
       <Divider />
       <p className="text-xl !mb-3">내 체형정보를 입력해주세요 (선택)</p>
       <Flex className="gap-3 !my-3" vertical>

@@ -21,6 +21,7 @@ import {
 import logo from '@/assets/images/logo.png';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadingSlice';
+import { returnBucketUrl } from '@/utils';
 
 const EditProductModal = ({
   modalOpen,
@@ -135,7 +136,20 @@ const EditProductModal = ({
     {
       title: '이미지',
       key: 'action',
-      render: () => <Image src={logo} width="50px" />,
+      render: (_, record) => {
+        console.log(record);
+
+        return (
+          <Image
+            src={
+              record.Product?.ProductImages[0].imageUrl
+                ? returnBucketUrl(record.Product?.ProductImages[0]?.imageUrl)
+                : '/none_logo.png'
+            }
+            width="50px"
+          />
+        );
+      },
     },
     {
       key: 'color',
@@ -144,7 +158,9 @@ const EditProductModal = ({
       render: (_, record) => (
         <Input
           value={record.color}
-          onChange={(e) => onChangeFormList(record.id, 'color', e.target.value)}
+          onChange={(e) => {
+            onChangeFormList(record.id, 'color', e.target.value);
+          }}
         />
       ),
     },

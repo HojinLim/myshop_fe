@@ -78,5 +78,24 @@ const payWithoutMoney = async (userId, totalPrice, usedPoint, order_items) => {
     return null; // ✅ 오류 발생 시 `null` 반환
   }
 };
+const refundProduct = async (imp_uid, amount, reason, order_item_id) => {
+  try {
+    const response = await fetch(`${back_url}/payments/refund`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        imp_uid,
+        amount,
+        reason,
+        order_item_id,
+      }),
+    });
 
-export { testPayment, payWithoutMoney };
+    return await response.json();
+  } catch (error) {
+    console.error('오류 발생:', error);
+    return null; // ✅ 오류 발생 시 `null` 반환
+  }
+};
+
+export { testPayment, payWithoutMoney, refundProduct };

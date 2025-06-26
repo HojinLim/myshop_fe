@@ -22,15 +22,12 @@
   -moz-osx-font-smoothing: grayscale;
 
   height: 100%;
-  /* max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center; */
 }
 body {
   margin: 0;
   justify-self: center;
   max-width: var(--max-width);
+  min-width: 360px;
 }
 h4 {
   font-size: 20px;

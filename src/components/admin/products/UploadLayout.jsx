@@ -19,6 +19,7 @@ import styles from './index.module.css';
 import { PlusOutlined } from '@ant-design/icons';
 
 import { uploadProduct } from '@/api/product';
+import UploadButton from './UploadButton';
 
 const UploadLayout = (props) => {
   const { selectCateogry, fetchProduct } = props;
@@ -39,14 +40,6 @@ const UploadLayout = (props) => {
     detailFiles: [],
   });
 
-  const UploadButton = () => {
-    return (
-      <button style={{ border: 0, background: 'none' }} type="button">
-        <PlusOutlined />
-        <div style={{ marginTop: 8 }}>Upload</div>
-      </button>
-    );
-  };
   // 상품 등록 폼 핸들러
   const onChangeForm = (value, type) => {
     setProductForm({ ...productForm, [type]: value });
@@ -96,9 +89,6 @@ const UploadLayout = (props) => {
             listType="picture-card"
             type="file"
             accept="image/*"
-            // onChange={({ fileList }) => {
-            //   onChangeForm(fileList, 'mainFiles');
-            // }}
             onChange={({ fileList }) => {
               setProductForm((prev) => ({
                 ...prev,

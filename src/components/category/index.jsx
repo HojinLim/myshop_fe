@@ -58,7 +58,11 @@ const index = () => {
               >
                 <img
                   className="w-full h-full object-cover"
-                  src={returnBucketUrl(product.ProductImages[0].imageUrl)}
+                  src={
+                    product?.ProductImages[0]
+                      ? returnBucketUrl(product?.ProductImages[0]?.imageUrl)
+                      : '/logo.png'
+                  }
                 />
               </div>
               <Flex>

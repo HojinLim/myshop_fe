@@ -99,7 +99,13 @@ const Favorite = () => {
               }}
             >
               <img
-                src={returnBucketUrl(product.Product.ProductImages[0].imageUrl)}
+                src={
+                  product?.Product?.ProductImages[0]
+                    ? returnBucketUrl(
+                        product?.Product?.ProductImages[0]?.imageUrl
+                      )
+                    : '/logo.png'
+                }
                 alt={product.Product.name}
                 className="w-full h-full object-cover"
               />

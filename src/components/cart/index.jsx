@@ -162,7 +162,6 @@ const index = () => {
       )
     ).toLocaleString();
   };
-
   // 구매 버튼 핸들러
   const buyHandler = () => {
     const newArr = selectedCarts.map((item, idx) => ({
@@ -240,9 +239,14 @@ const index = () => {
                   <div className="aspect-square overflow-hidden rounded-md w-20 mx-2">
                     <img
                       className="w-full h-full object-contain "
-                      src={returnBucketUrl(
-                        item.product_option.Product.ProductImages[0].imageUrl
-                      )}
+                      src={
+                        item.product_option?.Product?.ProductImages[0]
+                          ? returnBucketUrl(
+                              item.product_option?.Product?.ProductImages[0]
+                                ?.imageUrl
+                            )
+                          : '/none_logo.png'
+                      }
                     />
                   </div>
                   <p>{item.product_option.Product.name}</p>

@@ -1,11 +1,9 @@
 const back_url = import.meta.env.VITE_BACK_URL;
 
-// 상품 조회 (type: 카테고리- 카테고리id에 따른, type: id에 따른)
-const getProducts = async (type = '', category = '') => {
+// 상품 조회 (type: category, id)
+const getProducts = async (type = '', value = '') => {
   try {
-    const response = await fetch(
-      `${back_url}/product/products?${type}=${category}`
-    );
+    const response = await fetch(`${back_url}/product?${type}=${value}`);
     if (!response.ok) throw new Error('시스템 오류 발생.');
 
     return await response.json();
@@ -171,6 +169,49 @@ const deleteProductOptions = async (id) => {
   }
 };
 
+// 상품 사진 업데이트
+const updateProductPhoto = async (productId, images, deleteImageIds) => {
+  try {
+    const formData = new FormData();
+
+    formData.append('deleteImageIds', JSON.stringify(deleteImageIds));
+
+    //  메인 파일 추가
+    (images.main || []).forEach((fileObj, index) => {
+      const file = fileObj?.file;
+      if (!(file instanceof File)) return;
+
+      formData.append('mainImages', file);
+    });
+
+    //  디테일 파일 추가
+    (images.detail || []).forEach((fileObj, index) => {
+      const file = fileObj?.file;
+      if (!(file instanceof File)) return;
+
+      formData.append('detailImages', file);
+    });
+
+    const response = await fetch(
+      `${back_url}/product/update_photo/${productId}`,
+      {
+        method: 'POST',
+        body: formData,
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`상품 사진 수정 실패: ${response.status}`);
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('상품 사진 수정 중 오류 발생:', error);
+    return null;
+  }
+};
+
 export {
   getProducts,
   uploadProduct,
@@ -179,4 +220,5 @@ export {
   getProductOption,
   updateProductOption,
   deleteProductOptions,
+  updateProductPhoto,
 };

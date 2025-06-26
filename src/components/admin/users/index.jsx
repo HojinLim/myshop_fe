@@ -63,6 +63,7 @@ const UserTable = () => {
         rowSelection={rowSelection}
         columns={columns}
         dataSource={data}
+        rowKey="id"
         // loading={loading} // 로딩 표시 추가
         pagination={{ pageSize: 10 }} // 기본 페이지네이션 추가
       />

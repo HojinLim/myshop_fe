@@ -55,7 +55,6 @@ const index = () => {
       .then((res) => {
         if (res.products && res.products.length > 0) {
           setProducts(res.products);
-          console.log(res.products);
         }
       })
       .catch((err) => console.log(err));
@@ -152,7 +151,13 @@ const index = () => {
               onClick={() => navigate(`/product/${product.id}`)}
             >
               <div className="aspect-square overflow-hidden w-32">
-                <img src={returnBucketUrl(product.ProductImages[0].imageUrl)} />
+                <img
+                  src={
+                    product?.ProductImages[0]
+                      ? returnBucketUrl(product?.ProductImages[0]?.imageUrl)
+                      : '/logo.png'
+                  }
+                />
               </div>
 
               <Text strong>

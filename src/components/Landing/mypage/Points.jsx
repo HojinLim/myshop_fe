@@ -39,11 +39,11 @@ const Points = () => {
                 {dayjs(point.createdAt).format('MM.DD')}
               </p>
               <div className="flex flex-col">
-                <p>관리자의 선물</p>
+                <p>{point.description}</p>
                 <p>{dayjs(point.createdAt).format('HH:MM')}</p>
               </div>
               <p>
-                {Math.sign(point.point) ? '+' : '-'}
+                {Math.sign(point.point) === -1 ? '' : '+'}
                 {point.point}P
               </p>
             </Flex>

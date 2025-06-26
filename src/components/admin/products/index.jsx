@@ -22,6 +22,7 @@ import UploadProduct from './UploadLayout';
 import UploadLayout from './UploadLayout';
 import { setLoading } from '@/store/slices/loadingSlice';
 import { useDispatch } from 'react-redux';
+import EditProductPicModal from './EditProductPicModal';
 
 const index = () => {
   const dispath = useDispatch();
@@ -31,8 +32,10 @@ const index = () => {
   const [updated, setUpdated] = useState(false);
   const [changed, setChanged] = useState(false);
   const [reset, setReset] = useState(false);
+  const [imageEditModalOpen, setImageEditModalOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [products, setProducts] = useState([]);
+  const [productId, setProductId] = useState();
 
   // 상품 관리- 클릭한 상품 정보
   const [productInfo, setProductInfo] = useState('');
@@ -117,14 +120,19 @@ const index = () => {
         dispath(setLoading(true));
         if (res.products && res.products.length > 0) {
           const productArr = res.products.map((product, index) => {
-            const { id, category, ProductImages, name, discountPrice } =
-              product; // ✅ 객체 구조 분해 할당
+            const {
+              id,
+              category,
+              ProductImages = [],
+              name,
+              discountPrice,
+            } = product; // ✅ 객체 구조 분해 할당
 
             return {
               index: index + 1,
               id,
               category,
-              imageUrl: ProductImages?.[0].imageUrl || null, // ✅ 첫 번째 이미지가 없으면 `null` 반환
+              imageUrl: ProductImages?.[0]?.imageUrl || null, // ✅ 첫 번째 이미지가 없으면 `null` 반환
               name,
               discountPrice,
             };
@@ -182,7 +190,14 @@ const index = () => {
       title: '이미지',
       key: 'action',
       render: (_, record) => (
-        <Image src={returnBucketUrl(record.imageUrl)} width="50px" />
+        <Image
+          src={
+            record?.imageUrl
+              ? returnBucketUrl(record.imageUrl)
+              : '/none_logo.png'
+          }
+          width="50px"
+        />
       ),
     },
     {
@@ -201,7 +216,14 @@ const index = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a>이미지 관리</a>
+          <a
+            onClick={() => {
+              setImageEditModalOpen(true);
+              setProductId(record.id);
+            }}
+          >
+            이미지 관리
+          </a>
           <a
             onClick={() => {
               setModalOpen(true);
@@ -297,6 +319,11 @@ const index = () => {
           fetchProduct={fetchProduct}
         />
       </Row>
+      <EditProductPicModal
+        imageEditModalOpen={imageEditModalOpen}
+        setImageEditModalOpen={setImageEditModalOpen}
+        productId={productId}
+      />
       <EditProductModal
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
