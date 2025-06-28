@@ -31,6 +31,8 @@ const OrderList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageInfo, setPageInfo] = useState({ limit: 5, totalCount: 10 });
 
+  if (user.id) navigate('/login');
+
   const fetchOrderList = async () => {
     console.log(currentPage);
 
