@@ -238,7 +238,7 @@ const UploadReview = () => {
           onChange={setUserInfoHandler}
         />
       </Flex>
-      <Flex>
+      {/* <Flex>
         <input
           type="checkbox"
           name="infoSave"
@@ -246,7 +246,7 @@ const UploadReview = () => {
           onChange={setUserInfoHandler}
         />
         <p className="!ml-2">나의 신체정보에 업데이트</p>
-      </Flex>
+      </Flex> */}
 
       <Button className={styles.review_upload_btn} onClick={clickHandleReview}>
         {item.type === 'update' ? '수정하기' : '업로드'}

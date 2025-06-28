@@ -44,7 +44,8 @@ const index = () => {
     },
     { key: 'products', icon: <ShopOutlined />, label: '상품관리' },
     { key: 'users', icon: <UserOutlined />, label: '유저관리' },
-    { key: 'settings', icon: <SettingOutlined />, label: '설정' },
+    // 설정 페이지 (예정)
+    // { key: 'settings', icon: <SettingOutlined />, label: '설정' },
   ];
   const onSelect = (e) => {
     // if (e.key) {

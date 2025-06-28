@@ -245,9 +245,9 @@ const index = () => {
 
   return (
     <Content>
-      <Row className={styles.product_page_container}>
+      <Row gutter={24} className={styles.product_page_container}>
         {/* 상품 리스트 디스플레이 영역 */}
-        <Col span={14} className="border-r">
+        <Col span={14}>
           <h4>카테고리 관리</h4>
           <Row>
             <Col span={2}></Col>
