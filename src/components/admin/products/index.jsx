@@ -3,6 +3,7 @@ import {
   Col,
   Flex,
   Image,
+  message,
   Popconfirm,
   Row,
   Select,
@@ -55,6 +56,7 @@ const index = () => {
 
   // 카테고리 리스트 가져오기
   const getCategoryList = async () => {
+    dispath(setLoading(true));
     await getCategories()
       .then((res) => {
         if (Array.isArray(res.categories) && res.categories.length > 0) {
@@ -68,12 +70,15 @@ const index = () => {
               value: el.name,
               label: capitalizeJs(el.name),
             }));
-          arr.unshift({ value: '', label: '전체' });
+          // arr.unshift({ value: '', label: '전체' });
           setSelectCateogry(arr);
         }
       })
       .catch((error) => {
         console.error(error);
+      })
+      .finally(() => {
+        dispath(setLoading(false));
       });
   };
   const resetHandler = () => {
@@ -109,10 +114,9 @@ const index = () => {
       .then((res) => {
         // 업데이트 성공시 다시 불러오기
         getCategoryList();
+        message.success('카테고리 업데이트 완료');
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
   const fetchProduct = async () => {
     await getProducts('category', productForm.category)
@@ -152,7 +156,6 @@ const index = () => {
       .then((res) => {
         dispath(setLoading(true));
         fetchProduct();
-        console.log(res);
       })
       .finally(() => {
         dispath(setLoading(false));
@@ -215,7 +218,7 @@ const index = () => {
       title: '관리',
       key: 'action',
       render: (_, record) => (
-        <Space size="middle">
+        <Space className={styles.manage_layout} size="middle">
           <a
             onClick={() => {
               setImageEditModalOpen(true);
@@ -281,7 +284,7 @@ const index = () => {
             <Col span={2}></Col>
           </Row>
           <Col span={24}>
-            <Flex>
+            <Flex gap={12}>
               <Button
                 className={styles.button}
                 onClick={updateCategoriesHandler}
@@ -297,7 +300,7 @@ const index = () => {
               </Button>
             </Flex>
           </Col>
-          <Col span={24} className="mt-3">
+          <Col span={24} className="mt-3 overflow-x-auto overflow-y-hidden">
             <Flex justify="space-between">
               <h4>상품 관리</h4>
               <Select
@@ -310,7 +313,13 @@ const index = () => {
               />
               {/* 상품 관리 테이블 */}
             </Flex>
-            <Table rowKey="id" columns={columns} dataSource={products} />
+            <Table
+              rowKey="id"
+              className={styles.table}
+              columns={columns}
+              dataSource={products}
+              pagination={false}
+            />
           </Col>
         </Col>
         {/* 상품 추가 영역 */}

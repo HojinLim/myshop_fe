@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 const back_url = import.meta.env.VITE_BACK_URL;
 
 const getOrderList = async (user_id, page) => {
-  console.log(page);
+  page;
 
   try {
     const response = await fetch(`${back_url}/order?userId=${user_id}`, {
@@ -29,7 +29,7 @@ const countOrder = async (userId) => {
 
       return data;
     } else {
-      console.log('시스템 오류 발생.');
+      ('시스템 오류 발생.');
     }
   } catch (error) {
     console.error(' 오류 발생:', error);

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // 초기 상태값
 const initialState = {
-  loading: true,
+  loading: false,
 };
 
 const loadingSlice = createSlice({

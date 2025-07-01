@@ -137,7 +137,7 @@ const EditProductModal = ({
       title: '이미지',
       key: 'action',
       render: (_, record) => {
-        console.log(record);
+        record;
 
         return (
           <Image

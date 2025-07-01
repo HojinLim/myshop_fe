@@ -101,7 +101,7 @@ const transferCart = async (params) => {
 
 // 카트 삭제
 const deleteCart = async (id) => {
-  console.log(id);
+  id;
 
   try {
     const response = await fetch(`${back_url}/cart/delete?id=${id}`, {
@@ -112,7 +112,7 @@ const deleteCart = async (id) => {
     });
 
     const result = await response.json();
-    console.log('삭제 결과:', result);
+    '삭제 결과:', result;
     return result;
   } catch (error) {
     console.error('⚠️ 오류 발생:', error.message); // 에러 로그 출력

@@ -28,6 +28,7 @@
   line-height: 160px;
   text-align: center;
   background: #364d79;
+  position: relative;
 }
 .ad {
   justify-self: center;
@@ -35,6 +36,7 @@
   height: 90%;
   width: 100%;
   max-width: fit-content;
+  cursor: pointer;
 }
 
 .item_info_container {

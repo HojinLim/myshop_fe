@@ -47,35 +47,29 @@ const index = () => {
     // 설정 페이지 (예정)
     // { key: 'settings', icon: <SettingOutlined />, label: '설정' },
   ];
-  const onSelect = (e) => {
-    // if (e.key) {
-    //   localStorage.setItem('adminMenu', e.key);
-    // }
-  };
 
   const onClick = (e) => {
     if (e.key) {
       navigate(e.key);
     }
   };
-  useEffect(() => {
-    const menu = localStorage.getItem('adminMenu');
-    if (menu) {
-      const tempMenu = menu ? menu : '1';
-      setDefaultMenu(tempMenu);
-    }
-    return () => {
-      localStorage.removeItem('adminMenu');
-    };
-  }, []);
+
   useEffect(() => {
     const filterd = location.pathname.split('/');
     const filtererPath = filterd[filterd.length - 1];
-    localStorage.setItem('adminMenu', filtererPath);
-    setDefaultMenu(filtererPath);
-  }, [location.pathname, location.key]);
 
-  if ((!loading && !user) || user.role !== 'admin') return <Notfound />;
+    setDefaultMenu(filtererPath);
+  }, [location.pathname, location.key, defaultMenu]);
+
+  useEffect(() => {
+    if (user && user.role === 'admin' && location.pathname === '/admin') {
+      navigate('/admin/dashboard', { replace: true });
+    }
+  }, [user, location.pathname]);
+
+  if ((!loading && !user) || user?.role !== 'admin') {
+    return <Notfound />;
+  }
 
   return (
     <>
@@ -83,7 +77,7 @@ const index = () => {
         <Layout className={styles.layout}>
           <Sider className={styles.sider}>
             <Row className={styles.sider_info_container}>
-              <Col span={24}>로고</Col>
+              {/* <Col span={24}>로고</Col> */}
               <Col span={24} className="place-items-center">
                 <img src={logo} width={100} />
               </Col>
@@ -95,9 +89,9 @@ const index = () => {
                   onClick={onClick}
                   defaultSelectedKeys={[defaultMenu]}
                   defaultOpenKeys={[defaultMenu]}
+                  selectedKeys={[defaultMenu]}
                   mode="inline"
                   items={items}
-                  onSelect={onSelect}
                 />
               </Col>
             </Row>

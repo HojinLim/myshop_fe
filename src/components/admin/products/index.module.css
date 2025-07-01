@@ -8,7 +8,22 @@
 }
 .inputNumber {
   width: 100%;
+  border-radius: 0 !important;
+  border-bottom: 0;
+  padding-left: 0;
+  margin-right: 2rem;
   input {
     border-radius: 0 !important;
+  }
+}
+
+.manage_layout {
+  & div {
+    min-width: 70px !important;
+  }
+}
+.table {
+  & :global(.ant-table-cell) {
+    min-width: 88px;
   }
 }

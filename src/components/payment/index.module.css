@@ -19,19 +19,18 @@
   gap: 0.2rem;
   margin-top: 1rem;
   flex-wrap: nowrap;
-  button {
-    width: 100%;
-    padding: 1.3rem 0 !important;
-  }
+}
 
-  button:focus {
-    background-color: #56667d;
-    color: white;
-  }
-  .button {
-    background-color: white !important; /* 일반 hover 시에는 흰색 */
-    color: black !important;
-  }
+.button {
+  width: 100%;
+  padding: 1.3rem 0 !important;
+  background-color: white !important; /* 기본 상태 */
+  color: black !important;
+}
+
+.button.clicked {
+  background-color: #56667d !important;
+  color: white !important;
 }
 
 .bottom_container {

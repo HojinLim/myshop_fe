@@ -31,10 +31,10 @@ const SignupForm = () => {
     errorOpen: false,
   });
   const onFinish = (values) => {
-    console.log('Success:', values);
+    'Success:', values;
   };
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    'Failed:', errorInfo;
   };
   const clickRegister = async () => {
     const stringForm = JSON.stringify(signupForm);

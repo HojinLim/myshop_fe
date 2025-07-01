@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './index.module.css';
 import { Content, Header } from 'antd/es/layout/layout';
 import {
+  CrownOutlined,
   HeartFilled,
   SearchOutlined,
   ShoppingOutlined,
@@ -28,6 +29,7 @@ import { getCarts, transferCart } from '@/api/cart';
 
 import { fetchCartLength } from '@/store/slices/cartSlice';
 import { searchProduct } from '@/api/search';
+import { setLoading } from '@/store/slices/loadingSlice';
 const index = () => {
   const { Text, Title } = Typography;
   const [categories, setCategories] = useState([]);
@@ -39,6 +41,7 @@ const index = () => {
   const user = useSelector((state) => state.user.data);
 
   const getCategoryList = async () => {
+    dispatch(setLoading(true));
     await getCategories()
       .then((res) => {
         if (Array.isArray(res.categories) && res.categories.length > 0) {
@@ -47,17 +50,24 @@ const index = () => {
       })
       .catch((error) => {
         console.error(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
       });
   };
 
   const fetchProductsList = async () => {
+    dispatch(setLoading(true));
     await getProducts()
       .then((res) => {
         if (res.products && res.products.length > 0) {
           setProducts(res.products);
         }
       })
-      .catch((err) => console.log(err));
+      .catch(() => {})
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
   };
   useEffect(() => {
     fetchProductsList();
@@ -111,17 +121,21 @@ const index = () => {
         <Row>
           <Col span={24}>
             <Carousel arrows infinite>
-              <div className={styles.ad_contaier}>
-                <img className={styles.ad} src={logo} />
+              <div
+                className={styles.ad_contaier}
+                onClick={() => {
+                  navigate('/admin');
+                }}
+              >
+                <img className={styles.ad} src="/logo.png" />
               </div>
-              <div className={styles.ad_contaier}>
-                <img className={styles.ad} src={logo} />
-              </div>
-              <div className={styles.ad_contaier}>
-                <img className={styles.ad} src={logo} />
-              </div>
-              <div className={styles.ad_contaier}>
-                <img className={styles.ad} src={logo} />
+              <div
+                className={styles.ad_contaier}
+                onClick={() => {
+                  navigate('/admin');
+                }}
+              >
+                <img className={styles.ad} src="/logo.png" />
               </div>
             </Carousel>
           </Col>
@@ -166,9 +180,9 @@ const index = () => {
               </Text>
               <Text>{product.name}</Text>
 
-              <div className="text-red-500">
+              <div className="text-red-400">
                 <HeartFilled />
-                <span className="ml-1">1</span>
+                <span className="ml-1">{product.favorites.length}</span>
               </div>
             </Col>
           ))}

@@ -105,7 +105,7 @@ const OptionDrawer = (props) => {
     }
   };
   const updateCartOptions = async (option_id) => {
-    console.log(selectedCart);
+    selectedCart;
 
     const params = {
       user_id: user.id || getNonMemberId(),
@@ -114,11 +114,9 @@ const OptionDrawer = (props) => {
     };
     await updateCartOption(params)
       .then((res) => {
-        console.log(res);
         fetchCart();
       })
       .catch((err) => {
-        console.log(err);
         message.error(err.message);
       });
   };

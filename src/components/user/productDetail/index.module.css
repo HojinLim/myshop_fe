@@ -45,7 +45,8 @@
 
 .drawer {
   height: 80vh;
-  width: 600px;
+  width: 100%;
+  max-width: var(--max-width);
   justify-self: center;
   background-color: white;
   position: fixed;

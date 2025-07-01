@@ -49,7 +49,6 @@ const UploadLayout = (props) => {
   const uploadProductHandler = async () => {
     await uploadProduct(productForm)
       .then((res) => {
-        console.log(res);
         message.success('상품 등록 완료 ');
         // ✅ 상품 목록 다시 불러오기
         fetchProduct();
@@ -64,9 +63,7 @@ const UploadLayout = (props) => {
         });
         form.resetFields();
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   const handlePreview = async (file) => {
@@ -84,7 +81,7 @@ const UploadLayout = (props) => {
         <Col span={24}>
           <h4>상품 업로드</h4>
           {/* 메인 사진 업로드 */}
-          <h5>- 메인 사진 업로드</h5>
+          <h5>메인 사진 업로드</h5>
           <Upload
             listType="picture-card"
             type="file"
@@ -119,7 +116,7 @@ const UploadLayout = (props) => {
           </Upload>
 
           {/* 디테일 사진 업로드 */}
-          <h5>- 디테일 사진 업로드</h5>
+          <h5>디테일 사진 업로드</h5>
           <Upload
             listType="picture-card"
             fileList={productForm.detailFiles}
@@ -193,6 +190,7 @@ const UploadLayout = (props) => {
             >
               <Input
                 type="text"
+                variant="underlined"
                 onChange={(e) => onChangeForm(e.target.value, 'name')}
               />
             </Form.Item>
@@ -214,6 +212,7 @@ const UploadLayout = (props) => {
                 onChange={(value) => {
                   onChangeForm(value, 'category');
                 }}
+                variant="underlined"
               />
             </Form.Item>
             <Typography.Title level={5}>기존 가격</Typography.Title>
@@ -236,6 +235,7 @@ const UploadLayout = (props) => {
                 parser={(value) => value.replace(/\D/g, '')}
                 controls={false}
                 onChange={(e) => onChangeForm(e, 'originPrice')}
+                variant="underlined"
               />
             </Form.Item>
             <Typography.Title level={5}>할인된 가격</Typography.Title>
@@ -258,6 +258,7 @@ const UploadLayout = (props) => {
                 parser={(value) => value.replace(/\D/g, '')}
                 controls={false}
                 onChange={(e) => onChangeForm(e, 'discountPrice')}
+                variant="underlined"
               />
             </Form.Item>
           </Form>

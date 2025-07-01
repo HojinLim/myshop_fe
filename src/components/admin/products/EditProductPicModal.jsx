@@ -1,4 +1,13 @@
-import { Breadcrumb, Button, Flex, Image, Modal, Table, Upload } from 'antd';
+import {
+  Breadcrumb,
+  Button,
+  Flex,
+  Image,
+  message,
+  Modal,
+  Table,
+  Upload,
+} from 'antd';
 import React, { useEffect, useState } from 'react';
 import { RedoOutlined } from '@ant-design/icons';
 import { getProducts, updateProductPhoto } from '@/api/product';
@@ -90,7 +99,7 @@ const EditProductPicModal = ({
   const clickUpload = async () => {
     await updateProductPhoto(productId, images, deleteImageIds)
       .then((res) => {
-        console.log(res);
+        message.success('사진 수정 완료');
       })
       .catch(() => {});
   };

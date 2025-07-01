@@ -118,9 +118,7 @@ const UploadReview = () => {
       }
       message.success('리뷰 업로드 완료!');
       // navigate('/mypage/review');
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   // 유저 신체 정보 상태 핸들러

@@ -18,8 +18,8 @@ const uploadProduct = async (params) => {
   const { mainFiles, detailFiles } = params || {};
   const formData = new FormData();
 
-  console.log('mainFiles:', mainFiles);
-  console.log('detailFiles:', detailFiles);
+  'mainFiles:', mainFiles;
+  'detailFiles:', detailFiles;
 
   // ✅ 메인 파일 추가
   (mainFiles || []).forEach((fileObj, index) => {
@@ -44,7 +44,7 @@ const uploadProduct = async (params) => {
   // ✅ 상품 정보 추가
   formData.append('product', JSON.stringify(params));
 
-  console.log('업로드할 FormData:', [...formData.entries()]);
+  '업로드할 FormData:', [...formData.entries()];
 
   try {
     const response = await fetch(`${back_url}/product/upload_product`, {
@@ -53,7 +53,7 @@ const uploadProduct = async (params) => {
     });
 
     const result = await response.json();
-    console.log('업로드 결과:', result);
+    '업로드 결과:', result;
     return result;
   } catch (error) {
     console.error('❌ 업로드 실패:', error);
@@ -74,7 +74,7 @@ const deleteProduct = async (id) => {
     );
 
     const result = await response.json();
-    console.log('삭제 결과:', result);
+    '삭제 결과:', result;
     return result;
   } catch (error) {
     console.error('⚠️ 오류 발생:', error.message); // 에러 로그 출력

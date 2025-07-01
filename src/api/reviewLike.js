@@ -13,7 +13,7 @@ const createReviewLike = async (userId, reviewId) => {
     if (response.ok) {
       return response;
     } else {
-      console.log('시스템 오류 발생.');
+      ('시스템 오류 발생.');
     }
   } catch (error) {
     console.error(' 오류 발생:', error);
@@ -22,7 +22,7 @@ const createReviewLike = async (userId, reviewId) => {
 
 // 리뷰 좋아요 삭제
 const deleteReviewLike = async (userId, reviewId) => {
-  console.log(userId, reviewId);
+  userId, reviewId;
 
   try {
     const response = await fetch(
@@ -35,7 +35,7 @@ const deleteReviewLike = async (userId, reviewId) => {
     if (response.ok) {
       return response;
     } else {
-      console.log('시스템 오류 발생.');
+      ('시스템 오류 발생.');
     }
   } catch (error) {
     console.error(' 오류 발생:', error);
@@ -51,7 +51,7 @@ const checkReviewLike = async (userId, reviewId) => {
     if (response.ok) {
       return response;
     } else {
-      console.log('시스템 오류 발생.');
+      ('시스템 오류 발생.');
     }
   } catch (error) {
     console.error(' 오류 발생:', error);
@@ -66,7 +66,7 @@ const countReviewLike = async (reviewId) => {
     if (response.ok) {
       return response;
     } else {
-      console.log('시스템 오류 발생.');
+      ('시스템 오류 발생.');
     }
   } catch (error) {
     console.error(' 오류 발생:', error);

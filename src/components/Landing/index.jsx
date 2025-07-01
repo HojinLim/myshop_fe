@@ -43,15 +43,15 @@ const Landing = () => {
     },
   ];
 
-  const clickMenu = (id, option = {}) => {
-    setSelectedId(id);
+  const clickMenu = (index, option = {}) => {
+    setSelectedId(index);
 
-    const routeName = menuList[id]['value'];
+    const routeName = menuList[index]['value'];
     navigate(routeName, option);
   };
   // 주소창 path 변경마다 메뉴 인덱스 상태 변경
   useEffect(() => {
-    const idx = menuList.findIndex((el, idx) => el.value === location.pathname);
+    const idx = menuList.findIndex((el, _) => el.value === location.pathname);
     setSelectedId(idx);
   }, [location.pathname]);
   useEffect(() => {

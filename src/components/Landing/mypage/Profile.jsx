@@ -8,6 +8,7 @@ import { Avatar, Button, Col, Row, Typography } from 'antd';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from '@/store/slices/userSlice';
+import { returnBucketUrl } from '@/utils';
 
 const backURL = import.meta.env.VITE_BACK_URL;
 
@@ -45,8 +46,8 @@ const Profile = () => {
 
     try {
       const response = await fetch(`${backURL}/auth/upload?userId=${user.id}`, {
-        body: formData,
         method: 'POST',
+        body: formData,
       });
       const responseData = await response.json(); // 응답 확인
 
@@ -63,37 +64,13 @@ const Profile = () => {
       return;
     }
   };
-  const getProfileImage = async () => {
-    if (user && (user.profileUrl === '' || !user.profileUrl)) return;
 
-    const userProfile = JSON.stringify({ profileUrl: user.profileUrl });
-    try {
-      const response = await fetch(`${backURL}/auth/get_profile`, {
-        body: userProfile,
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      }); // 서버에서 이미지 URL 가져오기
-      const data = await response.json();
-
-      // 서버에서 반환한 이미지 URL
-      const profileUrl = data.profileUrl;
-
-      setPreview(profileUrl);
-    } catch (error) {
-      console.error('프로필 이미지를 불러오는 데 실패했습니다.', error);
-    }
-  };
   useEffect(() => {
     if (user && user.id) {
-      getProfileImage();
+      setPreview(returnBucketUrl(user.profileUrl));
     }
   }, [user]);
   const deleteProfileImage = async () => {
-    console.log('hh', user);
-
     if (user && (user.profileUrl === '' || !user.profileUrl)) return;
     try {
       const response = await fetch(`${backURL}/auth/delete_profile`, {
@@ -105,7 +82,6 @@ const Profile = () => {
       });
 
       const data = await response.json();
-      console.log(data); // "프로필 이미지가 삭제되었습니다."
 
       dispatch(fetchUserInfo());
       setPreview(null); // 이미지 삭제 후 미리보기 제거

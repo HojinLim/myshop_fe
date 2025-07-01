@@ -36,12 +36,9 @@ const Favorite = () => {
   const fetchMyFavorite = async () => {
     await myFavorite(user.id)
       .then((res) => {
-        console.log(res);
         setFavorites(res);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
   const clickFavorite = async (product) => {
     const isDeleted = product.delete;
@@ -56,9 +53,7 @@ const Favorite = () => {
             )
           );
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     } else {
       // 좋아요 추가
       await createFavorite(user.id, productId)
@@ -69,9 +64,7 @@ const Favorite = () => {
             )
           );
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     }
   };
 

@@ -38,7 +38,7 @@ const index = () => {
 
   // 선택한 카트들 상태관리
   const [selectedCarts, setSelectedCarts] = useState([]);
-  console.log(selectedCarts);
+  selectedCarts;
 
   useEffect(() => {
     fetchCart();
@@ -47,9 +47,8 @@ const index = () => {
   const fetchCart = async () => {
     await getCarts(user.id || getNonMemberId())
       .then((res) => {
-        console.log(res);
         setCarts(res.cartItems);
-        console.log('res.cartItems', res.cartItems);
+        'res.cartItems', res.cartItems;
 
         // message.success('카트 불러오기 완료 ');
         if (Array.isArray(res.cartItems) && res.cartItems.length) {
@@ -62,9 +61,7 @@ const index = () => {
           setOptions(mappedOptions);
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
   const selectOption = (index) => {
     if (options.length > 0) {
@@ -82,7 +79,6 @@ const index = () => {
 
     await updateCartQuantity(params)
       .then((res) => {
-        console.log(res);
         fetchCart();
 
         // 선택된 카트 항목도 업데이트!
@@ -93,7 +89,6 @@ const index = () => {
         );
       })
       .catch((err) => {
-        console.log(err);
         message.error(err.message);
       });
   };
@@ -102,7 +97,6 @@ const index = () => {
   const confirmDeleteCart = async (item) => {
     await deleteCart(item.id)
       .then((res) => {
-        console.log(res);
         message.success(res.message);
         fetchCart();
       })
@@ -207,7 +201,7 @@ const index = () => {
               }
               onChange={handleAllCheck}
             />
-            <p>{`전체선택(${selectedCarts.length || 0}/${
+            <p className="ml-2">{`전체선택(${selectedCarts.length || 0}/${
               carts.length || 0
             })`}</p>
           </div>
@@ -219,7 +213,7 @@ const index = () => {
             okText="확인"
             cancelText="취소"
           >
-            <p>선택삭제</p>
+            <p className="mr-2">선택삭제</p>
           </Popconfirm>
         </Flex>
         <Divider />
@@ -325,10 +319,10 @@ const index = () => {
             <p>상품할인</p>
             <p>0원</p>
           </Flex>
-          <Flex justify="space-between">
+          {/* <Flex justify="space-between">
             <p>쿠폰할인</p>
             <Button>쿠폰 선택</Button>
-          </Flex>
+          </Flex> */}
           <Flex justify="space-between">
             <p>배송비</p>
             <p>무료배송</p>

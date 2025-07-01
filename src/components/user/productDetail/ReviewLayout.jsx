@@ -22,50 +22,27 @@ import {
 } from '@/api/reviewLike';
 import { useSelector } from 'react-redux';
 const ReviewLayout = (props) => {
-  const { pathname } = useLocation();
-  const productId = pathname.split('/').pop();
+  const { fetchReview, reviews } = props;
+
   const user = useSelector((state) => state.user.data);
-
-  const [reviews, setReviews] = useState({ averageRating: 0, reviews: [] });
-
-  // const { data, isLoading, error } = useQuery({
-  //   queryKey: ['countReviewLike', reviewId],
-  //   queryFn: (reviewId) => countReviewLike(reviewId),
-  // });
 
   const { mutate: mutateCreateReviewLike, isSuccess: reviewLikeSuccess } =
     useMutation({
       mutationFn: ({ userId, reviewId }) => createReviewLike(userId, reviewId),
     });
 
-  const fetchReview = async () => {
-    await getProductReviews(user.id, productId)
-      .then((res) => {
-        setReviews(res);
-      })
-      .catch(() => {});
-  };
-
-  useEffect(() => {
-    fetchReview();
-  }, []);
   useEffect(() => {
     fetchReview();
   }, [reviewLikeSuccess]);
 
   const clickReviewLikeHandler = async (review) => {
-    console.log(review.isLiked);
-
     if (review.isLiked) {
-      console.log('hi');
-
       await deleteReviewLike(user.id, review.id)
         .then(() => {
           fetchReview();
         })
         .catch(() => {});
     } else {
-      console.log('hi2');
       mutateCreateReviewLike({
         userId: user.id,
         reviewId: review.id,

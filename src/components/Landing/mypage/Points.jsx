@@ -19,7 +19,7 @@ const Points = () => {
   const fetchPoints = async () => {
     await getPoints(user.id)
       .then((res) => {
-        console.log(res.data);
+        res.data;
         setPoints(res.data);
       })
       .catch(() => {});

@@ -27,9 +27,7 @@ const ReviewList = () => {
           setReviews(res);
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
   useEffect(() => {
     fetchMyReviews();
@@ -46,7 +44,7 @@ const ReviewList = () => {
     }
   };
   const moveToUploadReviewHandler = (review) => {
-    console.log(review);
+    review;
 
     const newData = {
       ...review,

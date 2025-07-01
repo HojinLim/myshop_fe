@@ -10,6 +10,8 @@ const CONSTANTS = {
   // },
   KAKAO_PG: 'kakaopay.TC0ONETIME',
   KG_PG: 'html5_inicis',
+  // KG_PG: 'inicis.INIpayTest',
+  // KG_PG: 'inicis',
 };
 
 const QUERY_KEYS = {

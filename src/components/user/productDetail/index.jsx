@@ -48,6 +48,7 @@ import {
   createFavorite,
   deleteFavorite,
 } from '@/api/favorite';
+import { getProductReviews } from '@/api/review';
 
 const index = () => {
   const { pathname } = useLocation();
@@ -73,9 +74,9 @@ const index = () => {
   const [selectMode, setSelectMode] = useState(true);
 
   const fetchProduct = async () => {
+    dispatch(setLoading(true));
     await getProducts('id', id)
       .then((res) => {
-        dispatch(setLoading(true));
         if (res.products && res.products.length > 0) {
           setProduct(res.products[0]);
         }
@@ -87,20 +88,15 @@ const index = () => {
     // 상품의 좋아요 수 가져오기
     await countProductFavorite(id)
       .then((res) => {
-        console.log(res);
         setProductLikeCount(res.count);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
 
     await checkFavorite(user.id, id)
       .then((res) => {
         setProductLike(res.isFavorite);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   // 상품 좋아요 클릭 핸들러
@@ -112,9 +108,7 @@ const index = () => {
           setProductLike(false);
           fetchProduct();
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     } else {
       // 좋아요 추가
       await createFavorite(user.id, id)
@@ -122,9 +116,7 @@ const index = () => {
           setProductLike(true);
           fetchProduct();
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     }
   };
   const fetchProductOptions = async () => {
@@ -151,11 +143,27 @@ const index = () => {
           setColorOptions(mixedColorArr);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {});
   };
+
+  // 해당 상품 리뷰 리스트 불러오기 로직
+  const [reviews, setReviews] = useState({ averageRating: 0, reviews: [] });
   useEffect(() => {
     fetchProduct();
     fetchProductOptions();
+  }, []);
+  const productId = pathname.split('/').pop();
+  const fetchReview = async () => {
+    await getProductReviews(user.id, productId)
+      .then((res) => {
+        setReviews(res);
+      })
+      .catch(() => {});
+  };
+  useEffect(() => {
+    fetchReview();
+
+    return () => {};
   }, []);
 
   const DetailProductLayout = ({ product }) => {
@@ -191,13 +199,19 @@ const index = () => {
     },
     {
       key: '2',
-      label: '리뷰 3',
-      children: <ReviewLayout productId={id} />,
+      label: `리뷰 ${reviews?.reviews?.length}`,
+      children: (
+        <ReviewLayout
+          productId={id}
+          reviews={reviews}
+          fetchReview={fetchReview}
+        />
+      ),
     },
   ];
 
   const onChange = (key) => {
-    console.log(key);
+    key;
   };
 
   const copyUrl = async () => {
@@ -316,7 +330,6 @@ const index = () => {
         try {
           await addCart(params);
         } catch (err) {
-          console.log(err);
           message.error(err.message);
         }
       });

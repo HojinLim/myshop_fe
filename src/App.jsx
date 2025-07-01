@@ -50,12 +50,12 @@ function App() {
   useEffect(() => {
     dispatch(fetchUserInfo());
   }, []);
-  const loading = useSelector((state) => state.Loading);
+  // const loading = useSelector((state) => state.loading.loading);
 
   return (
     <>
       {contextHolder}
-      {loading && <Loading />}
+      <Loading />
       {/* 라우터 */}
       <Router>
         <Routes>

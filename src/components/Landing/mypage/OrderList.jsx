@@ -29,24 +29,24 @@ const OrderList = () => {
   const user = useSelector((state) => state.user.data);
   const [orderList, setOrderList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5); // 기본 5개
   const [pageInfo, setPageInfo] = useState({ limit: 5, totalCount: 10 });
 
-  if (user.id) navigate('/login');
+  if (!user?.id) navigate('/login');
 
   const fetchOrderList = async () => {
-    console.log(currentPage);
-
-    await getOrderList(user.id, currentPage)
+    await getOrderList(user.id, currentPage, pageSize)
       .then((res) => {
         if (Array.isArray(res.data) && res.data.length > 0) {
           const filtered = res.data
             .filter((el) => el.order_items.length > 0)
             .map((data) => ({
               ...data,
-              imp_uid: res.data.imp_uid,
+              imp_uid: data.imp_uid,
             }));
 
           setOrderList(filtered);
+
           setPageInfo({ limit: res.limit, totalCount: res.totalCount });
         }
       })
@@ -55,23 +55,15 @@ const OrderList = () => {
 
   useEffect(() => {
     fetchOrderList();
-  }, [currentPage]);
+  }, [currentPage, pageSize]);
 
-  const clickRefund = async (
-    imp_uid,
-    amount,
-
-    reason,
-    order_item_id
-  ) => {
+  const clickRefund = async (imp_uid, amount, reason, order_item_id) => {
     await refundProduct(imp_uid, amount, reason, order_item_id)
       .then((res) => {
-        console.log(res);
         fetchOrderList();
+        message.success('환불 완료!');
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   return (
@@ -126,22 +118,24 @@ const OrderList = () => {
                   >
                     리뷰 작성
                   </Button>
-                  <Popconfirm
-                    title="환불하기"
-                    description="정말 환불하시겠습니까?"
-                    onConfirm={() =>
-                      clickRefund(
-                        item.imp_uid,
-                        item.quantity * item.price,
-                        '',
-                        item.id
-                      )
-                    }
-                    okText="네"
-                    cancelText="아니오"
-                  >
-                    <Button className="w-full">환불하기</Button>
-                  </Popconfirm>
+                  {item.status !== 'refunded' && (
+                    <Popconfirm
+                      title="환불하기"
+                      description="정말 환불하시겠습니까?"
+                      onConfirm={() =>
+                        clickRefund(
+                          order.imp_uid,
+                          item.quantity * item.price,
+                          '',
+                          item.id
+                        )
+                      }
+                      okText="네"
+                      cancelText="아니오"
+                    >
+                      <Button className="w-full">환불하기</Button>
+                    </Popconfirm>
+                  )}
                 </Flex>
               </div>
             ))}
@@ -150,14 +144,12 @@ const OrderList = () => {
 
         <Pagination
           align="center"
-          defaultCurrent={1}
-          total={pageInfo.totalCount}
-          pageSize={pageInfo.limit}
           current={currentPage}
-          onChange={(page) => {
+          pageSize={pageSize}
+          total={pageInfo.totalCount}
+          onChange={(page, size) => {
             setCurrentPage(page);
-
-            // fetchOrderList();
+            setPageSize(size);
           }}
         />
       </Flex>

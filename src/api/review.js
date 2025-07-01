@@ -26,7 +26,7 @@ const uploadReview = async (userData, images) => {
     if (response.ok) {
       return response;
     } else {
-      console.log('시스템 오류 발생.');
+      ('시스템 오류 발생.');
     }
   } catch (error) {
     console.error(' 오류 발생:', error);
@@ -59,11 +59,11 @@ const updateReview = async (reviewId, data, imageFiles) => {
       formData.append('reviewImage', item.file); // 다중 파일 허용
     });
 
-    console.log(imageFiles); // 콘솔에서 확인
+    imageFiles; // 콘솔에서 확인
     // 각각의 item이 File 또는 Blob 인스턴스인지 확인
 
     imageFiles.forEach((file) => {
-      console.log(file.file instanceof File); // true 나와야 정상
+      file.file instanceof File; // true 나와야 정상
     });
 
     const response = await fetch(`${back_url}/review/update/${reviewId}`, {
@@ -95,7 +95,7 @@ const deleteReview = async (reviewId) => {
 
       return data;
     } else {
-      console.log('시스템 오류 발생.');
+      ('시스템 오류 발생.');
     }
   } catch (error) {
     console.error(' 오류 발생:', error);
@@ -125,7 +125,7 @@ const countReview = async (userId) => {
 
       return data;
     } else {
-      console.log('시스템 오류 발생.');
+      ('시스템 오류 발생.');
     }
   } catch (error) {
     console.error(' 오류 발생:', error);

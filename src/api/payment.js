@@ -9,7 +9,6 @@ const testPayment = async (
 ) => {
   const { IMP } = window;
   IMP.init('imp55447710'); // 아임포트 테스트용 가맹점 코드
-  console.log(order_items);
 
   IMP.request_pay(
     {
@@ -43,12 +42,12 @@ const testPayment = async (
           }),
         });
         const result = await res.json();
-        console.log(result);
+        result;
 
         if (result.success) {
           alert('결제 성공!');
           window.location.href = '/mypage/orderList';
-          console.log(rsp);
+          rsp;
         } else {
           alert('결제 검증 실패');
         }

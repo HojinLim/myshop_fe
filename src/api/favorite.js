@@ -13,7 +13,7 @@ const createFavorite = async (userId, productId) => {
 
       return data;
     } else {
-      console.log('시스템 오류 발생.');
+      ('시스템 오류 발생.');
     }
   } catch (error) {
     console.error(' 오류 발생:', error);
@@ -32,7 +32,7 @@ const deleteFavorite = async (userId, productId) => {
 
       return data;
     } else {
-      console.log('시스템 오류 발생.');
+      ('시스템 오류 발생.');
     }
   } catch (error) {
     console.error(' 오류 발생:', error);
@@ -49,7 +49,7 @@ const myFavorite = async (userId) => {
 
       return data;
     } else {
-      console.log('시스템 오류 발생.');
+      ('시스템 오류 발생.');
     }
   } catch (error) {
     console.error(' 오류 발생:', error);
@@ -69,7 +69,7 @@ const checkFavorite = async (userId, productId) => {
 
       return data;
     } else {
-      console.log('시스템 오류 발생.');
+      ('시스템 오류 발생.');
     }
   } catch (error) {
     console.error(' 오류 발생:', error);
@@ -89,7 +89,7 @@ const countProductFavorite = async (productId) => {
 
       return data;
     } else {
-      console.log('시스템 오류 발생.');
+      ('시스템 오류 발생.');
     }
   } catch (error) {
     console.error(' 오류 발생:', error);
@@ -109,7 +109,7 @@ const countFavorite = async (userId) => {
 
       return data;
     } else {
-      console.log('시스템 오류 발생.');
+      ('시스템 오류 발생.');
     }
   } catch (error) {
     console.error(' 오류 발생:', error);

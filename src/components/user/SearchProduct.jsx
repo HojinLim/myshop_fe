@@ -14,13 +14,13 @@ const SearchProduct = () => {
   const myRef = useRef(null);
   const location = useLocation();
 
-  const [searchKeyword, setSearchKeyword] = useState(keyword || null);
+  const [searchKeyword, setSearchKeyword] = useState(keyword || '');
 
   const fetchSearchProduct = async () => {
+    if (!searchKeyword) return;
+
     await searchProduct(searchKeyword)
       .then((res) => {
-        console.log(res);
-
         if (Array.isArray(res.products)) {
           if (res.message === '검색 완료') {
             message.success(res.message);
@@ -36,13 +36,12 @@ const SearchProduct = () => {
 
   const moveWithKeyword = () => {
     navigate(`/search/${searchKeyword}`);
-    fetchSearchProduct();
   };
   useEffect(() => {
     myRef.current.focus();
     fetchSearchProduct();
   }, [keyword]);
-  useEffect(() => {}, []);
+
   return (
     <Content>
       <Input

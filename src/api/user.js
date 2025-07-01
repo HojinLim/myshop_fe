@@ -12,7 +12,7 @@ const getAllUsers = async () => {
 
       return data;
     } else {
-      console.log('시스템 오류 발생.');
+      ('시스템 오류 발생.');
     }
   } catch (error) {
     console.error(' 오류 발생:', error);

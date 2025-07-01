@@ -9,7 +9,7 @@ const getCategories = async () => {
 
       return data;
     } else {
-      console.log('시스템 오류 발생.');
+      ('시스템 오류 발생.');
     }
   } catch (error) {
     console.error(' 오류 발생:', error);
@@ -40,7 +40,7 @@ const updateCategories = async (params) => {
     });
 
   for (const [key, value] of formData.entries()) {
-    console.log(`Key: ${key}, Value:`, value);
+    `Key: ${key}, Value:`, value;
   }
 
   try {
@@ -48,14 +48,14 @@ const updateCategories = async (params) => {
       method: 'POST',
       body: formData,
     });
-    console.log(formData);
+    formData;
 
     if (response.ok) {
       const data = await response.json();
 
       return data;
     } else {
-      console.log('시스템 오류 발생.');
+      ('시스템 오류 발생.');
     }
   } catch (error) {
     console.error(' 오류 발생:', error);

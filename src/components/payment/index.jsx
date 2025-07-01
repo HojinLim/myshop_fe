@@ -80,39 +80,37 @@ const index = () => {
         .then((res) => {
           navigate('/payment_success', { state: res });
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
       return;
     }
 
-    await testPayment(
-      CONSTANTS.KAKAO_PG,
-      point,
-      user.id,
-      items,
-      totalPrice() - point
-    )
+    let pay_method = buttonIdx === 0 ? CONSTANTS.KAKAO_PG : CONSTANTS.KG_PG;
+
+    await testPayment(pay_method, point, user.id, items, totalPrice() - point)
       .then((res) => {
-        navigate('/payment_success', { state: res });
+        if (res) {
+          navigate('/payment_success', { state: res });
+        }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
   // 결제 버튼들
   const payButtons = [
     {
       title: '간편결제',
+      disabled: false,
     },
     {
       title: '카드',
+      disabled: false,
     },
     {
       title: '현금',
+      disabled: true,
     },
     {
       title: '휴대폰',
+      disabled: true,
     },
   ];
 
@@ -178,15 +176,16 @@ const index = () => {
         <Divider />
 
         <Col span={24}>
-          <h4>쿠폰 / 포인트</h4>
+          {/* <h4>쿠폰 / 포인트</h4> */}
+          <h4>포인트</h4>
         </Col>
         {/* 쿠폰 input */}
-        <Col span={20} className="mb-4">
+        {/* <Col span={20} className="mb-4">
           <Input variant="underlined" placeholder="쿠폰" />
         </Col>
         <Col span={4}>
           <Button>쿠폰 선택</Button>
-        </Col>
+        </Col> */}
 
         <Col span={20}>
           <Input
@@ -194,6 +193,7 @@ const index = () => {
             placeholder="포인트"
             value={point}
             onChange={editPointHandler}
+            maxLength={9}
           />
         </Col>
         <Col span={4}>
@@ -221,7 +221,8 @@ const index = () => {
           <p className="font-medium">{toWon(totalPrice())}원</p>
         </Flex>
         <Flex className="justify-between !mb-3">
-          <p className="text-gray-400">쿠폰/포인트 할인</p>
+          {/* <p className="text-gray-400">쿠폰/포인트 할인</p> */}
+          <p className="text-gray-400">포인트 할인</p>
           <p className="font-medium">
             {`${point > 0 ? '-' : ''}`}
             {toWon(point)}원
@@ -240,9 +241,15 @@ const index = () => {
         {payButtons.map((pay, idx) => (
           <Col key={idx} span={6}>
             <button
+              className={
+                buttonIdx === idx
+                  ? `${styles.button} ${styles.clicked}`
+                  : styles.button
+              }
               onClick={() => {
                 setButtonIdx(idx);
               }}
+              disabled={pay.disabled}
             >
               {pay.title}
             </button>
@@ -253,14 +260,26 @@ const index = () => {
         <Row className="mt-3">
           <Col span={24} className="mb-2">
             <Flex>
-              <input type="radio" id="kakao" name="contact" value="kakao" />
+              <input
+                type="radio"
+                id="kakao"
+                name="contact"
+                value="kakao"
+                defaultChecked
+              />
               <img className="mx-1" width={50} src="./kakao_pay.png" />
               <label htmlFor="kakao">카카오페이</label>
             </Flex>
           </Col>
           <Col span={24}>
             <Flex>
-              <input type="radio" id="naver" name="contact" value="naver" />
+              <input
+                type="radio"
+                id="naver"
+                name="contact"
+                value="naver"
+                disabled
+              />
               <img className="mx-1" width={50} src="./naver_pay.png" />
               <label htmlFor="naver">네이버페이</label>
             </Flex>

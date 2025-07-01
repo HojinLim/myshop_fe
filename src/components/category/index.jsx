@@ -22,7 +22,6 @@ const index = () => {
   const [products, setProducts] = useState([]);
   const fetchProducts = () => {
     getProducts('category', category).then((res) => {
-      console.log(res);
       if (res.products && res.products.length > 0) {
         setProducts(res.products);
       }
