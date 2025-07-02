@@ -4,13 +4,12 @@ import styles from './index.module.css';
 import MenuHeader from '@/components/common/MenuHeader';
 import { Content } from 'antd/es/layout/layout';
 import { CameraFilled, UserOutlined } from '@ant-design/icons';
-import { Avatar, Button, Col, Row, Typography } from 'antd';
+import { Avatar, Button, Col, message, Row, Typography } from 'antd';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from '@/store/slices/userSlice';
 import { returnBucketUrl } from '@/utils';
-
-const backURL = import.meta.env.VITE_BACK_URL;
+import { deleteProfileImage, uploadProfileImage } from '@/api/user';
 
 const Profile = () => {
   const [image, setImage] = useState(null);
@@ -31,38 +30,17 @@ const Profile = () => {
     setImage(file);
     setPreview(URL.createObjectURL(file)); // 이미지 미리보기
 
-    await handleUpload(file);
-  };
-  // 🔹 S3로 업로드하는 함수
-  const handleUpload = async (file) => {
-    if (!file) {
-      alert('이미지를 선택하세요.');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('userId', user.id);
-    formData.append('profile', file);
-
-    try {
-      const response = await fetch(`${backURL}/auth/upload?userId=${user.id}`, {
-        method: 'POST',
-        body: formData,
+    await uploadProfileImage(file, user.id)
+      .then(() => {
+        dispatch(fetchUserInfo());
+        message.success('프로필 업로드 완료');
+      })
+      .catch(() => {
+        message.error('프로필 삭제 실패');
+      })
+      .finally(() => {
+        e.target.value = ''; // 중복 사진 업로드 에러 방지
       });
-      const responseData = await response.json(); // 응답 확인
-
-      if (responseData.imageUrl) {
-        dispatch(fetchUserInfo()); // 유저 정보 새로 불러오기
-        setPreview(responseData.imageUrl); // 새로운 프로필 이미지 URL로 미리보기 업데이트
-        alert('업로드 성공!');
-      } else {
-        alert('이미지 URL이 없습니다.');
-      }
-    } catch (error) {
-      console.error('업로드 실패:', error);
-      alert('업로드 실패');
-      return;
-    }
   };
 
   useEffect(() => {
@@ -70,27 +48,19 @@ const Profile = () => {
       setPreview(returnBucketUrl(user.profileUrl));
     }
   }, [user]);
-  const deleteProfileImage = async () => {
+
+  const clickDeleteProfile = async () => {
     if (user && (user.profileUrl === '' || !user.profileUrl)) return;
-    try {
-      const response = await fetch(`${backURL}/auth/delete_profile`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId: user.id }), // userId를 서버로 전송
+
+    await deleteProfileImage(user.id)
+      .then(() => {
+        dispatch(fetchUserInfo());
+        setPreview(null); // 이미지 삭제 후 미리보기 제거
+        message.success('이미지 삭제 성공');
+      })
+      .catch(() => {
+        message.error('이미지 삭제 실패');
       });
-
-      const data = await response.json();
-
-      dispatch(fetchUserInfo());
-      setPreview(null); // 이미지 삭제 후 미리보기 제거
-      return;
-    } catch (error) {
-      console.error('프로필 이미지 삭제 실패:', error);
-      alert('삭제 실패');
-      return;
-    }
   };
 
   return (
@@ -110,7 +80,7 @@ const Profile = () => {
             {preview && (
               <Typography.Text
                 className="cursor-pointer"
-                onClick={deleteProfileImage}
+                onClick={clickDeleteProfile}
               >
                 현재 사진 삭제
               </Typography.Text>

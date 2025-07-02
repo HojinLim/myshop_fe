@@ -1,3 +1,7 @@
 .expandedRow {
   background-color: #e6f7ff !important;
 }
+.table {
+  max-width: 100% !important;
+  overflow-x: auto;
+}

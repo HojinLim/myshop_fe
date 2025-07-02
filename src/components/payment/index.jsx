@@ -113,6 +113,7 @@ const index = () => {
       disabled: true,
     },
   ];
+  console.log(items);
 
   const { Text } = Typography;
   return (
@@ -144,9 +145,15 @@ const index = () => {
                 <Flex>
                   <Image
                     width={50}
-                    src={returnBucketUrl(
-                      item.Product?.ProductImages[0].imageUrl || ''
-                    )}
+                    src={
+                      item?.Product?.ProductImages.length > 0
+                        ? returnBucketUrl(
+                            item?.Product?.ProductImages.find(
+                              (img) => img.type === 'main'
+                            ).imageUrl || ''
+                          )
+                        : '/none_logo.png'
+                    }
                   ></Image>
                   <Flex vertical>
                     <Typography.Text>{item.Product.name}</Typography.Text>

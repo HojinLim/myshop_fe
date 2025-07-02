@@ -11,7 +11,7 @@
   border-radius: 0 !important;
   border-bottom: 0;
   padding-left: 0;
-  margin-right: 2rem;
+  /* margin-right: 2rem; */
   input {
     border-radius: 0 !important;
   }
@@ -25,5 +25,18 @@
 .table {
   & :global(.ant-table-cell) {
     min-width: 88px;
+  }
+}
+
+.upload_layout {
+  .ant-upload-list {
+    flex-flow: nowrap !important;
+  }
+  margin: 2rem 0;
+  padding: 0 1rem;
+}
+@media (min-width: 1200px) {
+  .upload_layout {
+    margin-top: 0;
   }
 }

@@ -87,10 +87,13 @@ const OrderList = () => {
                     width={100}
                     height={10}
                     src={
-                      item.product_option.Product?.ProductImages[0]
+                      item.product_option.Product?.ProductImages?.find(
+                        (img) => img.type === 'main'
+                      )
                         ? returnBucketUrl(
-                            item.product_option.Product.ProductImages[0]
-                              .imageUrl
+                            item.product_option.Product?.ProductImages?.find(
+                              (img) => img.type === 'main'
+                            ).imageUrl
                           )
                         : '/none_logo.png'
                     }

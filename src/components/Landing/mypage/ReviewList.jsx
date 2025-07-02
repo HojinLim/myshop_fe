@@ -84,7 +84,9 @@ const ReviewList = () => {
               <div className="aspect-square overflow-hidden w-24">
                 <img
                   src={returnBucketUrl(
-                    review.Product.ProductImages[0].imageUrl
+                    review.Product.ProductImages.find(
+                      (img) => img.type === 'main'
+                    ).imageUrl
                   )}
                 />
               </div>

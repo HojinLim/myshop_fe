@@ -27,6 +27,7 @@ export const AdminMenuItem = (props) => {
     });
     setCategories(list);
     setUpdated(true);
+    e.target.value = '';
   };
 
   useEffect(() => {
@@ -62,6 +63,7 @@ export const AdminMenuItem = (props) => {
       } else return _category;
     });
     setCategories(uploadPhotoCategory);
+    e.target.value = '';
   };
 
   // 사진 제거 핸들러

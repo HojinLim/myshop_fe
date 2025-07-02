@@ -167,8 +167,12 @@ const index = () => {
               <div className="aspect-square overflow-hidden w-32">
                 <img
                   src={
-                    product?.ProductImages[0]
-                      ? returnBucketUrl(product?.ProductImages[0]?.imageUrl)
+                    product?.ProductImages?.find((img) => img.type === 'main')
+                      ? returnBucketUrl(
+                          product.ProductImages.find(
+                            (img) => img.type === 'main'
+                          ).imageUrl
+                        )
                       : '/logo.png'
                   }
                 />

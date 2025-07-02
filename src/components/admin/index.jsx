@@ -79,9 +79,18 @@ const index = () => {
             <Row className={styles.sider_info_container}>
               {/* <Col span={24}>로고</Col> */}
               <Col span={24} className="place-items-center">
-                <img src={logo} width={100} />
+                <img
+                  className="cursor-pointer"
+                  src="/logo.png"
+                  width={100}
+                  onClick={() => {
+                    navigate('/');
+                  }}
+                />
               </Col>
-              <Col span={24}>{user.username}</Col>
+              <Col span={24} className="font-bold">
+                {user.username}
+              </Col>
             </Row>
             <Row className={styles.sider_menu_container}>
               <Col span={24}>
@@ -96,7 +105,7 @@ const index = () => {
               </Col>
             </Row>
           </Sider>
-          <Layout>
+          <Layout className="w-full">
             <Outlet />
           </Layout>
         </Layout>

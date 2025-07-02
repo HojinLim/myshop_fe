@@ -76,11 +76,10 @@ const UploadLayout = (props) => {
   };
 
   return (
-    <Col span={10} className="upload_layout">
+    <Col span={24} xl={{ span: 10 }} className={styles.upload_layout}>
       <Row>
         <Col span={24}>
           <h4>상품 업로드</h4>
-          {/* 메인 사진 업로드 */}
           <h5>메인 사진 업로드</h5>
           <Upload
             listType="picture-card"
@@ -267,7 +266,7 @@ const UploadLayout = (props) => {
           <Button
             type="primary"
             htmlType="submit"
-            className="w-full"
+            className="w-full !mb-3"
             onClick={uploadProductHandler}
           >
             상품 등록

@@ -236,8 +236,9 @@ const index = () => {
                       src={
                         item.product_option?.Product?.ProductImages[0]
                           ? returnBucketUrl(
-                              item.product_option?.Product?.ProductImages[0]
-                                ?.imageUrl
+                              item.product_option?.Product?.ProductImages.find(
+                                (img) => img.type === 'main'
+                              ).imageUrl
                             )
                           : '/none_logo.png'
                       }

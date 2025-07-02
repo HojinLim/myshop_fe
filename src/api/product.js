@@ -1,3 +1,5 @@
+import { message } from 'antd';
+
 const back_url = import.meta.env.VITE_BACK_URL;
 
 // 상품 조회 (type: category, id)
@@ -75,6 +77,11 @@ const deleteProduct = async (id) => {
 
     const result = await response.json();
     '삭제 결과:', result;
+
+    if (result?.error?.name === 'SequelizeForeignKeyConstraintError') {
+      message.warning('해당 제품 옵션부터 삭제바랍니다.');
+    }
+
     return result;
   } catch (error) {
     console.error('⚠️ 오류 발생:', error.message); // 에러 로그 출력

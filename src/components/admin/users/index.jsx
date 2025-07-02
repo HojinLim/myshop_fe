@@ -75,6 +75,12 @@ const UserTable = () => {
 
   // 포인트 변경 핸들러
   const clickChangePoint = async (id) => {
+    if (!points || isNaN(Number(points))) {
+      message.warning('유효한 숫자를 기입하세요');
+      setPoints('');
+      return;
+    }
+
     await updateUserPoints(id, Number(points), reason)
       .then(() => {
         message.success('포인트 변경 완료');
@@ -98,7 +104,7 @@ const UserTable = () => {
   };
 
   return (
-    <>
+    <Layout>
       <Table
         className={styles.table}
         columns={columns}
@@ -188,7 +194,7 @@ const UserTable = () => {
         }}
         pagination={false}
       />
-    </>
+    </Layout>
   );
 };
 

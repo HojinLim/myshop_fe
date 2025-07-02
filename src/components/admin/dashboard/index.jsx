@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Breadcrumb, Col, Row, Typography, Layout } from 'antd';
 import styles from './index.module.css';
 
 import { Line } from '@ant-design/charts';
 import { Pie } from '@ant-design/plots';
+import { getSales } from '@/api/order';
 
 const index = () => {
   const { Header, Content } = Layout;
@@ -51,6 +52,16 @@ const index = () => {
       },
     },
   };
+  const fetchSales = async () => {
+    await getSales()
+      .then((res) => {
+        console.log(res.result);
+      })
+      .catch(() => {});
+  };
+  useEffect(() => {
+    fetchSales();
+  }, []);
 
   return (
     <>
@@ -81,13 +92,13 @@ const index = () => {
           <Col span={6} className={styles.content_container}>
             <Pie {...pieConfig} />
           </Col>
-          <Col
+          {/* <Col
             span={24}
             className={styles.content_container}
             style={{ marginTop: '10px' }}
           >
             <Line {...props} />
-          </Col>
+          </Col> */}
         </Row>
       </Content>
     </>

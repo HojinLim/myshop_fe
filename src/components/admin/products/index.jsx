@@ -157,6 +157,10 @@ const index = () => {
         dispath(setLoading(true));
         fetchProduct();
       })
+
+      .catch((err) => {
+        console.log(err);
+      })
       .finally(() => {
         dispath(setLoading(false));
       });
@@ -247,10 +251,10 @@ const index = () => {
   ];
 
   return (
-    <Content>
-      <Row gutter={24} className={styles.product_page_container}>
+    <Layout className="w-full">
+      <Row className={styles.product_page_container}>
         {/* 상품 리스트 디스플레이 영역 */}
-        <Col span={14}>
+        <Col span={24} xl={{ span: 14 }} className="px-12">
           <h4>카테고리 관리</h4>
           <Row>
             <Col span={2}></Col>
@@ -339,7 +343,7 @@ const index = () => {
         productInfo={productInfo}
         setProductInfo={setProductInfo}
       />
-    </Content>
+    </Layout>
   );
 };
 

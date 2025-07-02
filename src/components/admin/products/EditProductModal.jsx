@@ -142,7 +142,7 @@ const EditProductModal = ({
         return (
           <Image
             src={
-              record.Product?.ProductImages[0].imageUrl
+              record?.Product?.ProductImages[0]?.imageUrl
                 ? returnBucketUrl(record.Product?.ProductImages[0]?.imageUrl)
                 : '/none_logo.png'
             }

@@ -117,7 +117,7 @@ const UploadReview = () => {
         await uploadReview(data, images);
       }
       message.success('리뷰 업로드 완료!');
-      // navigate('/mypage/review');
+      navigate('/mypage/review');
     } catch (err) {}
   };
 
@@ -142,9 +142,13 @@ const UploadReview = () => {
         <div className="aspect-square overflow-hidden w-32">
           <img
             src={
-              item.product_option.Product?.ProductImages[0]
+              item?.product_option?.Product?.ProductImages.find(
+                (img) => img.type === 'main'
+              )
                 ? returnBucketUrl(
-                    item.product_option.Product.ProductImages[0].imageUrl
+                    item?.product_option?.Product?.ProductImages.find(
+                      (img) => img.type === 'main'
+                    ).imageUrl
                   )
                 : '/none_logo.png'
             }
