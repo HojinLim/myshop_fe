@@ -74,7 +74,7 @@ const payWithoutMoney = async (userId, totalPrice, usedPoint, order_items) => {
     return await response.json();
   } catch (error) {
     console.error('오류 발생:', error);
-    return null; // ✅ 오류 발생 시 `null` 반환
+    return null; //  오류 발생 시 `null` 반환
   }
 };
 const refundProduct = async (imp_uid, amount, reason, order_item_id) => {
@@ -93,7 +93,7 @@ const refundProduct = async (imp_uid, amount, reason, order_item_id) => {
     return await response.json();
   } catch (error) {
     console.error('오류 발생:', error);
-    return null; // ✅ 오류 발생 시 `null` 반환
+    return null; //  오류 발생 시 `null` 반환
   }
 };
 

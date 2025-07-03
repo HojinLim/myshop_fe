@@ -19,7 +19,7 @@ const FormHeader = (props) => {
         <Avatar
           className="cursor-pointer"
           size="large"
-          src={logo}
+          src="/logo.png"
           onClick={() => go('/')}
         />
       </Col>

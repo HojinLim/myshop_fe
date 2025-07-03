@@ -27,10 +27,10 @@ const Favorite = () => {
   const dispatch = useDispatch();
   const [favorites, setFavorites] = useState([]);
 
-  if (!user.id) navigate('/login');
+  if (!user.id) navigate('/login', { replace: true });
 
   useEffect(() => {
-    dispatch(fetchCartLength()); // ✅ 비동기 API 호출
+    dispatch(fetchCartLength()); //  비동기 API 호출
   }, [dispatch]);
 
   const fetchMyFavorite = async () => {

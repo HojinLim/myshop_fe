@@ -68,6 +68,7 @@ const index = () => {
   const [cart, setCart] = useState([]);
   const [productLikeCount, setProductLikeCount] = useState(0);
   const [productLike, setProductLike] = useState(0);
+  const [optionBtnVisible, setOptionBtnVisible] = useState(true);
 
   const navigate = useNavigate();
 
@@ -142,6 +143,25 @@ const index = () => {
           }));
           setColorOptions(mixedColorArr);
         }
+        // else {
+        //   // 옵션이 없으면
+        //   setSelectMode(false);
+        //   setOptionBtnVisible(false);
+
+        //   if (product) {
+        //     console.log(product);
+
+        //     const defaultItem = {
+        //       // ...res.product_option[0], // 아예 옵션 테이블도 없다면 이 부분 생략
+        //       id: product.id, // product id도 같이 넣어주면 나중에 결제나 카트에서도 유용
+        //       price: product.discountPrice,
+        //       quantity: 1,
+        //       color: null,
+        //       size: null,
+        //     };
+        //     setCart([defaultItem]);
+        //   }
+        // }
       })
       .catch((err) => {});
   };
@@ -149,8 +169,12 @@ const index = () => {
   // 해당 상품 리뷰 리스트 불러오기 로직
   const [reviews, setReviews] = useState({ averageRating: 0, reviews: [] });
   useEffect(() => {
-    fetchProduct();
-    fetchProductOptions();
+    const fetchAll = async () => {
+      await fetchProduct(); // 상품 정보 먼저 받아오고
+      await fetchProductOptions(); // 그 후 옵션 정보 받아옴
+    };
+
+    fetchAll();
   }, []);
   const productId = pathname.split('/').pop();
   const fetchReview = async () => {
@@ -252,7 +276,7 @@ const index = () => {
         disabled: item.stock <= 0 ? true : false,
       }));
 
-    setSelectedOption({ color: value, size: null }); // ✅ `null`로 설정하여 placeholder 유지
+    setSelectedOption({ color: value, size: null }); //  `null`로 설정하여 placeholder 유지
     setSizeOptions(sizeArr);
   };
 
@@ -269,7 +293,7 @@ const index = () => {
       (item) => item.color === color && item.size === size
     );
 
-    if (!selectedProduct) return; // ✅ 선택한 옵션이 없으면 종료
+    if (!selectedProduct) return; //  선택한 옵션이 없으면 종료
 
     setCart((prevCart) => {
       const existingItem = prevCart.find(
@@ -307,7 +331,7 @@ const index = () => {
       (item) => item.color === color && item.size === size
     );
 
-    if (!selectedProduct) return; // ✅ 선택한 옵션이 없으면 종료
+    if (!selectedProduct) return; //  선택한 옵션이 없으면 종료
 
     setCart((prevCart) => {
       return prevCart.filter(
@@ -321,6 +345,8 @@ const index = () => {
 
     try {
       const promises = cart.map(async (item) => {
+        const isOptionProduct = !!item.id; // 옵션이 있는 상품인지 체크
+
         let params = {
           user_id: user.id || getNonMemberId(),
           product_option_id: item.id,
@@ -334,7 +360,7 @@ const index = () => {
         }
       });
 
-      await Promise.all(promises); // ✅ 모든 요청을 병렬 처리!
+      await Promise.all(promises); //  모든 요청을 병렬 처리!
       message.success('모든 상품이 성공적으로 장바구니에 추가됨!');
       // 장바구니 초기화
       setCart([]);
@@ -492,20 +518,22 @@ const index = () => {
                 onChange={handleSizeChange}
                 placeholder="사이즈 선택하기"
                 options={sizeOptions}
-                value={selectedOption.size} // ✅ 실제 선택된 값 반영
+                value={selectedOption.size} //  실제 선택된 값 반영
               />
             </Col>
           </>
         ) : (
           <>
-            <Button
-              className={styles.select_drawer_button}
-              onClick={() => {
-                setSelectMode(true);
-              }}
-            >
-              옵션 선택하기
-            </Button>
+            {optionBtnVisible && (
+              <Button
+                className={styles.select_drawer_button}
+                onClick={() => {
+                  setSelectMode(true);
+                }}
+              >
+                옵션 선택하기
+              </Button>
+            )}
 
             {/* 선택한 상품 목록- 카트 */}
             {cart.map((item, idx) => (

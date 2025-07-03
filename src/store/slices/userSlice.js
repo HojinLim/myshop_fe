@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 const back_url = import.meta.env.VITE_BACK_URL;
 
-// ✅ 비동기 API 요청 (Thunk 사용)
+//  비동기 API 요청 (Thunk 사용)
 export const fetchUserInfo = createAsyncThunk(
   'user/fetchUserInfo', // 액션 타입 (user/fetchUserInfo)
   async (param, { rejectWithValue }) => {

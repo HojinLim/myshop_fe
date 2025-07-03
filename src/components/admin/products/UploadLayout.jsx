@@ -50,7 +50,7 @@ const UploadLayout = (props) => {
     await uploadProduct(productForm)
       .then((res) => {
         message.success('상품 등록 완료 ');
-        // ✅ 상품 목록 다시 불러오기
+        //  상품 목록 다시 불러오기
         fetchProduct();
         // 초기화
         setProductForm({
@@ -88,13 +88,13 @@ const UploadLayout = (props) => {
             onChange={({ fileList }) => {
               setProductForm((prev) => ({
                 ...prev,
-                mainFiles: fileList, // ✅ 업데이트된 fileList를 그대로 반영
+                mainFiles: fileList, //  업데이트된 fileList를 그대로 반영
               }));
             }}
             beforeUpload={(file) => {
               setProductForm((prev) => ({
                 ...prev,
-                mainFiles: [...prev.mainFiles, file], // ✅ File 객체 저장
+                mainFiles: [...prev.mainFiles, file], //  File 객체 저장
               }));
               return false; // 자동 업로드 방지
             }}
@@ -123,13 +123,13 @@ const UploadLayout = (props) => {
             onChange={({ fileList }) => {
               setProductForm((prev) => ({
                 ...prev,
-                detailFiles: fileList, // ✅ 업데이트된 fileList를 그대로 반영
+                detailFiles: fileList, //  업데이트된 fileList를 그대로 반영
               }));
             }}
             beforeUpload={(file) => {
               setProductForm((prev) => ({
                 ...prev,
-                detailFiles: [...prev.detailFiles, file], // ✅ File 객체 저장
+                detailFiles: [...prev.detailFiles, file], //  File 객체 저장
               }));
               return false; // 자동 업로드 방지
             }}

@@ -72,7 +72,7 @@ export const AdminMenuItem = (props) => {
     if (!category.imageUrl) return;
     const uploadPhotoCategory = categories.map((_category) =>
       _category.id === category.id
-        ? { ..._category, upload_photo: null }
+        ? { ..._category, upload_photo: null, photo_delete: true }
         : _category
     );
 

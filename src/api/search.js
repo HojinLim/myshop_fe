@@ -8,14 +8,6 @@ const searchProduct = async (keyword = '') => {
     const data = await response.json();
 
     return data;
-    if (response.ok) {
-      return data;
-    } else if (data.message === '키워드가 없습니다') {
-      return data;
-    } else if (data.message === '검색 결과가 없습니다.') {
-      message.error('검색 결과가 없습니다.');
-      return data;
-    }
   } catch (error) {
     console.error(' 오류 발생:', error);
   }

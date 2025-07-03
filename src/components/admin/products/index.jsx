@@ -38,6 +38,10 @@ const index = () => {
   const [products, setProducts] = useState([]);
   const [productId, setProductId] = useState();
 
+  // 상품 페이지네이션
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(null);
+
   // 상품 관리- 클릭한 상품 정보
   const [productInfo, setProductInfo] = useState('');
 
@@ -116,10 +120,15 @@ const index = () => {
         getCategoryList();
         message.success('카테고리 업데이트 완료');
       })
-      .catch((err) => {});
+      .catch((err) => {
+        if (err.response?.data?.error?.errors[0]?.message.includes('unique')) {
+          message.warning('카테고리 이름이 중복됩니다.');
+        }
+      });
   };
+  // 상품 가져오기
   const fetchProduct = async () => {
-    await getProducts('category', productForm.category)
+    await getProducts('category', productForm.category, currentPage)
       .then((res) => {
         dispath(setLoading(true));
         if (res.products && res.products.length > 0) {
@@ -130,19 +139,20 @@ const index = () => {
               ProductImages = [],
               name,
               discountPrice,
-            } = product; // ✅ 객체 구조 분해 할당
+            } = product; //  객체 구조 분해 할당
 
             return {
               index: index + 1,
               id,
               category,
-              imageUrl: ProductImages?.[0]?.imageUrl || null, // ✅ 첫 번째 이미지가 없으면 `null` 반환
+              imageUrl: ProductImages?.[0]?.imageUrl || null, //  첫 번째 이미지가 없으면 `null` 반환
               name,
               discountPrice,
             };
           });
 
           setProducts(productArr);
+          setTotalCount(res.totalCount);
         } else {
           setProducts([]);
         }
@@ -156,6 +166,7 @@ const index = () => {
       .then((res) => {
         dispath(setLoading(true));
         fetchProduct();
+        message.success('상품 삭제 완료');
       })
 
       .catch((err) => {
@@ -172,7 +183,7 @@ const index = () => {
   }, []);
   useEffect(() => {
     fetchProduct();
-  }, [productForm.category]);
+  }, [productForm.category, currentPage]);
 
   useEffect(() => {
     compareDiff();
@@ -322,7 +333,12 @@ const index = () => {
               className={styles.table}
               columns={columns}
               dataSource={products}
-              pagination={false}
+              pagination={{
+                current: currentPage,
+                pageSize: 6,
+                total: totalCount,
+                onChange: (page) => setCurrentPage(page),
+              }}
             />
           </Col>
         </Col>

@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const back_url = import.meta.env.VITE_BACK_URL;
 
 const getCategories = async () => {
@@ -36,7 +38,7 @@ const updateCategories = async (params) => {
   params
     .filter((category) => category.upload_photo)
     .forEach((category) => {
-      formData.append('categoryImages', category.upload_photo); // ✅ 개별 추가
+      formData.append('categoryImages', category.upload_photo); //  개별 추가
     });
 
   for (const [key, value] of formData.entries()) {
@@ -44,21 +46,19 @@ const updateCategories = async (params) => {
   }
 
   try {
-    const response = await fetch(`${back_url}/category/update_categories`, {
-      method: 'POST',
-      body: formData,
-    });
-    formData;
+    const response = await axios.post(
+      `${back_url}/category/update_categories`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
 
-    if (response.ok) {
-      const data = await response.json();
-
-      return data;
-    } else {
-      ('시스템 오류 발생.');
-    }
+    return response.data;
   } catch (error) {
-    console.error(' 오류 발생:', error);
+    throw error;
   }
 };
 

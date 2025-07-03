@@ -63,7 +63,7 @@ const index = () => {
 
   useEffect(() => {
     if (user && user.role === 'admin' && location.pathname === '/admin') {
-      navigate('/admin/dashboard', { replace: true });
+      navigate('/admin/dashboard');
     }
   }, [user, location.pathname]);
 
@@ -88,7 +88,7 @@ const index = () => {
                   }}
                 />
               </Col>
-              <Col span={24} className="font-bold">
+              <Col span={24} className={styles.admin_nickname}>
                 {user.username}
               </Col>
             </Row>

@@ -33,8 +33,8 @@ const getNonMemberId = () => {
   // 비회원
   let uid = localStorage.getItem('non_member_uid');
   if (!uid) {
-    uid = uuidv4(); // ✅ 새 UID 생성
-    localStorage.setItem('non_member_uid', uid); // ✅ 저장
+    uid = uuidv4(); //  새 UID 생성
+    localStorage.setItem('non_member_uid', uid); //  저장
   }
   return uid;
 };

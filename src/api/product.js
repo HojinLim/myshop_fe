@@ -3,15 +3,17 @@ import { message } from 'antd';
 const back_url = import.meta.env.VITE_BACK_URL;
 
 // 상품 조회 (type: category, id)
-const getProducts = async (type = '', value = '') => {
+const getProducts = async (type = '', value = '', page = 1) => {
   try {
-    const response = await fetch(`${back_url}/product?${type}=${value}`);
+    const response = await fetch(
+      `${back_url}/product?${type}=${value}&page=${page}`
+    );
     if (!response.ok) throw new Error('시스템 오류 발생.');
 
     return await response.json();
   } catch (error) {
     console.error('오류 발생:', error);
-    return null; // ✅ 오류 발생 시 `null` 반환
+    return null; //  오류 발생 시 `null` 반환
   }
 };
 
@@ -23,7 +25,7 @@ const uploadProduct = async (params) => {
   'mainFiles:', mainFiles;
   'detailFiles:', detailFiles;
 
-  // ✅ 메인 파일 추가
+  //  메인 파일 추가
   (mainFiles || []).forEach((fileObj, index) => {
     const file = fileObj.originFileObj;
     if (!(file instanceof File)) {
@@ -33,7 +35,7 @@ const uploadProduct = async (params) => {
     formData.append('mainImages', file);
   });
 
-  // ✅ 디테일 파일 추가
+  //  디테일 파일 추가
   (detailFiles || []).forEach((fileObj, index) => {
     const file = fileObj.originFileObj;
     if (!(file instanceof File)) {
@@ -43,7 +45,7 @@ const uploadProduct = async (params) => {
     formData.append('detailImages', file);
   });
 
-  // ✅ 상품 정보 추가
+  //  상품 정보 추가
   formData.append('product', JSON.stringify(params));
 
   '업로드할 FormData:', [...formData.entries()];

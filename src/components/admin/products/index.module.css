@@ -40,3 +40,11 @@
     margin-top: 0;
   }
 }
+
+.footer_container {
+  input {
+    margin-right: 20px !important;
+    min-width: 60px;
+    max-width: fit-content;
+  }
+}

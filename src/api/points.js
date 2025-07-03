@@ -9,7 +9,7 @@ const getPoints = async (user_id) => {
     return await response.json();
   } catch (error) {
     console.error('오류 발생:', error);
-    return null; // ✅ 오류 발생 시 `null` 반환
+    return null; //  오류 발생 시 `null` 반환
   }
 };
 
@@ -28,7 +28,7 @@ const updateUserPoints = async (userId, points, reason = '') => {
     return await response.json();
   } catch (error) {
     console.error('오류 발생:', error);
-    return null; // ✅ 오류 발생 시 `null` 반환
+    return null; //  오류 발생 시 `null` 반환
   }
 };
 

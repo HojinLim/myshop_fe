@@ -5,23 +5,23 @@ import cartSlice from '@/store/slices/cartSlice';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
 
-// ✅ 'user' 상태만 Persist 적용
+//  'user' 상태만 Persist 적용
 const persistConfig = {
   key: 'user',
   storage,
 };
 
-const persistedUserReducer = persistReducer(persistConfig, userSlice); // ✅ persistReducer 적용!
+const persistedUserReducer = persistReducer(persistConfig, userSlice); //  persistReducer 적용!
 
 const store = configureStore({
   reducer: {
-    user: persistedUserReducer, // ✅ Persist 적용된 userReducer
+    user: persistedUserReducer, //  Persist 적용된 userReducer
     loading: loadingSlice,
     cart: cartSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false, // ✅ 직렬화 검사 비활성화
+      serializableCheck: false, //  직렬화 검사 비활성화
     }),
 });
 

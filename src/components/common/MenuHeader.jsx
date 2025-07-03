@@ -19,7 +19,7 @@ const MenuHeader = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchCartLength()); // ✅ 비동기 API 호출
+    dispatch(fetchCartLength()); //  비동기 API 호출
   }, [dispatch]);
 
   const DefaultRightItems = () => {

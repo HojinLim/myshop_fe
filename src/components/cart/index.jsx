@@ -213,7 +213,7 @@ const index = () => {
             okText="확인"
             cancelText="취소"
           >
-            <p className="mr-2">선택삭제</p>
+            <p className="mr-2 cursor-pointer">선택삭제</p>
           </Popconfirm>
         </Flex>
         <Divider />

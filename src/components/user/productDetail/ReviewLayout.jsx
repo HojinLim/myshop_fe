@@ -10,7 +10,7 @@ import { getProductReviews } from '@/api/review';
 import styles from './index.module.css';
 import { Divider, Flex, Modal, Rate } from 'antd';
 import { anonymizeNickname, returnBucketUrl } from '@/utils';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import dayjs from '@/utils/dayjs';
 
 import NotFound from '@/components/notfound';
@@ -23,6 +23,7 @@ import {
 import { useSelector } from 'react-redux';
 const ReviewLayout = (props) => {
   const { fetchReview, reviews } = props;
+  const navigate = useNavigate();
 
   const user = useSelector((state) => state.user.data);
 
@@ -97,7 +98,15 @@ const ReviewLayout = (props) => {
               >
                 <p>{review.likeCount}</p>
 
-                <LikeFilled onClick={() => clickReviewLikeHandler(review)} />
+                <LikeFilled
+                  onClick={() => {
+                    if (!user?.id) {
+                      navigate('/login');
+                    } else {
+                      clickReviewLikeHandler(review);
+                    }
+                  }}
+                />
               </div>
             </Flex>
             <Flex>

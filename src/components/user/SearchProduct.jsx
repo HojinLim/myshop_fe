@@ -67,7 +67,7 @@ const SearchProduct = () => {
         onChange={(e) => setSearchKeyword(e.target.value)}
         onPressEnter={moveWithKeyword}
       />
-      {!location.state && result?.length <= 0 && (
+      {result?.length <= 0 && (
         <NotFound
           title="검색 결과가 없습니다."
           subTitle="다른 검색어를 입력하시거나

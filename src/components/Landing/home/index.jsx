@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.module.css';
 import { Content, Header } from 'antd/es/layout/layout';
 import {
@@ -25,10 +25,8 @@ import { getProducts } from '@/api/product';
 import { discountPercent, getNonMemberId, returnBucketUrl } from '@/utils';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCarts, transferCart } from '@/api/cart';
 
 import { fetchCartLength } from '@/store/slices/cartSlice';
-import { searchProduct } from '@/api/search';
 import { setLoading } from '@/store/slices/loadingSlice';
 const index = () => {
   const { Text, Title } = Typography;
@@ -39,6 +37,11 @@ const index = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.data);
+  const [isFetching, setIsFetching] = useState(false);
+
+  // 페이지네이션 상태
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
   const getCategoryList = async () => {
     dispatch(setLoading(true));
@@ -57,25 +60,33 @@ const index = () => {
   };
 
   const fetchProductsList = async () => {
+    if (isFetching || !hasMore) return; // 중복 방지
+
+    setIsFetching(true);
     dispatch(setLoading(true));
-    await getProducts()
+
+    await getProducts('', '', page)
       .then((res) => {
         if (res.products && res.products.length > 0) {
-          setProducts(res.products);
+          if (res.products.length < 5) setHasMore(false);
+          setProducts((prev) => [...prev, ...res.products]);
+        } else {
+          setHasMore(false); // 빈 배열이면 더 없음
         }
       })
-      .catch(() => {})
+      .catch((err) => console.error(err))
       .finally(() => {
+        setIsFetching(false);
         dispatch(setLoading(false));
       });
   };
+
   useEffect(() => {
-    fetchProductsList();
     getCategoryList();
   }, []);
   useEffect(() => {
     setProfilePic(returnBucketUrl(user.profileUrl));
-    dispatch(fetchCartLength()); // ✅ 비동기 API 호출
+    dispatch(fetchCartLength()); //  비동기 API 호출
   }, [user]);
 
   const { cartNum, loading, error } = useSelector((state) => state.cart);
@@ -83,6 +94,32 @@ const index = () => {
   const moveWithKeyword = () => {
     navigate(`/search/${keyword}`);
   };
+
+  const loaderRef = useRef(null);
+
+  useEffect(() => {
+    fetchProductsList();
+  }, [page]);
+
+  useEffect(() => {
+    if (!hasMore || isFetching) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isFetching && hasMore) {
+          setPage((prev) => prev + 1);
+        }
+      },
+      {
+        threshold: 1.0,
+        rootMargin: '0px 0px 200px 0px',
+      }
+    );
+
+    if (loaderRef.current) observer.observe(loaderRef.current);
+
+    return () => observer.disconnect();
+  }, [hasMore, isFetching]);
 
   return (
     <Layout className={styles.layout_except_footer}>
@@ -190,6 +227,8 @@ const index = () => {
               </div>
             </Col>
           ))}
+          {/* 다음 스크롤 감시 불러올 지점 */}
+          {hasMore && products.length > 0 && <div ref={loaderRef}></div>}
         </Row>
       </Content>
     </Layout>

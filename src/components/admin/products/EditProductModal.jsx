@@ -10,8 +10,15 @@ import {
   Popconfirm,
   Space,
   Table,
+  Tooltip,
 } from 'antd';
-import { RedoOutlined } from '@ant-design/icons';
+import {
+  CheckCircleOutlined,
+  CheckCircleTwoTone,
+  DeleteOutlined,
+  EditOutlined,
+  RedoOutlined,
+} from '@ant-design/icons';
 import {
   createProductOption,
   deleteProductOptions,
@@ -22,6 +29,8 @@ import logo from '@/assets/images/logo.png';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadingSlice';
 import { returnBucketUrl } from '@/utils';
+import { useMediaQuery } from 'react-responsive';
+import styles from './index.module.css';
 
 const EditProductModal = ({
   modalOpen,
@@ -32,11 +41,12 @@ const EditProductModal = ({
   const dispatch = useDispatch();
   const [open, setOpen] = useState(modalOpen);
   const [productOptions, setProductOptions] = useState([]);
+  const isXL = useMediaQuery({ minWidth: 1200 });
 
-  // ✅ 상품 옵션 조회 입력 폼 상태 (여러 개 관리)
+  //  상품 옵션 조회 입력 폼 상태 (여러 개 관리)
   const [formList, setFormList] = useState([]);
 
-  // ✅ 상품 옵션 추가 입력 폼 상태
+  //  상품 옵션 추가 입력 폼 상태
   const [form, setForm] = useState({
     product_id: productInfo?.id || '',
     size: '',
@@ -49,14 +59,14 @@ const EditProductModal = ({
     setOpen(modalOpen);
   }, [modalOpen]);
 
-  // ✅ 상품 옵션 목록 가져오기
+  //  상품 옵션 목록 가져오기
   const fetchProductOptions = async () => {
     if (!productInfo?.id) return;
 
     try {
       const res = await getProductOption(productInfo.id);
       setProductOptions(res.product_option ?? []);
-      setFormList(res.product_option ?? []); // ✅ `formList`에 옵션 데이터 저장
+      setFormList(res.product_option ?? []); //  `formList`에 옵션 데이터 저장
     } catch (err) {
       console.error('⚠️ 옵션 가져오기 실패:', err);
     }
@@ -68,7 +78,7 @@ const EditProductModal = ({
     }
   }, [productInfo]);
 
-  // ✅ 입력 값 변경 핸들러 (`formList`에서 해당 옵션 수정)
+  //  입력 값 변경 핸들러 (`formList`에서 해당 옵션 수정)
   const onChangeFormList = (id, field, value) => {
     setFormList((prevList) =>
       prevList.map((option) =>
@@ -76,23 +86,23 @@ const EditProductModal = ({
       )
     );
   };
-  // ✅ 입력 값 변경 핸들러
+  //  입력 값 변경 핸들러
   const onChangeForm = (e) => {
     const { name, value } = e.target;
     setForm((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  // ✅ 상품 옵션 업데이트
+  //  상품 옵션 업데이트
   const handleUpdate = async (option) => {
     try {
-      const res = await updateProductOption(option); // ✅ 개별 옵션 업데이트
-      fetchProductOptions(); // ✅ 수정 후 목록 업데이트
+      const res = await updateProductOption(option); //  개별 옵션 업데이트
+      fetchProductOptions(); //  수정 후 목록 업데이트
       message.success(`옵션 ${option.id} 업데이트 완료!`);
     } catch (error) {
       message.error(`옵션 ${option.id} 업데이트 실패: ${error.message}`);
     }
   };
-  // ✅ 상품 옵션 생성
+  //  상품 옵션 생성
   const createOption = async () => {
     try {
       const res = await createProductOption(form);
@@ -103,7 +113,7 @@ const EditProductModal = ({
       message.error(`옵션 생성 실패: ${error.message}`);
     }
   };
-  // ✅ 상품 옵션 삭제
+  //  상품 옵션 삭제
   const handleDelete = async (id) => {
     try {
       await deleteProductOptions(id);
@@ -118,14 +128,14 @@ const EditProductModal = ({
       product_id: productInfo.id,
       size: '',
       color: '',
-      price: productInfo.discountPrice, // ✅ 기본값 설정
+      price: productInfo.discountPrice, //  기본값 설정
       stock: '',
     });
   };
   useEffect(() => {
     resetField();
   }, [modalOpen]);
-  // ✅ 상품 옵션 테이블 컬럼
+  //  상품 옵션 테이블 컬럼
   const columns = [
     {
       key: 'id',
@@ -208,44 +218,42 @@ const EditProductModal = ({
             title={`${record.id}번 옵션을 정말 수정합니까?`}
             onConfirm={() => handleUpdate(record)}
           >
-            <a>옵션 수정</a>
+            <Tooltip title="옵션 수정">
+              {isXL ? <a>옵션 수정</a> : <EditOutlined />}
+            </Tooltip>
           </Popconfirm>
           <Popconfirm
             title={`${record.id}번 옵션을 정말 삭제합니까?`}
             onConfirm={() => handleDelete(record.id)}
           >
-            <a>옵션 삭제</a>
+            <Tooltip title="옵션 수정">
+              {isXL ? <a>옵션 삭제</a> : <DeleteOutlined />}
+            </Tooltip>
           </Popconfirm>
         </Space>
       ),
     },
   ];
-  const inputFieldMemo = useMemo(() => {
+  const inputField = () => {
     return (
-      <Flex justify="space-between">
-        <Flex>
+      <Flex justify="space-between" className="w-full overflow-x-auto">
+        <Flex className={styles.footer_container}>
           <Space>
-            <div>색상</div>
+            <div className="min-w-7">색상</div>
             <Input
-              style={{ width: '155px', marginRight: '20px' }}
+              // style={{ maxWidth: '155px', marginRight: '20px' }}
               value={form.color}
               name="color"
               onChange={onChangeForm}
             />
           </Space>
           <Space>
-            <div>사이즈</div>
-            <Input
-              style={{ width: '155px', marginRight: '20px' }}
-              value={form.size}
-              name="size"
-              onChange={onChangeForm}
-            />
+            <div className="min-w-10">사이즈</div>
+            <Input value={form.size} name="size" onChange={onChangeForm} />
           </Space>
-          <Space>
-            <div>가격</div>
+          <Space className="mr-5">
+            <div className="min-w-7">가격</div>
             <Input
-              style={{ width: '155px', marginRight: '20px' }}
               value={form.price}
               suffix="원"
               name="price"
@@ -253,9 +261,8 @@ const EditProductModal = ({
             />
           </Space>
           <Space>
-            <div>재고</div>
+            <div className="min-w-7">재고</div>
             <Input
-              style={{ width: '155px' }}
               value={form.stock}
               suffix="개"
               name="stock"
@@ -263,10 +270,19 @@ const EditProductModal = ({
             />
           </Space>
         </Flex>
-        <Button onClick={createOption}>옵션 추가</Button>
+        <Tooltip title="옵션 추가">
+          {isXL ? (
+            <Button onClick={createOption}>옵션 추가</Button>
+          ) : (
+            <CheckCircleTwoTone
+              className="cursor-pointer ml-3"
+              onClick={createOption}
+            />
+          )}
+        </Tooltip>
       </Flex>
     );
-  }, [form]); // ✅ `form`이 변경될 때만 `InputField` 리렌더링
+  };
 
   return (
     <>
@@ -314,7 +330,7 @@ const EditProductModal = ({
           rowKey="id"
           columns={columns}
           dataSource={formList}
-          footer={() => inputFieldMemo}
+          footer={() => inputField()}
         />
       </Modal>
     </>

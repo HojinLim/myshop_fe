@@ -2,12 +2,12 @@ import { getCarts } from '@/api/cart';
 import { getNonMemberId } from '@/utils';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// ✅ 비동기 API 호출: 카트 개수 가져오기
+//  비동기 API 호출: 카트 개수 가져오기
 export const fetchCartLength = createAsyncThunk(
   'cart/fetchCartLength',
   async (_, { getState, rejectWithValue }) => {
     try {
-      // ✅ Redux에서 현재 userId 가져오기
+      //  Redux에서 현재 userId 가져오기
       const state = getState();
       const userId = state.user.data?.id || getNonMemberId();
 

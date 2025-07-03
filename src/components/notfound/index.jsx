@@ -16,7 +16,7 @@ const index = (props) => {
           <Button
             type="primary"
             onClick={() => {
-              navigate('/', { replace: true });
+              navigate('/');
             }}
           >
             메인 페이지
