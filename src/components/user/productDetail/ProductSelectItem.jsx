@@ -4,19 +4,22 @@ import { CloseOutlined } from '@ant-design/icons';
 import { Button, Col, Flex } from 'antd';
 
 const ProductSelectItem = (props) => {
-  const { product, deleteFromCart, handleQuantityChange } = props;
+  const { product, productInfo, deleteFromCart, handleQuantityChange } = props;
 
   const totalPrice = product.price * product.quantity;
+
   return (
     <Col className={styles.select_product_container} span={24}>
       <Flex className="justify-between">
         <span>
-          {product.color} / {product.size}
+          {product.id ? `${product.color} / ${product.size}` : productInfo.name}
         </span>
-        <CloseOutlined
-          className="cursor-pointer"
-          onClick={() => deleteFromCart(product.color, product.size)}
-        />
+        {product.id && (
+          <CloseOutlined
+            className="cursor-pointer"
+            onClick={() => deleteFromCart(product.color, product.size)}
+          />
+        )}
       </Flex>
       <p className="text-gray-400">일반배송</p>
       <Flex className="justify-between">

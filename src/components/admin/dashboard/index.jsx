@@ -86,19 +86,12 @@ const index = () => {
       </Header>
       <Content className={styles.content}>
         <Row>
-          <Col span={18} className={styles.content_container}>
+          <Col span={24} xl={{ span: 18 }} className={styles.content_container}>
             <Line {...props} />
           </Col>
-          <Col span={6} className={styles.content_container}>
+          <Col span={24} xl={{ span: 6 }} className={styles.content_container}>
             <Pie {...pieConfig} />
           </Col>
-          {/* <Col
-            span={24}
-            className={styles.content_container}
-            style={{ marginTop: '10px' }}
-          >
-            <Line {...props} />
-          </Col> */}
         </Row>
       </Content>
     </>

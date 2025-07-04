@@ -16,16 +16,26 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getProducts } from '@/api/product';
 import { discountPercent, returnBucketUrl } from '@/utils';
 import NotFound from '@/components/notfound';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoading } from '@/store/slices/loadingSlice';
 const index = () => {
   const { category } = useParams(); // URL에서 category 값 가져오기
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.loading.loading);
+
   const fetchProducts = () => {
-    getProducts('category', category).then((res) => {
-      if (res.products && res.products.length > 0) {
-        setProducts(res.products);
-      }
-    });
+    dispatch(setLoading(true));
+    getProducts('category', category)
+      .then((res) => {
+        if (res.products && res.products.length > 0) {
+          setProducts(res.products);
+        }
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
   };
   useEffect(() => {
     fetchProducts();
@@ -39,7 +49,7 @@ const index = () => {
       <MenuHeader title={category} />
       <Divider />
       <Content>
-        {products.length <= 0 && (
+        {!loading && products.length <= 0 && (
           <NotFound
             title="제품 없음"
             subTitle="해당 카테고리 제품이 없습니다"

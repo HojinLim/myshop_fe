@@ -29,7 +29,7 @@ const uploadProduct = async (params) => {
   (mainFiles || []).forEach((fileObj, index) => {
     const file = fileObj.originFileObj;
     if (!(file instanceof File)) {
-      console.error(`❌ 메인 파일이 아님 (index: ${index}):`, file);
+      console.error(` 메인 파일이 아님 (index: ${index}):`, file);
       return;
     }
     formData.append('mainImages', file);
@@ -39,7 +39,7 @@ const uploadProduct = async (params) => {
   (detailFiles || []).forEach((fileObj, index) => {
     const file = fileObj.originFileObj;
     if (!(file instanceof File)) {
-      console.error(`❌ 디테일 파일이 아님 (index: ${index}):`, file);
+      console.error(` 디테일 파일이 아님 (index: ${index}):`, file);
       return;
     }
     formData.append('detailImages', file);
@@ -60,7 +60,7 @@ const uploadProduct = async (params) => {
     '업로드 결과:', result;
     return result;
   } catch (error) {
-    console.error('❌ 업로드 실패:', error);
+    console.error(' 업로드 실패:', error);
     throw error;
   }
 };
