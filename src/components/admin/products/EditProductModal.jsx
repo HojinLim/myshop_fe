@@ -54,6 +54,7 @@ const EditProductModal = ({
     price: '',
     stock: '',
   });
+  console.log(formList);
 
   useEffect(() => {
     setOpen(modalOpen);

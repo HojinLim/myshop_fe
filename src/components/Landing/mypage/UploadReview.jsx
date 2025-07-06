@@ -88,8 +88,8 @@ const UploadReview = () => {
     }
   };
   const clickHandleReview = async () => {
-    const { id: option_id } = item.product_option;
-    const { id: prodcut_id } = item.product_option.Product;
+    const { id: option_id } = item?.product_option || {};
+    const { id: prodcut_id } = item.Product;
 
     if (!rate) {
       message.warning('평가는 필수입니다!');
@@ -99,7 +99,7 @@ const UploadReview = () => {
     const data = {
       user_id: user.id,
       product_id: prodcut_id,
-      option_id: option_id,
+      option_id: option_id || null,
       rating: rate,
       content: content || null,
       gender: userInfo['gender'] || null,
@@ -142,11 +142,9 @@ const UploadReview = () => {
         <div className="aspect-square overflow-hidden w-32">
           <img
             src={
-              item?.product_option?.Product?.ProductImages.find(
-                (img) => img.type === 'main'
-              )
+              item?.Product?.ProductImages.find((img) => img.type === 'main')
                 ? returnBucketUrl(
-                    item?.product_option?.Product?.ProductImages.find(
+                    item?.Product?.ProductImages.find(
                       (img) => img.type === 'main'
                     ).imageUrl
                   )
@@ -155,8 +153,14 @@ const UploadReview = () => {
           />
         </div>
         <div className="flex flex-col justify-end p-2">
-          <p>{item.product_option.Product.name}</p>
-          <p>{`${item.product_option.color} · ${item.product_option.size}`}</p>
+          <p>{item.Product.name}</p>
+          {item?.product_option?.size || item?.product_option?.color ? (
+            <>
+              <p>{`${item.product_option.color} · ${item.product_option.size}`}</p>
+            </>
+          ) : (
+            <p>옵션 없음</p>
+          )}
         </div>
       </Flex>
       <Flex className="items-center !mt-3">

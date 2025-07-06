@@ -51,11 +51,19 @@ const Index = () => {
       if (Array.isArray(res.cartItems)) {
         setCarts(res.cartItems);
         // 장바구니 데이터가 변경되면 선택된 카트 목록도 초기화하거나 재검증
-        setSelectedCarts((prev) =>
-          prev.filter((selectedItem) =>
-            res.cartItems.some((newItem) => newItem.id === selectedItem.id)
-          )
-        );
+        setSelectedCarts((prev) => {
+          const newSelected = prev
+            .filter((selectedItem) =>
+              res.cartItems.some((newItem) => newItem.id === selectedItem.id)
+            )
+            .map((selectedItem) => {
+              const updatedItem = res.cartItems.find(
+                (newItem) => newItem.id === selectedItem.id
+              );
+              return updatedItem ? updatedItem : selectedItem; // 최신 데이터로 업데이트
+            });
+          return newSelected;
+        });
       } else {
         setCarts([]);
       }
@@ -75,6 +83,8 @@ const Index = () => {
     }
 
     // 재고 확인 로직 (옵션 상품과 단일 상품 구분)
+    console.log(item.Product);
+
     let maxStock = 0;
     if (item.product_option_id) {
       // 옵션 상품
@@ -101,6 +111,7 @@ const Index = () => {
       product_id: item.product_option_id ? null : item.product_id, // 단일 상품인 경우 product_id 사용
       quantity: updateQuantity,
     };
+    console.log(params);
 
     try {
       await updateCartQuantity(params);
@@ -160,6 +171,7 @@ const Index = () => {
       setSelectedCarts([]);
     }
   };
+  console.log(selectedCarts);
 
   // 선택된 상품의 총 상품 가격 계산
   const totalPrice = () => {
@@ -193,7 +205,7 @@ const Index = () => {
       } else {
         // 단일 상품
         return {
-          id: item.Product.id, // 상품 ID
+          id: null,
           size: null, // 옵션 없으므로 null
           color: null, // 옵션 없으므로 null
           price: item.Product.discountPrice, // 단일 상품의 할인 가격
@@ -248,7 +260,7 @@ const Index = () => {
               onChange={handleAllCheck}
               className="mr-2"
             />
-            <p>{`전체선택(${selectedCarts.length || 0}/${
+            <p className="ml-2">{`전체선택(${selectedCarts.length || 0}/${
               carts.length || 0
             })`}</p>
           </div>
@@ -429,11 +441,10 @@ const Index = () => {
             <p>총 상품금액</p>
             <p>{totalPrice()}원</p>
           </Flex>
-          <Flex justify="space-between" className="mb-2">
+          {/* <Flex justify="space-between" className="mb-2">
             <p>상품할인</p>
-            {/* 상품 할인 금액은 개별 상품의 originPrice와 discountPrice 차이로 계산해야 함 */}
-            <p>0원</p> {/* TODO: 실제 할인 금액 계산 로직 추가 필요 */}
-          </Flex>
+            <p>0원</p>
+          </Flex> */}
           <Flex justify="space-between" className="mb-2">
             <p>배송비</p>
             <p>무료배송</p>

@@ -315,7 +315,7 @@ const index = () => {
               </Button>
             </Flex>
           </Col>
-          <Col span={24} className="mt-3 overflow-x-auto overflow-y-hidden">
+          <Col span={24} className="mt-3 ">
             <Flex justify="space-between">
               <h4>상품 관리</h4>
               <Select
@@ -328,18 +328,20 @@ const index = () => {
               />
               {/* 상품 관리 테이블 */}
             </Flex>
-            <Table
-              rowKey="id"
-              className={styles.table}
-              columns={columns}
-              dataSource={products}
-              pagination={{
-                current: currentPage,
-                pageSize: 6,
-                total: totalCount,
-                onChange: (page) => setCurrentPage(page),
-              }}
-            />
+            <div className="overflow-x-auto overflow-y-hidden">
+              <Table
+                rowKey="id"
+                className={styles.table}
+                columns={columns}
+                dataSource={products}
+                pagination={{
+                  current: currentPage,
+                  pageSize: 6,
+                  total: totalCount,
+                  onChange: (page) => setCurrentPage(page),
+                }}
+              />
+            </div>
           </Col>
         </Col>
         {/* 상품 추가 영역 */}

@@ -2,7 +2,7 @@ import { Content } from 'antd/es/layout/layout';
 import React, { useEffect, useState } from 'react';
 import styles from './index.module.css';
 import MenuHeader from '@/components/common/MenuHeader';
-import { Divider, Flex, Rate } from 'antd';
+import { Divider, Flex, message, Rate } from 'antd';
 import {
   EllipsisOutlined,
   HeartFilled,
@@ -37,7 +37,7 @@ const ReviewList = () => {
     try {
       await deleteReview(reviewId);
       fetchMyReviews();
-      alert('리뷰가 삭제되었습니다.');
+      message.success('리뷰가 삭제되었습니다.');
     } catch (err) {
       alert('삭제 중 오류 발생');
       console.error(err);
@@ -93,9 +93,12 @@ const ReviewList = () => {
               <Flex vertical justify="flex-end" className="!p-2">
                 <p>{review.Product.name}</p>
                 <p className="text-gray-500">
-                  {`${review.product_option.color} · ${
-                    review.product_option.size
-                  } |
+                  {`${
+                    review.product_option
+                      ? `${review.product_option.color} · 
+                    ${review.product_option.size}`
+                      : ''
+                  }
                   ${dayjs(review.createdAt).format('YYYY.MM.DD')} 구매확정`}
                 </p>
               </Flex>

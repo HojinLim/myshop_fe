@@ -132,10 +132,14 @@ const ReviewLayout = (props) => {
               </Flex>
             )}
             <Flex>
-              <p className="mr-3 text-gray-400">상품 구매 옵션</p>
-              <p>
-                {review.product_option.color} | {review.product_option.size}
-              </p>
+              {review.product_option && (
+                <>
+                  <p className="mr-3 text-gray-400">상품 구매 옵션</p>
+                  <p>
+                    {review.product_option.color} | {review.product_option.size}
+                  </p>
+                </>
+              )}
             </Flex>
             <Divider />
           </div>
