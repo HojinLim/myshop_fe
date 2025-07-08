@@ -1,4 +1,5 @@
 import { message } from 'antd';
+import axios from 'axios';
 
 const back_url = import.meta.env.VITE_BACK_URL;
 
@@ -116,18 +117,18 @@ const createProductOption = async (options) => {
 // 상품 옵션 조회
 const getProductOption = async (id) => {
   try {
-    const response = await fetch(
+    const response = await axios(
       `${back_url}/product/product_options?product_id=${id}`
     );
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || `HTTP 오류: ${response.status}`);
-    }
+    // if (!response.ok) {
+    //   const errorData = await response.json();
+    //   throw new Error(errorData.message || `HTTP 오류: ${response.status}`);
+    // }
 
-    return await response.json();
+    return await response.data;
   } catch (error) {
-    console.error('⚠️ 오류 발생:', error.message); // 에러 로그 출력
+    // console.error('⚠️ 오류 발생:', error.message); // 에러 로그 출력
     throw error; // 에러를 다시 던져서 상위 함수에서 처리할 수 있게 함
   }
 };

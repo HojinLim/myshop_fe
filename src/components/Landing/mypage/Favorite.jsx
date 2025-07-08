@@ -17,6 +17,7 @@ import { Badge, Button, Flex, Popconfirm, Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { discountPercent, returnBucketUrl } from '@/utils';
 import { fetchCartLength } from '@/store/slices/cartSlice';
+import { setLoading } from '@/store/slices/loadingSlice';
 
 const Favorite = () => {
   const user = useSelector((state) => state.user.data);
@@ -34,11 +35,13 @@ const Favorite = () => {
   }, [dispatch]);
 
   const fetchMyFavorite = async () => {
+    dispatch(setLoading(true));
     await myFavorite(user.id)
       .then((res) => {
         setFavorites(res);
       })
-      .catch((err) => {});
+      .catch((err) => {})
+      .finally(() => dispatch(setLoading(false)));
   };
   const clickFavorite = async (product) => {
     const isDeleted = product.delete;

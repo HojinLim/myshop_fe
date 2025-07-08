@@ -155,12 +155,15 @@ const index = () => {
           setTotalCount(res.totalCount);
         } else {
           setProducts([]);
+          setCurrentPage(1);
+          setTotalCount(res.totalCount);
         }
       })
       .finally(() => {
         dispath(setLoading(false));
       });
   };
+
   const handleDelete = async (id) => {
     await deleteProduct(id)
       .then((res) => {

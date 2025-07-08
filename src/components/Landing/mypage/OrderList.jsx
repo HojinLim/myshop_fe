@@ -17,12 +17,13 @@ import {
 import styles from './index.module.css';
 import MenuHeader from '@/components/common/MenuHeader';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getOrderList } from '@/api/order';
 import { returnBucketUrl, toWon } from '@/utils'; // toWon 임포트
 import dayjs from '@/utils/dayjs';
 import MenuDrawer from '@/components/common/MenuDrawer';
 import { refundProduct } from '@/api/payment';
+import { setLoading } from '@/store/slices/loadingSlice';
 
 const OrderList = () => {
   const navigate = useNavigate();
@@ -31,6 +32,8 @@ const OrderList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5); // 기본 5개
   const [pageInfo, setPageInfo] = useState({ limit: 5, totalCount: 10 });
+
+  const dispatch = useDispatch();
 
   // 사용자 ID가 없으면 로그인 페이지로 리다이렉트
   // 이 부분은 컴포넌트 최상단보다는 useEffect 내에서 처리하는 것이 일반적입니다.
@@ -47,6 +50,7 @@ const OrderList = () => {
     // user.id가 없으면 API 호출하지 않음
     if (!user?.id) return;
 
+    dispatch(setLoading(true));
     try {
       const res = await getOrderList(user.id, currentPage, pageSize);
       if (Array.isArray(res.data) && res.data.length > 0) {
@@ -69,9 +73,11 @@ const OrderList = () => {
       setOrderList([]);
       setPageInfo({ limit: 0, totalCount: 0 });
     }
+    dispatch(setLoading(false));
   };
 
   const clickRefund = async (imp_uid, amount, reason, order_item_id) => {
+    dispatch(setLoading(true));
     try {
       await refundProduct(imp_uid, amount, reason, order_item_id);
       fetchOrderList(); // 환불 후 목록 새로고침
@@ -81,6 +87,7 @@ const OrderList = () => {
       // 백엔드에서 에러 메시지를 넘겨준다면 해당 메시지를 사용
       message.error(err.response?.data?.message || '환불에 실패했습니다.');
     }
+    dispatch(setLoading(false));
   };
 
   return (

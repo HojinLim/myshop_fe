@@ -26,7 +26,7 @@ import {
   updateProductOption,
 } from '@/api/product';
 import logo from '@/assets/images/logo.png';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from '@/store/slices/loadingSlice';
 import { returnBucketUrl } from '@/utils';
 import { useMediaQuery } from 'react-responsive';
@@ -40,7 +40,7 @@ const EditProductModal = ({
 }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(modalOpen);
-  const [productOptions, setProductOptions] = useState([]);
+
   const isXL = useMediaQuery({ minWidth: 1200 });
 
   //  상품 옵션 조회 입력 폼 상태 (여러 개 관리)
@@ -54,7 +54,6 @@ const EditProductModal = ({
     price: '',
     stock: '',
   });
-  console.log(formList);
 
   useEffect(() => {
     setOpen(modalOpen);
@@ -63,15 +62,32 @@ const EditProductModal = ({
   //  상품 옵션 목록 가져오기
   const fetchProductOptions = async () => {
     if (!productInfo?.id) return;
+    dispatch(setLoading(true));
 
     try {
       const res = await getProductOption(productInfo.id);
-      setProductOptions(res.product_option ?? []);
-      setFormList(res.product_option ?? []); //  `formList`에 옵션 데이터 저장
+      setFormList(res.product_option || []); //  `formList`에 옵션 데이터 저장
+
+      if (res.productWithStock) {
+        const { stock, discountPrice, ProductImages } = res.productWithStock;
+        setFormList([
+          {
+            product_id: productInfo.id,
+            id: '-',
+            stock,
+            color: null,
+            size: null,
+            price: discountPrice,
+            Product: { ProductImages },
+          },
+        ]);
+      }
     } catch (err) {
       console.error('⚠️ 옵션 가져오기 실패:', err);
     }
+    dispatch(setLoading(false));
   };
+  console.log(formList);
 
   useEffect(() => {
     if (productInfo?.id) {
@@ -112,6 +128,7 @@ const EditProductModal = ({
       message.success('옵션 생성 완료!');
     } catch (error) {
       message.error(`옵션 생성 실패: ${error.message}`);
+      resetField();
     }
   };
   //  상품 옵션 삭제
@@ -169,6 +186,7 @@ const EditProductModal = ({
       render: (_, record) => (
         <Input
           value={record.color}
+          disabled={!record.color}
           onChange={(e) => {
             onChangeFormList(record.id, 'color', e.target.value);
           }}
@@ -182,6 +200,7 @@ const EditProductModal = ({
       render: (_, record) => (
         <Input
           value={record.size}
+          disabled={!record.color}
           onChange={(e) => onChangeFormList(record.id, 'size', e.target.value)}
         />
       ),
@@ -225,7 +244,11 @@ const EditProductModal = ({
           </Popconfirm>
           <Popconfirm
             title={`${record.id}번 옵션을 정말 삭제합니까?`}
-            onConfirm={() => handleDelete(record.id)}
+            onConfirm={() =>
+              handleDelete(
+                record.id === '-' ? Number(record.product_id) : record.id
+              )
+            }
           >
             <Tooltip title="옵션 수정">
               {isXL ? <a>옵션 삭제</a> : <DeleteOutlined />}

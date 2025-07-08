@@ -111,7 +111,6 @@ const Index = () => {
       product_id: item.product_option_id ? null : item.product_id, // 단일 상품인 경우 product_id 사용
       quantity: updateQuantity,
     };
-    console.log(params);
 
     try {
       await updateCartQuantity(params);
@@ -171,7 +170,6 @@ const Index = () => {
       setSelectedCarts([]);
     }
   };
-  console.log(selectedCarts);
 
   // 선택된 상품의 총 상품 가격 계산
   const totalPrice = () => {
