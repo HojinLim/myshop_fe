@@ -5,3 +5,7 @@
   max-width: 100% !important;
   overflow-x: auto;
 }
+.content_layout {
+  width: 100%;
+  max-width: 80%;
+}

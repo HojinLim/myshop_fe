@@ -1,4 +1,14 @@
-import { Button, Flex, Input, Layout, message, Popconfirm, Table } from 'antd';
+import {
+  Button,
+  Col,
+  Flex,
+  Input,
+  Layout,
+  message,
+  Popconfirm,
+  Row,
+  Table,
+} from 'antd';
 import dayjs from '@/utils/dayjs'; // 경로는 프로젝트에 맞게 수정
 import React, { useEffect, useState } from 'react';
 import { getAllUsers } from '@/api/user';
@@ -105,95 +115,103 @@ const UserTable = () => {
 
   return (
     <Layout>
-      <Table
-        className={styles.table}
-        columns={columns}
-        dataSource={data}
-        rowKey="id"
-        bordered
-        rowClassName={(record) =>
-          expandedRowKeys.includes(record.id) ? styles.expandedRow : ''
-        }
-        expandable={{
-          expandedRowKeys,
-          expandedRowRender: (record) => (
-            <Layout>
-              <p className="text-xl font-bold !mb-5">포인트 전송/회수</p>
-              <Content className="rounded-lg border p-5">
-                <Flex>
-                  <span className="w-30">포인트</span>
-                  <Input
-                    className="w-70"
-                    variant="underlined"
-                    placeholder="전송할 포인트"
-                    value={points}
-                    onChange={(e) => {
-                      setPoints(e.target.value);
-                    }}
-                  />
-                </Flex>
-                <Flex className="!mt-3">
-                  <span className="w-30">사유</span>
-                  <Input
-                    placeholder="관리자 포인트"
-                    variant="underlined"
-                    value={reason}
-                    onChange={(e) => {
-                      setReason(e.target.value);
-                    }}
-                  />
-                </Flex>
-                <div className="w-full flex justify-end">
-                  <Button
-                    className="w-30 !mt-5 !place-self-end"
-                    onClick={() => clickChangePoint(record.id)}
-                  >
-                    전송
-                  </Button>
-                </div>
-              </Content>
-              <p className="text-xl font-bold !my-8">작성한 리뷰</p>
-              <Content className="rounded-lg border p-5">
-                {reviews.length > 0 ? (
-                  reviews.map((review, idx) => (
-                    <Content key={idx}>
-                      <Flex justify="space-between" className="!my-3">
-                        <div>
-                          <span className="w-5 text-right">{review.id}:</span>
-                          <span className="ml-5">{review.content || '_'}</span>
-                        </div>
-                        <Popconfirm
-                          title={`${review.id}을(를) 정말 삭제합니까?`}
-                          onConfirm={() => clickDeleteReview(review.id)}
-                        >
-                          <Button>삭제</Button>
-                        </Popconfirm>
-                      </Flex>
-                    </Content>
-                  ))
-                ) : (
-                  <div>작성한 리뷰가 없습니다.</div>
-                )}
-              </Content>
-            </Layout>
-          ),
-          onExpand: (expanded, record) => {
-            if (expanded) {
-              setExpandedRowKeys([record.id]); // 하나만 펼치게 설정
-            } else {
-              setExpandedRowKeys([]);
+      <Row>
+        <Col span={24}>
+          <Table
+            className={styles.table}
+            columns={columns}
+            dataSource={data}
+            rowKey="id"
+            bordered
+            rowClassName={(record) =>
+              expandedRowKeys.includes(record.id) ? styles.expandedRow : ''
             }
-          },
-          rowExpandable: (record) => !!record.email,
-          expandIcon: ({ expanded, onExpand, record }) =>
-            expanded ? (
-              <DownOutlined onClick={(e) => onExpand(record, e)} />
-            ) : (
-              <RightOutlined onClick={(e) => onExpand(record, e)} />
-            ),
-        }}
-        pagination={false}
-      />
+            expandable={{
+              expandedRowKeys,
+              expandedRowRender: (record) => (
+                <Layout className={styles.content_layout}>
+                  <p className="text-xl font-bold !mb-5">포인트 전송/회수</p>
+                  <Content className="rounded-lg border p-5">
+                    <Flex>
+                      <span className="w-30">포인트</span>
+                      <Input
+                        className="w-70"
+                        variant="underlined"
+                        placeholder="전송할 포인트"
+                        value={points}
+                        onChange={(e) => {
+                          setPoints(e.target.value);
+                        }}
+                      />
+                    </Flex>
+                    <Flex className="!mt-3">
+                      <span className="w-30">사유</span>
+                      <Input
+                        placeholder="관리자 포인트"
+                        variant="underlined"
+                        value={reason}
+                        onChange={(e) => {
+                          setReason(e.target.value);
+                        }}
+                      />
+                    </Flex>
+                    <div className="w-full flex justify-end">
+                      <Button
+                        className="w-30 !mt-5 !place-self-end"
+                        onClick={() => clickChangePoint(record.id)}
+                      >
+                        전송
+                      </Button>
+                    </div>
+                  </Content>
+                  <p className="text-xl font-bold !my-8">작성한 리뷰</p>
+                  <Content className="rounded-lg border p-5">
+                    {reviews.length > 0 ? (
+                      reviews.map((review, idx) => (
+                        <Content key={idx}>
+                          <Flex justify="space-between" className="!my-3">
+                            <div>
+                              <span className="w-5 text-right">
+                                {review.id}:
+                              </span>
+                              <span className="ml-5">
+                                {review.content || '_'}
+                              </span>
+                            </div>
+                            <Popconfirm
+                              title={`${review.id}을(를) 정말 삭제합니까?`}
+                              onConfirm={() => clickDeleteReview(review.id)}
+                            >
+                              <Button>삭제</Button>
+                            </Popconfirm>
+                          </Flex>
+                        </Content>
+                      ))
+                    ) : (
+                      <div>작성한 리뷰가 없습니다.</div>
+                    )}
+                  </Content>
+                </Layout>
+              ),
+              onExpand: (expanded, record) => {
+                if (expanded) {
+                  setExpandedRowKeys([record.id]); // 하나만 펼치게 설정
+                } else {
+                  setExpandedRowKeys([]);
+                }
+              },
+              rowExpandable: (record) => !!record.email,
+              expandIcon: ({ expanded, onExpand, record }) =>
+                expanded ? (
+                  <DownOutlined onClick={(e) => onExpand(record, e)} />
+                ) : (
+                  <RightOutlined onClick={(e) => onExpand(record, e)} />
+                ),
+            }}
+            pagination={false}
+          />
+        </Col>
+      </Row>
     </Layout>
   );
 };

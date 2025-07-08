@@ -87,7 +87,6 @@ const EditProductModal = ({
     }
     dispatch(setLoading(false));
   };
-  console.log(formList);
 
   useEffect(() => {
     if (productInfo?.id) {
