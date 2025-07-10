@@ -28,7 +28,7 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 | 작업                                       | 미리보기                           |
 | ------------------------------------------ | ----------------------------- |
 | **메인 페이지**                           |  ![메인페이지](https://github.com/CTDKSKM/hkmall/assets/69897998/1e8a4f2a-8985-4b70-a02f-a016a6e3caab)|
-| **로그인 페이지**                         |  <img  alt="detail" src="https://github.com/user-attachments/assets/9351d3e6-b372-4c13-8eb9-abb0d8e37a31" />|
+| **로그인 페이지**                         |  <img width="300" alt="detail" src="https://github.com/user-attachments/assets/9351d3e6-b372-4c13-8eb9-abb0d8e37a31" />|
 
 
 
