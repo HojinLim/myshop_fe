@@ -35,7 +35,7 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 
 -  상품 검색
   
-<img width="400" alt="gif" src="https://github.com/user-attachments/assets/300dd526-8223-46a2-bcd4-b195d5480187" />
+<img alt="gif" src="https://github.com/user-attachments/assets/300dd526-8223-46a2-bcd4-b195d5480187" />
 
 ---
 
