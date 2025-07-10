@@ -13,18 +13,16 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 
 ## 📸 스크린샷
 
-- 🏠 메인 페이지
+- 메인 페이지
 
 > 상품 목록과 카테고리, 상단 헤더 및 로그인/회원가입 등이 포함된 메인 홈 화면입니다.
-<img width="600" alt="Image" src="https://github.com/user-attachments/assets/8f76e09a-5a69-4c4f-9086-73f0158dfda5" />
+<img width="500" alt="Image" src="https://github.com/user-attachments/assets/8f76e09a-5a69-4c4f-9086-73f0158dfda5" />
 ---
 
-### 🔍 상품 상세 페이지
-
+-  상품 상세 페이지
+  
 > 개별 상품 정보 확인, 수량 선택, 장바구니 및 찜하기 버튼이 포함된 상세 페이지입니다.
-
-![상품 상세](https://github.com/your-id/your-repo/assets/your-img-id/product_detail.png)
-
+<img width="500" height="1324" alt="detail" src="https://github.com/user-attachments/assets/9351d3e6-b372-4c13-8eb9-abb0d8e37a31" />
 ---
 
 ### 🧑‍💼 사용자 기능
