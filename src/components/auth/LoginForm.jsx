@@ -18,8 +18,11 @@ import theme from '@/assets/styles/theme';
 
 import FormHeader from './common/FormHeader';
 import { fetchUserInfo, login } from '@/store/slices/userSlice';
+import { transferCart } from '@/api/cart';
+import store from '@/store';
 
 const LoginForm = () => {
+  const [isLogin, setLogin] = useState(false);
   const navigate = useNavigate();
   // antd 메시지 훅
   const [messageApi, contextHolder] = message.useMessage();
@@ -42,25 +45,22 @@ const LoginForm = () => {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+
   const clickLogin = async () => {
     const stringForm = JSON.stringify(loginForm);
     const url = import.meta.env.VITE_BACK_URL || 'https://video-down.shop/api';
+
     try {
-      const response = await fetch(
-        // `${import.meta.env.VITE_BACK_URL}/auth/login`,
-        `${url}/auth/login`,
-        {
-          method: 'POST',
-          body: stringForm,
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            //
-          },
-        }
-      );
+      const response = await fetch(`${url}/auth/login`, {
+        method: 'POST',
+        body: stringForm,
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      });
+
       if (!response.ok) {
-        //  에러 처리
         const errorData = await response.json();
         setError({
           title: '로그인 실패!',
@@ -70,29 +70,25 @@ const LoginForm = () => {
         return;
       }
 
-      // 성공 처리
+      //  로그인 성공
       const data = await response.json();
       console.log(data);
 
       if (data.token) {
         localStorage.setItem('token', data.token);
       }
-      await messageApi
-        .open({
-          type: 'success',
-          content: '로그인 성공 :)',
-          duration: 2,
-        })
-        .then(() => {
-          // 로그인 성공 후 유저 정보 가져오기
-          dispatch(fetchUserInfo()); // 유저 정보 가져오기
-          // 홈으로 이동
-          navigate('/');
-        })
 
-        .catch((err) => {
-          console.log(err, '네트워크 오류 발생!');
-        });
+      await messageApi.open({
+        type: 'success',
+        content: '로그인 성공 :)',
+        duration: 2,
+      });
+
+      //  Redux에 유저 정보 업데이트
+      dispatch(fetchUserInfo());
+      setLogin(true);
+      //  홈으로 이동
+      navigate('/', { replace: true }); // 다시 로그인 페이지로 안오게끔
     } catch (error) {
       console.error('네트워크 오류:', error);
       alert('서버와의 연결에 문제가 발생했습니다.');
@@ -102,6 +98,7 @@ const LoginForm = () => {
   const onChangeForm = (value, type) => {
     setForm({ ...loginForm, [type]: value });
   };
+
   return (
     <>
       {contextHolder}

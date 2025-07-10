@@ -75,14 +75,14 @@ const index = () => {
                 />
               </div>
               <Flex>
-                <p>
+                <p className="mr-2 font-bold text-xl text-red-500">
                   {discountPercent(product.originPrice, product.discountPrice)}%
                 </p>
-                <Typography.Text level={5}>
+                <p className="font-bold text-xl">
                   {Number(product.discountPrice).toLocaleString() + '원'}
-                </Typography.Text>
+                </p>
               </Flex>
-              <div>{product.name}</div>
+              <div className="text-xl">{product.name}</div>
             </Col>
           ))}
         </Row>
