@@ -3,18 +3,23 @@ import { Content } from 'antd/es/layout/layout';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import NotFound from '@/components/notfound';
+import dayjs from '@/utils/dayjs';
 
 const PaymentSuccess = () => {
   const location = useLocation();
   const navigate = useNavigate();
   if (!location.state) return <NotFound />;
 
+  const { newOrder } = location.state;
+
   return (
     <Content className="h-full content-center">
       <Result
         status="success"
         title="주문이 완료되었습니다"
-        subTitle="2023.11.10 주문하신 상품의 주문번호는 2013 입니다."
+        subTitle={`${dayjs(newOrder?.createdAt).format(
+          'YYYY.MM.DD'
+        )} 주문하신 상품의 주문번호는 ${newOrder?.id} 입니다.`}
         extra={[
           <Button
             key="list"

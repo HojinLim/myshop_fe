@@ -47,6 +47,11 @@ const UploadLayout = (props) => {
 
   // 상품 업로드
   const uploadProductHandler = async () => {
+    const { name, category, originPrice } = productForm;
+    if (!name || !category || !originPrice) {
+      message.warning('필수 입력란이 비어있습니다.');
+      return;
+    }
     await uploadProduct(productForm)
       .then((res) => {
         message.success('상품 등록 완료 ');
@@ -238,15 +243,7 @@ const UploadLayout = (props) => {
               />
             </Form.Item>
             <Typography.Title level={5}>할인된 가격</Typography.Title>
-            <Form.Item
-              name="discountPrice"
-              rules={[
-                {
-                  required: true,
-                  message: '폼을 입력해주세요!',
-                },
-              ]}
-            >
+            <Form.Item name="discountPrice">
               <InputNumber
                 className={styles.inputNumber}
                 type="text"
@@ -260,17 +257,17 @@ const UploadLayout = (props) => {
                 variant="underlined"
               />
             </Form.Item>
+            <Col span={24}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="w-full !mb-3"
+                onClick={uploadProductHandler}
+              >
+                상품 등록
+              </Button>
+            </Col>
           </Form>
-        </Col>
-        <Col span={24}>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="w-full !mb-3"
-            onClick={uploadProductHandler}
-          >
-            상품 등록
-          </Button>
         </Col>
       </Row>
     </Col>

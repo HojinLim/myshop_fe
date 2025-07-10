@@ -39,12 +39,8 @@ const LoginForm = () => {
     errorOpen: false,
   });
 
-  const onFinish = (values) => {
-    console.log('Success:', values);
-  };
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
+  const onFinish = (values) => {};
+  const onFinishFailed = (errorInfo) => {};
 
   const clickLogin = async () => {
     const stringForm = JSON.stringify(loginForm);
@@ -72,7 +68,6 @@ const LoginForm = () => {
 
       //  로그인 성공
       const data = await response.json();
-      console.log(data);
 
       if (data.token) {
         localStorage.setItem('token', data.token);

@@ -122,7 +122,6 @@ const index = () => {
               totalSales,
             }))
             .sort((a, b) => (dayjs(a.month).isAfter(dayjs(b.month)) ? 1 : -1));
-          console.log(categoryResults);
           setPieData(categoryResults);
         }
       })

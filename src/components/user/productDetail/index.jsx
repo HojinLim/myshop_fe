@@ -109,7 +109,7 @@ const Index = () => {
   const clickProductLike = async () => {
     if (!user.id) {
       // 로그인 여부 확인
-      message.warn('로그인 후 이용 가능합니다.');
+      message.warning('로그인 후 이용 가능합니다.');
       return;
     }
     try {
@@ -159,7 +159,6 @@ const Index = () => {
         // fetchedProduct가 유효한지 확인 후 defaultItem 설정
         if (fetchedProduct && fetchedProduct.id) {
           // <-- 인자로 받은 fetchedProduct 사용
-          console.log('옵션이 없는 상품의 defaultItem 설정:', fetchedProduct);
           const defaultItem = {
             id: null,
             price: fetchedProduct.discountPrice,
@@ -167,7 +166,9 @@ const Index = () => {
             quantity: 1,
             color: null,
             size: null,
+            imageUrl: fetchedProduct.ProductImages[0].imageUrl,
           };
+
           setCart([defaultItem]);
         } else {
           console.warn(
@@ -259,7 +260,7 @@ const Index = () => {
   ];
 
   const onChange = (key) => {
-    console.log(`탭 변경: ${key}`);
+    // console.log(`탭 변경: ${key}`);
   };
 
   // 현재 URL을 클립보드에 복사하는 함수
@@ -323,7 +324,7 @@ const Index = () => {
     );
 
     if (!selectedProduct) {
-      message.warn('선택된 옵션에 해당하는 상품이 없습니다.');
+      message.warning('선택된 옵션에 해당하는 상품이 없습니다.');
       return; // 선택한 옵션이 없으면 종료
     }
 
@@ -344,7 +345,12 @@ const Index = () => {
       // 새로운 상품이면 장바구니에 추가
       return [
         ...prevCart,
-        { ...selectedProduct, quantity: 1, product_id: product.id },
+        {
+          ...selectedProduct,
+          quantity: 1,
+          product_id: product.id,
+          imageUrl: product.ProductImages[0].imageUrl,
+        },
       ]; // product_id 추가
     });
   };
@@ -378,7 +384,7 @@ const Index = () => {
   // '장바구니 담기' 버튼 클릭 후 실제 장바구니 API 호출
   const clickAddToCart = async () => {
     if (!cart || cart.length <= 0) {
-      message.warn('장바구니에 담을 상품이 없습니다.');
+      message.warning('장바구니에 담을 상품이 없습니다.');
       return;
     }
 
@@ -445,7 +451,7 @@ const Index = () => {
   // '구매하기' 버튼 클릭 핸들러
   const clickBuyHandler = () => {
     if (cart.length <= 0) {
-      message.warn('구매할 상품이 없습니다.');
+      message.warning('구매할 상품이 없습니다.');
       return;
     }
     navigate('/payment', { state: cart }); // 결제 페이지로 이동하며 선택된 상품 목록 전달

@@ -94,6 +94,7 @@ const UserTable = () => {
     await updateUserPoints(id, Number(points), reason)
       .then(() => {
         message.success('포인트 변경 완료');
+        fetchUser();
         setPoints(null);
       })
       .catch((err) => {

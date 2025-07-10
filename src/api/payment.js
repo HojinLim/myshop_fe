@@ -42,12 +42,12 @@ const testPayment = async (
           }),
         });
         const result = await res.json();
-        result;
+        // result;
 
         if (result.success) {
-          alert('결제 성공!');
+          alert('결제 완료!');
           window.location.href = '/mypage/orderList';
-          rsp;
+          return await result;
         } else {
           alert('결제 검증 실패');
         }

@@ -130,7 +130,7 @@ const OptionDrawer = (props) => {
   // '변경하기' 버튼 클릭 핸들러
   const clickChange = async () => {
     if (!checkOptions.id) {
-      message.warn('색상과 사이즈를 모두 선택해주세요.');
+      message.warning('색상과 사이즈를 모두 선택해주세요.');
       return;
     }
 
@@ -144,7 +144,7 @@ const OptionDrawer = (props) => {
     // 재고 확인
     const newOption = options.find((opt) => opt.id === checkOptions.id);
     if (newOption && newOption.stock === 0) {
-      message.warn('선택하신 옵션은 품절되었습니다.');
+      message.warning('선택하신 옵션은 품절되었습니다.');
       return;
     }
 

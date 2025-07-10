@@ -83,7 +83,6 @@ const Index = () => {
     }
 
     // 재고 확인 로직 (옵션 상품과 단일 상품 구분)
-    console.log(item.Product);
 
     let maxStock = 0;
     if (item.product_option_id) {
@@ -95,13 +94,13 @@ const Index = () => {
     }
 
     if (updateQuantity > maxStock && maxStock > 0) {
-      message.warn(
+      message.warning(
         `재고가 부족합니다. 최대 ${maxStock}개까지 구매 가능합니다.`
       );
       return;
     }
     if (maxStock === 0 && type === 'plus') {
-      message.warn('품절된 상품입니다.');
+      message.warning('품절된 상품입니다.');
       return;
     }
 
@@ -136,7 +135,7 @@ const Index = () => {
   // 장바구니에서 선택된 해당 상품들을 삭제
   const confirmDeleteSelectCart = async () => {
     if (selectedCarts.length <= 0) {
-      message.warn('선택된 상품이 없습니다.');
+      message.warning('선택된 상품이 없습니다.');
       return;
     }
     try {
@@ -185,7 +184,7 @@ const Index = () => {
   // 구매 버튼 핸들러
   const buyHandler = () => {
     if (selectedCarts.length === 0) {
-      message.warn('구매할 상품을 선택해주세요.');
+      message.warning('구매할 상품을 선택해주세요.');
       return;
     }
     // 결제 페이지로 전달할 데이터 구조를 통일

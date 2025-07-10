@@ -94,7 +94,7 @@ const Index = () => {
   // 결제 수행 핸들러
   const onClickPayment = async () => {
     if (buttonIdx === null && finalPaymentAmount() > 0) {
-      message.warn('결제 방법을 선택해주세요.');
+      message.warning('결제 방법을 선택해주세요.');
       return;
     }
 
@@ -102,7 +102,7 @@ const Index = () => {
     if (finalPaymentAmount() === 0) {
       if (point === 0 && totalPrice() > 0) {
         // 상품 금액이 있는데 포인트 사용을 안 했을 경우
-        message.warn('결제할 금액이 0원입니다. 포인트를 사용해주세요.');
+        message.warning('결제할 금액이 0원입니다. 포인트를 사용해주세요.');
         return;
       }
       try {
@@ -126,7 +126,7 @@ const Index = () => {
     } else {
       // 다른 결제 방법 (현금, 휴대폰 등)은 현재 disabled 처리되어 있으므로 여기에 도달하지 않음
       // 만약 나중에 활성화된다면 각 PG사에 맞는 pay_method를 지정해야 함
-      message.warn('선택할 수 없는 결제 방법입니다.');
+      message.warning('선택할 수 없는 결제 방법입니다.');
       return;
     }
 
@@ -138,7 +138,9 @@ const Index = () => {
         items,
         finalPaymentAmount()
       );
-      if (res) {
+
+      if (res?.success) {
+        message.success('결제 성공!');
         navigate('/payment_success', { state: res });
       }
     } catch (err) {
@@ -166,6 +168,7 @@ const Index = () => {
       disabled: true,
     },
   ];
+  console.log(items);
 
   const { Text } = Typography;
   return (

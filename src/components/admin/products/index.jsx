@@ -172,9 +172,7 @@ const index = () => {
         message.success('상품 삭제 완료');
       })
 
-      .catch((err) => {
-        console.log(err);
-      })
+      .catch((err) => {})
       .finally(() => {
         dispath(setLoading(false));
       });
