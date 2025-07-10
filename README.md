@@ -1,4 +1,4 @@
-# 🛍️ 쇼핑몰 프로젝트
+![detail_gif](https://github.com/user-attachments/assets/31434505-6d68-412f-a8a9-3d72a87dee97)# 🛍️ 쇼핑몰 프로젝트
 
 React + Node.js 기반 풀스택 쇼핑몰 프로젝트입니다.  
 JWT 인증 기반 로그인, 상품 구매, 찜하기, 후기 작성 등 전자상거래의 기본 기능을 구현하였으며,  
@@ -26,7 +26,11 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 -  상품 상세 페이지
   
 > 개별 상품 정보 확인, 수량 선택, 장바구니 및 찜하기 버튼이 포함된 상세 페이지입니다.
+<!--
 <img width="300" height="1324" alt="detail" src="https://github.com/user-attachments/assets/9351d3e6-b372-4c13-8eb9-abb0d8e37a31" />
+-->
+<img width="400" alt="gif" src="https://github.com/user-attachments/assets/ec926636-bec5-4e18-a374-35feb7cfb6d3" />
+
 ---
 
 -  상품 상세 페이지
