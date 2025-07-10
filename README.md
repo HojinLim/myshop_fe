@@ -33,10 +33,10 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 
 ---
 
--  상품 상세 페이지
+-  상품 검색
   
-> 개별 상품 정보 확인, 수량 선택, 장바구니 및 찜하기 버튼이 포함된 상세 페이지입니다.
-<img width="300" height="1324" alt="detail" src="https://github.com/user-attachments/assets/9351d3e6-b372-4c13-8eb9-abb0d8e37a31" />
+<img width="400" alt="gif" alt="detail" src="https://github.com/user-attachments/assets/300dd526-8223-46a2-bcd4-b195d5480187" />
+
 ---
 
 
