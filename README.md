@@ -28,6 +28,7 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 - ✅ 상품 등록 / 수정 / 삭제 (CRUD)
 - ✅ 카테고리 관리 (CRUD)
 - ✅ 상품/주문 데이터 관리
+- ✅ Antd chart 이용한 매출 조회
 
 ---
 
