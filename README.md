@@ -6,7 +6,7 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 
 ## :rocket: 테스트 어드민 계정
 
-- ID: admin[at]test.com
+- ID: admin(골뱅이)test.com
 - PW: 123456
 
 ---
