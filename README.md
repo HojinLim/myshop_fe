@@ -16,7 +16,7 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 - 🏠 메인 페이지
 
 > 상품 목록과 카테고리, 상단 헤더 및 로그인/회원가입 등이 포함된 메인 홈 화면입니다.
-<img width="700" alt="Image" src="https://github.com/user-attachments/assets/8f76e09a-5a69-4c4f-9086-73f0158dfda5" />
+<img width="600" alt="Image" src="https://github.com/user-attachments/assets/8f76e09a-5a69-4c4f-9086-73f0158dfda5" />
 ---
 
 ### 🔍 상품 상세 페이지
