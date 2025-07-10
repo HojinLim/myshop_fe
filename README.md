@@ -11,7 +11,10 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 
 ---
 
-## ✅ 주요 기능
+## 📸 스크린샷
+
+### 🏠 메인 페이지
+<img src="public/logo.png" width="800"/>
 
 ### 🧑‍💼 사용자 기능
 
