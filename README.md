@@ -106,7 +106,9 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 -->
 <img width="400" alt="gif" src="https://github.com/user-attachments/assets/d47b0959-639a-46fe-a802-bedb9a0319d2" />
 
----
+<br/>
+<br/>
+<br/>
 
 -  상품 상세 페이지
   
@@ -116,74 +118,96 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 -->
 <img width="400" alt="gif" src="https://github.com/user-attachments/assets/ec926636-bec5-4e18-a374-35feb7cfb6d3" />
 
----
+<br/>
+<br/>
+<br/>
 
 -  상품 검색
   
 <img alt="gif" width="400" src="https://github.com/user-attachments/assets/da82b14b-6eee-4d53-ba8e-1b1bc603e47b" />
 
----
+<br/>
+<br/>
+<br/>
 
 -  상품 좋아요 기능
 > 선호하는 상품을 좋아요 리스트에 추가하거나 삭제합니다.
   
 <img alt="gif" width="400" src="https://github.com/user-attachments/assets/63eb73da-7b73-4c4f-ab37-893e4f74b8c9" />
 
----
+<br/>
+<br/>
+<br/>
 
 -  상품 좋아요 기능
 > 선호하는 상품을 좋아요 리스트에 추가하거나 삭제합니다.
   
 <img alt="gif" width="400" src="https://github.com/user-attachments/assets/63eb73da-7b73-4c4f-ab37-893e4f74b8c9" />
 
----
+<br/>
+<br/>
+<br/>
 
 -  주문 리스트 조회 및 환불
   
 <img alt="gif" width="400" src="https://github.com/user-attachments/assets/90ac3a67-a222-4544-9924-40f09e84bdb8" />
 
----
+<br/>
+<br/>
+<br/>
 
 -  상품 리뷰 작성
 > 주문한 제품의 리뷰를 작성합니다. (별점 제출만 필수 항목입니다.)
  
 <img alt="gif" width="400" src="https://github.com/user-attachments/assets/c53d301e-afe2-4938-8303-1a448e18b202" />
 
----
+<br/>
+<br/>
+<br/>
 
 -  쇼핑몰 포인트 조회
 > 자신이 보유한 포인트를 조회합니다. (포인트는 상품 구매 시 사용 가능)
  
 <img alt="png" width="400" src="https://github.com/user-attachments/assets/83b16821-879b-45a8-8bb6-0568900b05a7" />
 
----
+<br/>
+<br/>
+<br/>
 
 -  상품 구매
 > 원하는 상품을 바로 혹은 장바구니 추가된 상품을 선택해 구매합니다. (카카오페이 및 이니시스 테스트 구현)
  
 <img alt="gif" width="400" src="https://github.com/user-attachments/assets/4f986f03-3b92-4e3d-9b6e-017a303183dd" />
 
----
+<br/>
+<br/>
+<br/>
 
 -  어드민_ 대시보드
 > 쇼핑몰 매출 현황을 그래프나 수치로 확인 가능합니다.
  
 <img alt="gif" width="700" src="https://github.com/user-attachments/assets/dbe3aac9-d6a5-4ee1-b747-c10cd4e9e352" />
 
----
+<br/>
+<br/>
+<br/>
 
 -  어드민_ 카테고리 조정
 > 쇼핑몰 상품의 카테고리 메뉴들의 사진과 이름을 수정 및 삭제 가능합니다.
  
 <img alt="gif" width="700" src="https://github.com/user-attachments/assets/f5f9b458-f112-4598-b0ff-907f5e18027b" />
 
----
+<br/>
+<br/>
+<br/>
 
 -  어드민_ 상품 업로드
  
 <img alt="gif" width="700" src="https://github.com/user-attachments/assets/588523c1-d3c3-4752-a1a5-cb5e458161c6" />
 
----
+<br/>
+<br/>
+<br/>
 
 -  어드민_ 상품 옵션 조정
 > 등록된 상품의 세부적인 옵션(사이즈, 색상, 가격)을 생성, 조회, 수정 및 삭제합니다. <br/>
@@ -192,11 +216,14 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 
 <img alt="gif" width="700" src="https://github.com/user-attachments/assets/648380d2-345d-493a-8f3e-4eea47149cb8" />
 
----
+<br/>
+<br/>
+<br/>
 
 -  어드민_ 유저 관리
 > 쇼핑몰 가입된 유저 정보를 확인하고 포인트 송수신 및 부적절한 리뷰를 삭제 할 수 있습니다.
 
 <img alt="gif" width="700" src="https://github.com/user-attachments/assets/b2373b10-ef6f-43af-ac4b-97b04efab511" />
 
+<br/>
 
