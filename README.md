@@ -39,6 +39,68 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 
 ---
 
+-  상품 좋아요 기능
+> 선호하는 상품을 좋아요 리스트에 추가하거나 삭제합니다.
+  
+<img alt="gif" width="400" src="https://github.com/user-attachments/assets/63eb73da-7b73-4c4f-ab37-893e4f74b8c9" />
+
+---
+
+-  상품 좋아요 기능
+> 선호하는 상품을 좋아요 리스트에 추가하거나 삭제합니다.
+  
+<img alt="gif" width="400" src="https://github.com/user-attachments/assets/63eb73da-7b73-4c4f-ab37-893e4f74b8c9" />
+
+---
+
+-  주문 리스트 조회 및 환불
+  
+<img alt="gif" width="400" src="https://github.com/user-attachments/assets/90ac3a67-a222-4544-9924-40f09e84bdb8" />
+
+---
+
+-  상품 리뷰 작성
+> 주문한 제품의 리뷰를 작성합니다. (별점 제출만 필수 항목입니다.)
+ 
+<img alt="gif" width="400" src="https://github.com/user-attachments/assets/c53d301e-afe2-4938-8303-1a448e18b202" />
+
+---
+
+-  쇼핑몰 포인트 조회
+> 자신이 보유한 포인트를 조회합니다. (포인트는 상품 구매 시 사용 가능)
+ 
+<img alt="png" width="400" src="https://github.com/user-attachments/assets/83b16821-879b-45a8-8bb6-0568900b05a7" />
+
+---
+
+-  상품 구매
+> 원하는 상품을 바로 혹은 장바구니 추가된 상품을 선택해 구매합니다. (카카오페이 및 이니시스 테스트 구현)
+ 
+<img alt="gif" width="400" src="https://github.com/user-attachments/assets/4f986f03-3b92-4e3d-9b6e-017a303183dd" />
+
+---
+
+-  어드민_ 대시보드
+> 쇼핑몰 매출 현황을 그래프나 수치로 확인 가능합니다.
+ 
+<img alt="gif" width="400" src="https://github.com/user-attachments/assets/dbe3aac9-d6a5-4ee1-b747-c10cd4e9e352" />
+
+---
+
+-  어드민_ 대시보드
+> 쇼핑몰 매출 현황을 그래프나 수치로 확인 가능합니다.
+ 
+<img alt="gif" width="400" src="https://github.com/user-attachments/assets/dbe3aac9-d6a5-4ee1-b747-c10cd4e9e352" />
+
+---
+
+-  어드민_ 카테고리 조정
+> 쇼핑몰 상품의 카테고리 메뉴들의 사진과 이름을 수정 및 삭제 가능합니다.
+ 
+<img alt="gif" width="400" src="https://github.com/user-attachments/assets/f5f9b458-f112-4598-b0ff-907f5e18027b" />
+
+---
+
 
 ### 🧑‍💼 사용자 기능
 
