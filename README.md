@@ -58,7 +58,7 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 
 ### 🗃️ 데이터베이스 ERD
 
-<img width="700" alt="img" src="https://github.com/user-attachments/assets/945af870-4e88-4200-bd27-8b4d156f9223" />
+<img width="900" alt="img" src="https://github.com/user-attachments/assets/9384ed55-db6f-443d-b399-da43be5c4f2f" />
 
 
 ## 🚀 배포 주소
