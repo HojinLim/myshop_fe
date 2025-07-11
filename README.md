@@ -82,7 +82,7 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 
 <img width="1086" alt="shop_service_architecture" src="https://github.com/user-attachments/assets/f0af1f8d-ebd4-4297-adfc-00e46bcb5c47" />
 <br/>
-
+<br/>
 
 ---
 
