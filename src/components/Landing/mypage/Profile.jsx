@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from '@/store/slices/userSlice';
 import { returnBucketUrl } from '@/utils';
 import { deleteProfileImage, uploadProfileImage } from '@/api/user';
+import { setLoading } from '@/store/slices/loadingSlice';
 
 const Profile = () => {
   const [image, setImage] = useState(null);
@@ -25,6 +26,7 @@ const Profile = () => {
 
   // 사진 input 핸들러
   const onchangeImageUpload = async (e) => {
+    dispatch(setLoading(true));
     const file = e.target.files[0];
     if (!file) return;
     setImage(file);
@@ -40,6 +42,7 @@ const Profile = () => {
       })
       .finally(() => {
         e.target.value = ''; // 중복 사진 업로드 에러 방지
+        dispatch(setLoading(false));
       });
   };
 

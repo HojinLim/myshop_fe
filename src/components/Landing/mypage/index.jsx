@@ -73,7 +73,7 @@ const Index = () => {
     } else {
       setProfilePic(logo);
     }
-  }, [user]);
+  }, [user, user?.profileUrl]);
 
   // 장바구니 개수 redux 상태 동기화
   useEffect(() => {
