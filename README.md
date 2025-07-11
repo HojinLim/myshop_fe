@@ -138,14 +138,6 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 <br/>
 <br/>
 
--  상품 좋아요 기능
-> 선호하는 상품을 좋아요 리스트에 추가하거나 삭제합니다.
-  
-<img alt="gif" width="400" src="https://github.com/user-attachments/assets/63eb73da-7b73-4c4f-ab37-893e4f74b8c9" />
-
-<br/>
-<br/>
-<br/>
 
 -  주문 리스트 조회 및 환불
   
