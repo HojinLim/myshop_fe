@@ -18,8 +18,6 @@ import theme from '@/assets/styles/theme';
 
 import FormHeader from './common/FormHeader';
 import { fetchUserInfo, login } from '@/store/slices/userSlice';
-import { transferCart } from '@/api/cart';
-import store from '@/store';
 
 const LoginForm = () => {
   const [isLogin, setLogin] = useState(false);
@@ -44,7 +42,7 @@ const LoginForm = () => {
 
   const clickLogin = async () => {
     const stringForm = JSON.stringify(loginForm);
-    const url = import.meta.env.VITE_BACK_URL || 'https://video-down.shop/api';
+    const url = import.meta.env.VITE_BACK_URL || 'https://my-shop.shop/api';
 
     try {
       const response = await fetch(`${url}/auth/login`, {

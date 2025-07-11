@@ -17,10 +17,13 @@ export const fetchUserInfo = createAsyncThunk(
       if (!response.ok) {
         localStorage.removeItem('token');
         throw new Error('유저 정보를 가져오는데 실패했습니다.');
+        // return rejectWithValue('토큰 없음');
       }
 
       return await response.json(); // 성공 시 반환되는 값
     } catch (error) {
+      console.log(error);
+
       return rejectWithValue(error.message); // 실패 시 반환되는 에러 메시지
     }
   }
@@ -64,10 +67,17 @@ const userSlice = createSlice({
       .addCase(fetchUserInfo.fulfilled, (state, action) => {
         state.loading = false;
         state.data = { ...action.payload.data };
+        state.error = null;
       })
       .addCase(fetchUserInfo.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+
+        if (action.payload === '토큰 없음') {
+          localStorage.removeItem('token');
+          state.data = { ...initialState.data };
+          // alert('로그인 토큰 시간이 만료됐거나 유효하지 않습니다. ');
+        }
       });
   },
 });
