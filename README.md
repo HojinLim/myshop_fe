@@ -41,8 +41,6 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 - ✅ Antd chart 이용한 매출 조회
   
 
----
-
 <br/>
 
 ## 🛠 사용 기술
