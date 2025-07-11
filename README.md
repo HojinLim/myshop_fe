@@ -9,6 +9,11 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 - ID: admin@test.com
 - PW: 123456
 
+## 🚀 배포 주소
+
+- **프론트엔드**: [https://my-shop.shop/](https://my-shop.shop/)
+- **백엔드 API**: [https://my-shop.shop/api](https://my-shop.shop/api)
+
 ---
 ### 🧑‍💼 사용자 기능
 
@@ -55,16 +60,12 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 - **AWS RDS (MySQL)** – 데이터베이스 관리
 - **GitHub Actions** – CI/CD 자동화
 - **Certbot + Nginx** – HTTPS 적용
+<br/>
 
 ### 🗃️ 데이터베이스 ERD
 
 <img width="1891" alt="img" src="https://github.com/user-attachments/assets/9384ed55-db6f-443d-b399-da43be5c4f2f" />
-
-
-## 🚀 배포 주소
-
-- **프론트엔드**: [https://my-shop.shop/](https://my-shop.shop/)
-- **백엔드 API**: [https://my-shop.shop/api](https://my-shop.shop/api)
+<br/>
 
 ---
 
