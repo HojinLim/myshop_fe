@@ -36,6 +36,7 @@ const Profile = () => {
       .then(() => {
         dispatch(fetchUserInfo());
         message.success('프로필 업로드 완료');
+        window.location.reload(); // 보완 요함
       })
       .catch(() => {
         message.error('프로필 삭제 실패');
@@ -50,7 +51,7 @@ const Profile = () => {
     if (user && user.id) {
       setPreview(returnBucketUrl(user.profileUrl));
     }
-  }, [user]);
+  }, [user, user?.profileUrl]);
 
   const clickDeleteProfile = async () => {
     if (user && (user.profileUrl === '' || !user.profileUrl)) return;
