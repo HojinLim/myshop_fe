@@ -3,22 +3,25 @@
 React + Node.js 기반 풀스택 쇼핑몰 프로젝트입니다.  
 JWT 인증 기반 로그인, 상품 구매, 찜하기, 후기 작성 등 전자상거래의 기본 기능을 구현하였으며,  
 AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습니다.
+
 <br/>
 
 ## :rocket: 테스트 어드민 계정
 
 - ID: admin@test.com
 - PW: 123456
-<br/>
+
 
 ## 🚀 배포 주소
 
 - **프론트엔드**: [https://my-shop.shop/](https://my-shop.shop/)
 - **백엔드 API**: [https://my-shop.shop/api](https://my-shop.shop/api)
-<br/>
+
 
 ---
+
 <br/>
+
 ### 🧑‍💼 사용자 기능
 
 - ✅ JWT 기반 로그인 및 회원 인증
@@ -29,7 +32,6 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 - ✅ 아임포트를 이용한 실제 결제 기능 (테스트 결제 연동)
 - ✅ 후기(리뷰) 작성 / 수정 / 삭제 (CRUD)
 
-<br/>
 
 ### 🛠️ 관리자(어드민) 기능
 
@@ -38,11 +40,11 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 - ✅ 상품/주문 데이터 관리
 - ✅ Antd chart 이용한 매출 조회
   
-<br/>
 
 ---
 
 <br/>
+
 ## 🛠 사용 기술
 
 ### 💻 프론트엔드
