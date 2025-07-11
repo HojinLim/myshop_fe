@@ -17,12 +17,6 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 - **프론트엔드**: [https://my-shop.shop/](https://my-shop.shop/)
 - **백엔드 API**: [https://my-shop.shop/api](https://my-shop.shop/api)
 
------
---
-
--
-
-
 ---
 
 <br/>
