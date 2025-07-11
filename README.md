@@ -83,21 +83,28 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 -  어드민_ 대시보드
 > 쇼핑몰 매출 현황을 그래프나 수치로 확인 가능합니다.
  
-<img alt="gif" width="400" src="https://github.com/user-attachments/assets/dbe3aac9-d6a5-4ee1-b747-c10cd4e9e352" />
-
----
-
--  어드민_ 대시보드
-> 쇼핑몰 매출 현황을 그래프나 수치로 확인 가능합니다.
- 
-<img alt="gif" width="400" src="https://github.com/user-attachments/assets/dbe3aac9-d6a5-4ee1-b747-c10cd4e9e352" />
+<img alt="gif" width="700" src="https://github.com/user-attachments/assets/dbe3aac9-d6a5-4ee1-b747-c10cd4e9e352" />
 
 ---
 
 -  어드민_ 카테고리 조정
 > 쇼핑몰 상품의 카테고리 메뉴들의 사진과 이름을 수정 및 삭제 가능합니다.
  
-<img alt="gif" width="400" src="https://github.com/user-attachments/assets/f5f9b458-f112-4598-b0ff-907f5e18027b" />
+<img alt="gif" width="700" src="https://github.com/user-attachments/assets/f5f9b458-f112-4598-b0ff-907f5e18027b" />
+
+---
+
+-  어드민_ 상품 업로드
+ 
+<img alt="gif" width="700" src="https://github.com/user-attachments/assets/588523c1-d3c3-4752-a1a5-cb5e458161c6" />
+
+---
+
+-  어드민_ 상품 옵션 조정
+> 등록된 상품의 세부적인 옵션(사이즈, 색상, 가격)을 생성, 조회, 수정 및 삭제합니다.
+> 색상, 사이즈 빈 값으로 둘 시 "옵션 없는 상품"이 됩니다.
+
+<img alt="gif" width="700" src="https://github.com/user-attachments/assets/648380d2-345d-493a-8f3e-4eea47149cb8" />
 
 ---
 
