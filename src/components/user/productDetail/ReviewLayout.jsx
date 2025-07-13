@@ -74,7 +74,10 @@ const ReviewLayout = (props) => {
               className="aspect-square w-24 overflow-hidden rounded-xl content-center cursor-pointer"
               onClick={() => {}}
             >
-              <img src={returnBucketUrl(imgUrl)} />
+              <img
+                src={returnBucketUrl(imgUrl)}
+                className="h-full w-full object-cover"
+              />
             </div>
           ))}
       </Flex>
@@ -115,7 +118,10 @@ const ReviewLayout = (props) => {
                   key={idx}
                   className="aspect-square w-24 overflow-hidden rounded-xl content-center my-3 !mr-3"
                 >
-                  <img src={returnBucketUrl(image.imageUrl)} />
+                  <img
+                    className="h-full w-full object-cover"
+                    src={returnBucketUrl(image.imageUrl)}
+                  />
                 </div>
               ))}
             </Flex>

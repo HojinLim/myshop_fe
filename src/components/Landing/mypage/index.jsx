@@ -18,9 +18,9 @@ import { countFavorite } from '@/api/favorite';
 import { countReview } from '@/api/review';
 import { countOrder } from '@/api/order';
 import logo from '/logo.png';
+import { setLoading } from '@/store/slices/loadingSlice';
 
 const Index = () => {
-  const { Title, Text } = Typography;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -115,6 +115,13 @@ const Index = () => {
       },
     },
   ];
+  useEffect(() => {
+    if (isFavoriteLoading || isOrderLoading || isReviewLoading) {
+      dispatch(setLoading(true));
+    } else {
+      dispatch(setLoading(false));
+    }
+  }, [isFavoriteLoading, isOrderLoading, isReviewLoading]);
 
   return (
     <Content>

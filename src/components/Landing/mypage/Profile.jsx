@@ -34,9 +34,9 @@ const Profile = () => {
 
     await uploadProfileImage(file, user.id)
       .then(() => {
+        setPreview(URL.createObjectURL(file));
         dispatch(fetchUserInfo());
         message.success('프로필 업로드 완료');
-        window.location.reload(); // 보완 요함
       })
       .catch(() => {
         message.error('프로필 삭제 실패');
@@ -49,6 +49,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (user && user.id) {
+      // 여기
       setPreview(returnBucketUrl(user.profileUrl));
     }
   }, [user, user?.profileUrl]);

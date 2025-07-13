@@ -114,23 +114,23 @@ const OrderList = () => {
               >
                 {/* 상품별 구분선 */}
                 <Flex align="center" className="!mb-3">
-                  <img
-                    width={100}
-                    height={100}
-                    src={
-                      item.Product.ProductImages.filter(
-                        (image) => image.type === 'main'
-                      )[0]?.imageUrl
-                        ? returnBucketUrl(
-                            item.Product.ProductImages.filter(
-                              (image) => image.type === 'main'
-                            )[0]?.imageUrl
-                          )
-                        : '/none_logo.png'
-                    }
-                    alt={item.product_name || '상품 이미지'}
-                    className="rounded-md object-cover"
-                  />
+                  <div className="aspect-square w-24 overflow-hidden rounded-xl content-center my-3 !mr-3">
+                    <img
+                      src={
+                        item.Product.ProductImages.filter(
+                          (image) => image.type === 'main'
+                        )[0]?.imageUrl
+                          ? returnBucketUrl(
+                              item.Product.ProductImages.filter(
+                                (image) => image.type === 'main'
+                              )[0]?.imageUrl
+                            )
+                          : '/none_logo.png'
+                      }
+                      alt={item.product_name || '상품 이미지'}
+                      className="rounded-md object-cover w-full h-full"
+                    />
+                  </div>
                   <Flex vertical className="!ml-3 flex-1">
                     {/* flex-1 추가하여 공간 차지 */}
                     {/* 상품 상태 (예: 배송 중, 배송 완료 등) */}

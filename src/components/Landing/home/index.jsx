@@ -203,6 +203,7 @@ const index = () => {
             >
               <div className="aspect-square overflow-hidden w-32">
                 <img
+                  className="h-full w-full object-cover"
                   src={
                     product?.ProductImages?.find((img) => img.type === 'main')
                       ? returnBucketUrl(

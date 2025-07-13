@@ -87,7 +87,7 @@ const SearchProduct = () => {
               >
                 <div className="aspect-square overflow-hidden rounded-xl w-full content-center mb-3">
                   <img
-                    className="w-full object-fit"
+                    className="w-full h-full object-fit"
                     src={returnBucketUrl(product?.ProductImages[0]?.imageUrl)}
                   />
                 </div>

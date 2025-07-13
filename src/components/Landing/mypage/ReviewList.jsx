@@ -113,9 +113,12 @@ const ReviewList = () => {
                 review.review_images.map((photo, idx) => (
                   <div
                     key={idx}
-                    className="aspect-square overflow-hidden w-24 place-content-center"
+                    className="aspect-square w-24 overflow-hidden rounded-xl content-center my-3 !mr-3"
                   >
-                    <img src={returnBucketUrl(photo.imageUrl)} />
+                    <img
+                      className="w-full object-contain"
+                      src={returnBucketUrl(photo.imageUrl)}
+                    />
                   </div>
                 ))}
             </Flex>

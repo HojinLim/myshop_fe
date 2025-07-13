@@ -246,7 +246,6 @@ const Index = () => {
       <Content className={styles.content_layout}>
         <Flex justify="space-between" className={styles.select_container}>
           <div className="flex items-center">
-            {' '}
             {/* 중앙 정렬 추가 */}
             {/* 장바구니 전체 체크 핸들러 */}
             <input
@@ -311,10 +310,10 @@ const Index = () => {
                   <Flex vertical className="w-full">
                     <Flex align="flex-start">
                       {/* 이미지와 상품명 정렬 */}
-                      <div className="aspect-square overflow-hidden rounded-md w-20 h-20 mr-3">
+                      <div className="aspect-square w-24 overflow-hidden rounded-xl content-center ml-2 !mr-3">
                         {/* 이미지 크기 고정 */}
                         <img
-                          className="w-full h-full object-contain"
+                          className="object-contain w-full"
                           src={
                             productInfo?.ProductImages &&
                             productInfo.ProductImages.length > 0
