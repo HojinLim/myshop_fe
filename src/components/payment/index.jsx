@@ -168,7 +168,6 @@ const Index = () => {
       disabled: true,
     },
   ];
-  console.log(items);
 
   const { Text } = Typography;
   return (

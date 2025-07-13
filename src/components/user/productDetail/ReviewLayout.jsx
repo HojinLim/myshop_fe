@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  LikeFilled,
-  StarFilled,
-  StarOutlined,
-  ThunderboltOutlined,
-} from '@ant-design/icons';
+import { LikeFilled } from '@ant-design/icons';
 import { Content } from 'antd/es/layout/layout';
-import { getProductReviews } from '@/api/review';
 import styles from './index.module.css';
 import { Divider, Flex, Modal, Rate } from 'antd';
 import { anonymizeNickname, returnBucketUrl } from '@/utils';
@@ -15,14 +9,10 @@ import dayjs from '@/utils/dayjs';
 
 import NotFound from '@/components/notfound';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import {
-  countReviewLike,
-  createReviewLike,
-  deleteReviewLike,
-} from '@/api/reviewLike';
+import { createReviewLike, deleteReviewLike } from '@/api/reviewLike';
 import { useSelector } from 'react-redux';
 const ReviewLayout = (props) => {
-  const { fetchReview, reviews } = props;
+  const { fetchReview, reviews, reviewPhotos } = props;
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user.data);
@@ -63,23 +53,38 @@ const ReviewLayout = (props) => {
         <p className="font-bold">{Number(reviews?.averageRating) || ''}</p>
       </Flex>
       <Flex className="!my-3 gap-3">
-        {reviews?.reviews
-          ?.flatMap((review) =>
-            review.review_images?.map((img) => img.imageUrl)
-          ) // URL 배열로 평탄화
-          ?.slice(0, 8) // 최대 8장까지만 자름
-          ?.map((imgUrl, idx) => (
+        {reviewPhotos.slice(0, 8).map((imgUrl, idx) => {
+          const isLast = idx === 7 && reviewPhotos.length > 8;
+          const remainingCount = reviewPhotos.length - 7;
+
+          return (
             <div
               key={idx}
-              className="aspect-square w-24 overflow-hidden rounded-xl content-center cursor-pointer"
-              onClick={() => {}}
+              className="aspect-square w-24 overflow-hidden rounded-xl relative cursor-pointer"
+              onClick={() => {
+                // 클릭 시 전체 보기 등
+              }}
             >
               <img
                 src={returnBucketUrl(imgUrl)}
                 className="h-full w-full object-cover"
+                alt={`리뷰 이미지 ${idx}`}
               />
+              {isLast && (
+                <div
+                  className={styles.review_last_img}
+                  onClick={() => {
+                    navigate(
+                      `/product/grid/${reviews?.reviews[0]?.product_id}`
+                    );
+                  }}
+                >
+                  +{remainingCount}
+                </div>
+              )}
             </div>
-          ))}
+          );
+        })}
       </Flex>
 
       <hr className="divider_bold" />

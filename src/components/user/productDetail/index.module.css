@@ -107,3 +107,15 @@
   overflow-x: hidden;
   overflow-y: auto;
 }
+
+.review_last_img {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  color: white;
+  align-items: center;
+  font-weight: 700;
+  font-size: large;
+}

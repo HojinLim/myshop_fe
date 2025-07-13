@@ -22,8 +22,6 @@ export const fetchUserInfo = createAsyncThunk(
 
       return await response.json(); // 성공 시 반환되는 값
     } catch (error) {
-      console.log(error);
-
       return rejectWithValue(error.message); // 실패 시 반환되는 에러 메시지
     }
   }

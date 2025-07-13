@@ -184,11 +184,19 @@ const Index = () => {
 
   // 해당 상품 리뷰 리스트 불러오기 로직
   const [reviews, setReviews] = useState({ averageRating: 0, reviews: [] });
+  // 리뷰 사진들
+  const [reviewPhotos, setReivePhotos] = useState([]);
+
   // 리뷰 정보를 가져오는 함수는 ID만 필요하므로 독립적으로 유지
   const fetchReview = async () => {
     try {
       const res = await getProductReviews(user.id, id);
       setReviews(res);
+
+      const reviewPhotos = res?.reviews?.flatMap((review) =>
+        review.review_images?.map((img) => img.imageUrl)
+      );
+      setReivePhotos(reviewPhotos);
     } catch (err) {
       console.error('리뷰 정보를 가져오는 중 오류 발생:', err);
       // 에러 처리: 메시지 표시 등
@@ -254,14 +262,13 @@ const Index = () => {
           productId={id}
           reviews={reviews}
           fetchReview={fetchReview}
+          reviewPhotos={reviewPhotos}
         />
       ),
     },
   ];
 
-  const onChange = (key) => {
-    // console.log(`탭 변경: ${key}`);
-  };
+  const onChange = (key) => {};
 
   // 현재 URL을 클립보드에 복사하는 함수
   const copyUrl = async () => {

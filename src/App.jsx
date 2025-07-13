@@ -40,6 +40,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from './store/slices/userSlice';
 import Loading from './components/common/Loading';
 import { message } from 'antd';
+import AllReviewPhotos from './components/user/productDetail/AllReviewPhotos';
 
 function App() {
   const user = useSelector((state) => state.user.data);
@@ -81,6 +82,7 @@ function App() {
           </Route>
           {/* 상품 상세 */}
           <Route path="/product/:id" element={<ProductDetail />}></Route>
+          <Route path="/product/grid/:id" element={<AllReviewPhotos />}></Route>
           {/* 카테고리 */}
           <Route path="/category/:category" element={<Category />}></Route>
           {/* 결제 */}
