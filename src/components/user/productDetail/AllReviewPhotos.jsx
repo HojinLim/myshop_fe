@@ -3,17 +3,20 @@ import useReview from '@/hooks/useReview';
 import { returnBucketUrl } from '@/utils';
 
 import { Content } from 'antd/es/layout/layout';
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import Notfound from '@/components/notfound';
+import { setReview } from '@/store/slices/reviewSlice';
 
 const AllReviewPhotos = () => {
   const { pathname } = useLocation();
   const user = useSelector((state) => state.user.data);
+  const dispatch = useDispatch();
   const id = pathname.split('/').pop();
 
-  const { reviews, reviewPhotos, fetchReview } = useReview(user.id, id);
+  const { reviews, reviewPhotos, combinedReviewPhotos, fetchReview } =
+    useReview(user.id, id);
 
   useEffect(() => {
     fetchReview();
@@ -28,8 +31,18 @@ const AllReviewPhotos = () => {
           {reviewPhotos.map((photo, idx) => (
             <img
               key={idx}
-              src={returnBucketUrl(photo)}
+              src={returnBucketUrl(photo.imageUrl)}
               className="w-full aspect-square object-cover rounded cursor-pointer"
+              onClick={() => {
+                dispatch(
+                  setReview({
+                    open: true,
+                    reviews: combinedReviewPhotos,
+                    photos: reviewPhotos,
+                    currentIndex: idx,
+                  })
+                );
+              }}
             />
           ))}
         </div>

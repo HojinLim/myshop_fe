@@ -10,10 +10,12 @@ import dayjs from '@/utils/dayjs';
 import NotFound from '@/components/notfound';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { createReviewLike, deleteReviewLike } from '@/api/reviewLike';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setReview } from '@/store/slices/reviewSlice';
 const ReviewLayout = (props) => {
-  const { fetchReview, reviews, reviewPhotos } = props;
+  const { fetchReview, reviews, reviewPhotos, combinedReviewPhotos } = props;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user.data);
 
@@ -53,7 +55,7 @@ const ReviewLayout = (props) => {
         <p className="font-bold">{Number(reviews?.averageRating) || ''}</p>
       </Flex>
       <Flex className="!my-3 gap-3">
-        {reviewPhotos.slice(0, 8).map((imgUrl, idx) => {
+        {reviewPhotos.slice(0, 8).map((img, idx) => {
           const isLast = idx === 7 && reviewPhotos.length > 8;
           const remainingCount = reviewPhotos.length - 7;
 
@@ -66,9 +68,20 @@ const ReviewLayout = (props) => {
               }}
             >
               <img
-                src={returnBucketUrl(imgUrl)}
-                className="h-full w-full object-cover"
+                src={returnBucketUrl(img.imageUrl)}
+                className="h-full w-full object-cover cursor-pointer"
                 alt={`리뷰 이미지 ${idx}`}
+                onClick={() => {
+                  dispatch(
+                    setReview({
+                      open: true,
+                      // reviews: reviews.reviews,
+                      reviews: combinedReviewPhotos,
+                      photos: reviewPhotos,
+                      currentIndex: idx,
+                    })
+                  );
+                }}
               />
               {isLast && (
                 <div
@@ -124,15 +137,27 @@ const ReviewLayout = (props) => {
                   className="aspect-square w-24 overflow-hidden rounded-xl content-center my-3 !mr-3"
                 >
                   <img
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover cursor-pointer"
                     src={returnBucketUrl(image.imageUrl)}
+                    onClick={() => {
+                      dispatch(
+                        setReview({
+                          open: true,
+                          reviews: combinedReviewPhotos,
+                          photos: reviewPhotos,
+                          currentIndex: reviewPhotos.findIndex(
+                            (photo) => photo.id === image.id
+                          ),
+                        })
+                      );
+                    }}
                   />
                 </div>
               ))}
             </Flex>
             <Rate value={review?.rating} className="!mx-3" disabled={true} />
             <p className="!my-3">{review.content}</p>
-            {review.weight && review.height && (
+            {review.weight > 0 && review.height > 0 && (
               <Flex>
                 {/* <p className="mr-3 text-gray-400">체형·평소 사이즈</p>
               <p>176cm | 83kg | 105</p> */}

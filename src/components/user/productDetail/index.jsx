@@ -184,8 +184,11 @@ const Index = () => {
 
   // 해당 상품 리뷰 리스트 불러오기 로직
   const [reviews, setReviews] = useState({ averageRating: 0, reviews: [] });
-  // 리뷰 사진들
+
+  // 리뷰 사진 배열
   const [reviewPhotos, setReivePhotos] = useState([]);
+  // 리뷰 사진과 그와 연관된 리뷰를 포함한 배열
+  const [combinedReviewPhotos, setCombinedReviewPhotos] = useState([]);
 
   // 리뷰 정보를 가져오는 함수는 ID만 필요하므로 독립적으로 유지
   const fetchReview = async () => {
@@ -193,10 +196,23 @@ const Index = () => {
       const res = await getProductReviews(user.id, id);
       setReviews(res);
 
-      const reviewPhotos = res?.reviews?.flatMap((review) =>
-        review.review_images?.map((img) => img.imageUrl)
+      const reviewPhotos = res?.reviews?.flatMap(
+        (review) => review.review_images
       );
+      // 단일 리뷰 사진 배열
       setReivePhotos(reviewPhotos);
+
+      // 리뷰 사진과 그와 연관된 리뷰를 포함한 배열
+      const combinedReviewPhotos = reviewPhotos.map((photo) => {
+        const matchedReview = res?.reviews.find(
+          (review) => review.id === photo.review_id
+        );
+        return {
+          ...photo,
+          review: matchedReview,
+        };
+      });
+      setCombinedReviewPhotos(combinedReviewPhotos);
     } catch (err) {
       console.error('리뷰 정보를 가져오는 중 오류 발생:', err);
       // 에러 처리: 메시지 표시 등
@@ -263,6 +279,7 @@ const Index = () => {
           reviews={reviews}
           fetchReview={fetchReview}
           reviewPhotos={reviewPhotos}
+          combinedReviewPhotos={combinedReviewPhotos}
         />
       ),
     },

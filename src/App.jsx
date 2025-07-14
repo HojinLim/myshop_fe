@@ -43,25 +43,24 @@ import { fetchUserInfo } from './store/slices/userSlice';
 import Loading from './components/common/Loading';
 import { message } from 'antd';
 import AllReviewPhotos from './components/user/productDetail/AllReviewPhotos';
-import PhotoSlice from './components/common/PhotoSlice';
-import PhotoSliderModal from './components/common/PhotoSlice';
+import PhotoSliderModal from './components/common/PhotoSliderModal';
+import { setReview } from './store/slices/reviewSlice';
 
 function App() {
   const dispatch = useDispatch();
   const [_, contextHolder] = message.useMessage();
-  const [open, setOpen] = useState(true);
+
   useEffect(() => {
     dispatch(fetchUserInfo());
   }, []);
+  const reviews = useSelector((state) => state.reviews.data);
 
   return (
     <>
       {contextHolder}
       <Loading />
 
-      {/* {open && (
-        <PhotoSliderModal currentIndex={0} onClose={() => setOpen(false)} />
-      )} */}
+      {reviews.open && <PhotoSliderModal />}
       {/* 라우터 */}
       <Router>
         <Routes>

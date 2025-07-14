@@ -111,12 +111,14 @@ const UploadReview = () => {
       if (item.type === 'update') {
         const updateData = { ...data, deleteImageIds };
         await updateReview(item.id, updateData, images);
+        message.success('리뷰 수정 완료!');
       } else {
         // 리뷰 생성
 
         await uploadReview(data, images);
+        message.success('리뷰 업로드 완료!');
       }
-      message.success('리뷰 업로드 완료!');
+
       navigate('/mypage/review');
     } catch (err) {}
   };
