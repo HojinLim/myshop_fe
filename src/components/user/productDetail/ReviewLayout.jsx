@@ -46,13 +46,19 @@ const ReviewLayout = (props) => {
   return (
     <Content className={styles.review_layout}>
       <Flex>
-        <p className="font-bold">전체 {reviews?.reviews?.length}개</p>
-        <Rate
-          value={reviews?.averageRating}
-          className="!mx-3"
-          disabled={true}
-        />
-        <p className="font-bold">{Number(reviews?.averageRating) || ''}</p>
+        {reviews?.reviews?.length ? (
+          <>
+            <p className="font-bold">전체 {reviews?.reviews?.length}개</p>
+            <Rate
+              value={reviews?.averageRating}
+              className="!mx-3"
+              disabled={true}
+            />
+            <p className="font-bold">{Number(reviews?.averageRating) || ''}</p>
+          </>
+        ) : (
+          ''
+        )}
       </Flex>
       <Flex className="!my-3 gap-3">
         {reviewPhotos.slice(0, 8).map((img, idx) => {
