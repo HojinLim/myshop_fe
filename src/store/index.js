@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import userSlice from '@/store/slices/userSlice';
 import loadingSlice from '@/store/slices/loadingSlice';
 import cartSlice from '@/store/slices/cartSlice';
+import watchPhotosSlice from '@/store/slices/watchPhotosSlice';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
 
@@ -18,6 +19,7 @@ const store = configureStore({
     user: persistedUserReducer, //  Persist 적용된 userReducer
     loading: loadingSlice,
     cart: cartSlice,
+    watchPhotos: watchPhotosSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

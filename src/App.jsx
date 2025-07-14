@@ -1,5 +1,7 @@
 import '@/assets/styles/index.css';
 import '@/assets/styles/global.scss';
+import 'swiper/css';
+import 'swiper/css/navigation';
 import SignupForm from '@/components/auth/SignupForm';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomeLanding from '@/components/Landing';
@@ -41,22 +43,25 @@ import { fetchUserInfo } from './store/slices/userSlice';
 import Loading from './components/common/Loading';
 import { message } from 'antd';
 import AllReviewPhotos from './components/user/productDetail/AllReviewPhotos';
+import PhotoSlice from './components/common/PhotoSlice';
+import PhotoSliderModal from './components/common/PhotoSlice';
 
 function App() {
-  const user = useSelector((state) => state.user.data);
-  const login = useSelector((state) => state.login);
   const dispatch = useDispatch();
-  const token = localStorage.getItem('token');
   const [_, contextHolder] = message.useMessage();
+  const [open, setOpen] = useState(true);
   useEffect(() => {
     dispatch(fetchUserInfo());
   }, []);
-  // const loading = useSelector((state) => state.loading.loading);
 
   return (
     <>
       {contextHolder}
       <Loading />
+
+      {/* {open && (
+        <PhotoSliderModal currentIndex={0} onClose={() => setOpen(false)} />
+      )} */}
       {/* 라우터 */}
       <Router>
         <Routes>
