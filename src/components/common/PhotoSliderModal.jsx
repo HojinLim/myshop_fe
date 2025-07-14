@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
+import { Navigation, Mousewheel } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import {
@@ -51,11 +51,12 @@ const PhotoSliderModal = () => {
             <RightOutlined />
           </button>
           <Swiper
-            modules={[Navigation]}
+            modules={[Navigation, Mousewheel]}
             navigation={{
               nextEl: '.custom-next',
               prevEl: '.custom-prev',
             }}
+            mousewheel={true}
             initialSlide={currentIndex}
             className="h-full"
           >
