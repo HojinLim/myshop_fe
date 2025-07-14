@@ -55,3 +55,10 @@
     font-size: 24px !important;
   }
 }
+.skeleton_img {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+  top: 0;
+  left: 0;
+}

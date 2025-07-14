@@ -16,6 +16,7 @@ import {
   Layout,
   message,
   Row,
+  Skeleton,
   Typography,
 } from 'antd';
 import logo from '@/assets/images/logo.png';
@@ -108,6 +109,7 @@ const index = () => {
       ([entry]) => {
         if (entry.isIntersecting && !isFetching && hasMore) {
           setPage((prev) => prev + 1);
+          console.log('hi');
         }
       },
       {
@@ -120,7 +122,7 @@ const index = () => {
 
     return () => observer.disconnect();
   }, [hasMore, isFetching]);
-
+  const [imgLoaded, setImgLoaded] = useState(false);
   return (
     <Layout className={styles.layout_except_footer}>
       <Header className={styles.header}>
@@ -194,40 +196,47 @@ const index = () => {
         </Row>
         {/* 전체 상품 리스트 */}
         <Row className="flex-row">
-          {products.map((product) => (
-            <Col
-              key={product.id}
-              span={12}
-              className={styles.item_info}
-              onClick={() => navigate(`/product/${product.id}`)}
-            >
-              <div className="aspect-square overflow-hidden w-32">
-                <img
-                  className="h-full w-full object-cover"
-                  src={
-                    product?.ProductImages?.find((img) => img.type === 'main')
-                      ? returnBucketUrl(
-                          product.ProductImages.find(
-                            (img) => img.type === 'main'
-                          ).imageUrl
-                        )
-                      : '/logo.png'
-                  }
-                />
-              </div>
+          {products.map((product) => {
+            const mainImage = product?.ProductImages?.find(
+              (img) => img.type === 'main'
+            );
+            const imgSrc = mainImage
+              ? returnBucketUrl(mainImage.imageUrl)
+              : '/logo.png';
 
-              <Text strong>
-                {discountPercent(product.originPrice, product.discountPrice)}%{' '}
-                {Number(product.discountPrice).toLocaleString()}원
-              </Text>
-              <Text>{product.name}</Text>
+            return (
+              <Col
+                key={product.id}
+                span={12}
+                className={styles.item_info}
+                onClick={() => navigate(`/product/${product.id}`)}
+              >
+                <div className="aspect-square overflow-hidden w-32 relative">
+                  {!imgLoaded && (
+                    <Skeleton.Image className={styles.skeleton_img} active />
+                  )}
+                  <img
+                    className="h-full w-full object-cover transition-opacity duration-300"
+                    src={imgSrc}
+                    alt={product.name}
+                    style={{ opacity: imgLoaded ? 1 : 0 }}
+                    onLoad={() => setImgLoaded(true)}
+                  />
+                </div>
 
-              <div className="text-red-400">
-                <HeartFilled />
-                <span className="ml-1">{product.favorites.length}</span>
-              </div>
-            </Col>
-          ))}
+                <Text strong>
+                  {discountPercent(product.originPrice, product.discountPrice)}%{' '}
+                  {Number(product.discountPrice).toLocaleString()}원
+                </Text>
+                <Text>{product.name}</Text>
+
+                <div className="text-red-400">
+                  <HeartFilled />
+                  <span className="ml-1">{product.favorites.length}</span>
+                </div>
+              </Col>
+            );
+          })}
           {/* 다음 스크롤 감시 불러올 지점 */}
           {hasMore && products.length > 0 && <div ref={loaderRef}></div>}
         </Row>
