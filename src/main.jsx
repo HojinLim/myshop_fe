@@ -18,20 +18,20 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')).render(
-  // <StrictMode>
-  <QueryClientProvider client={queryClient}>
-    <ConfigProvider
-      theme={{ algorithm: theme.defaultAlgorithm }}
-      wave={{ disabled: true }}
-      typography={{ style: { margin: '0 !important', padding: 0 } }}
-      layout={{ style: { backgroundColor: 'transparent' } }}
-    >
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <App />
-        </PersistGate>
-      </Provider>
-    </ConfigProvider>
-  </QueryClientProvider>
-  // </StrictMode>
+  <StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <ConfigProvider
+        theme={{ algorithm: theme.defaultAlgorithm }}
+        wave={{ disabled: true }}
+        typography={{ style: { margin: '0 !important', padding: 0 } }}
+        layout={{ style: { backgroundColor: 'transparent' } }}
+      >
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <App />
+          </PersistGate>
+        </Provider>
+      </ConfigProvider>
+    </QueryClientProvider>
+  </StrictMode>
 );

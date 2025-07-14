@@ -26,7 +26,6 @@ const PhotoSliderModal = () => {
   );
 
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   // 전역 리뷰 초기화

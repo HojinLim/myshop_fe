@@ -81,12 +81,12 @@ function App() {
             <Route path="users" element={<Users />} />
           </Route>
           {/* 상품 상세 */}
-          <Route path="/product/:id" element={<ProductDetail />}></Route>(
+          <Route path="/product/:id" element={<ProductDetail />}></Route>
           <Route
             path="/product/:id/reviews"
             element={<PhotoSliderModal />}
           ></Route>
-          )
+
           <Route path="/product/grid/:id" element={<AllReviewPhotos />}></Route>
           {/* 카테고리 */}
           <Route path="/category/:category" element={<Category />}></Route>

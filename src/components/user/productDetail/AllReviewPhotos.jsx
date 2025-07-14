@@ -18,7 +18,6 @@ const AllReviewPhotos = () => {
 
   const { reviews, reviewPhotos, combinedReviewPhotos, fetchReview } =
     useReview(user.id, id);
-  console.log(user);
 
   useEffect(() => {
     fetchReview();

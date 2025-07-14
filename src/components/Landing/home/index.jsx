@@ -109,7 +109,6 @@ const index = () => {
       ([entry]) => {
         if (entry.isIntersecting && !isFetching && hasMore) {
           setPage((prev) => prev + 1);
-          console.log('hi');
         }
       },
       {
