@@ -115,7 +115,26 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 <!--
 <img width="300" height="1324" alt="detail" src="https://github.com/user-attachments/assets/9351d3e6-b372-4c13-8eb9-abb0d8e37a31" />
 -->
-<img width="400" alt="gif" src="https://github.com/user-attachments/assets/ec926636-bec5-4e18-a374-35feb7cfb6d3" />
+<img width="400" alt="gif" src="https://github.com/user-attachments/assets/39fcb074-55c7-4c48-89d4-8d66a06a0648" />
+
+<br/>
+<br/>
+<br/>
+
+-  상품 리뷰 슬라이드
+  
+> 유저가 작성한 리뷰 사진들과 남긴 정보들을 슬라이드로 확인하는 페이지입니다.
+
+<img width="650" alt="gif" src="https://github.com/user-attachments/assets/e148afef-2a05-431c-89f1-e6d5e89618a9" />
+
+<br/>
+<br/>
+<br/>
+
+-  상품 리뷰 모아보기
+  
+<img width="650" alt="gif" src="https://github.com/user-attachments/assets/86c7d68c-7c89-4784-a1e8-5fd7afbfc529" />
+
 
 <br/>
 <br/>
