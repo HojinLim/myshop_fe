@@ -17,14 +17,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { reviewInitialState, setReview } from '@/store/slices/reviewSlice';
 import { anonymizeNickname, returnBucketUrl } from '@/utils';
 import dayjs from '@/utils/dayjs';
-import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import NotFound from '@/components/notfound';
 
 const PhotoSliderModal = () => {
-  const { reviews, photos, currentIndex, open, prevLocation } = useSelector(
-    (state) => state.reviews.data
+  const { reviews, photos, currentIndex } = useSelector(
+    (state) => state?.reviews?.data
   );
+
   const dispatch = useDispatch();
-  const location = useLocation();
+
+  const navigate = useNavigate();
 
   // 전역 리뷰 초기화
   const initReview = () => {
@@ -35,13 +38,7 @@ const PhotoSliderModal = () => {
       })
     );
   };
-
-  useEffect(() => {
-    if (prevLocation && prevLocation !== window.location.href) {
-      initReview();
-    }
-  }, [location.pathname]);
-
+  if (reviews && reviews.length <= 0) return <NotFound />;
   return (
     <Layout className="fixed inset-0 bg-black/70 z-100">
       {/* 바깥 검정 배경 레이아웃*/}
@@ -50,15 +47,18 @@ const PhotoSliderModal = () => {
         <div className="relative w-full max-w-4xl h-full">
           {/* 닫기 버튼 */}
           <CloseOutlined
-            className="absolute top-4 right-4 translate-x-12 !text-white !cursor-pointer z-10 text-xl"
-            onClick={initReview}
+            className="absolute top-4 right-4 xl:translate-x-4 !text-white !cursor-pointer z-10 text-xl"
+            onClick={() => {
+              initReview();
+              navigate(-1);
+            }}
           />
 
           {/* 화살표 */}
-          <button className="custom-prev absolute left-4 -translate-x-16 top-1/2 z-50 -translate-y-1/2 text-4xl text-white w-[50px] h-[50px] !p-3 !rounded-full">
+          <button className="custom-prev absolute left-4 xl:-translate-x-16 top-1/2 z-50 -translate-y-1/2 text-4xl text-white w-[50px] h-[50px] !p-3 !rounded-full">
             <LeftOutlined />
           </button>
-          <button className="custom-next absolute right-4 translate-x-16  top-1/2 z-50 -translate-y-1/2 text-4xl text-white w-[50px] h-[50px] !p-3 !rounded-full">
+          <button className="custom-next absolute right-4 xl:translate-x-16  top-1/2 z-50 -translate-y-1/2 text-4xl text-white w-[50px] h-[50px] !p-3 !rounded-full">
             <RightOutlined />
           </button>
           <Swiper

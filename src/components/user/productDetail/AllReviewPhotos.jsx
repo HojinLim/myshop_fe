@@ -5,7 +5,7 @@ import { returnBucketUrl } from '@/utils';
 import { Content } from 'antd/es/layout/layout';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Notfound from '@/components/notfound';
 import { setReview } from '@/store/slices/reviewSlice';
 
@@ -13,10 +13,12 @@ const AllReviewPhotos = () => {
   const { pathname } = useLocation();
   const user = useSelector((state) => state.user.data);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const id = pathname.split('/').pop();
 
   const { reviews, reviewPhotos, combinedReviewPhotos, fetchReview } =
     useReview(user.id, id);
+  console.log(user);
 
   useEffect(() => {
     fetchReview();
@@ -34,13 +36,13 @@ const AllReviewPhotos = () => {
               src={returnBucketUrl(photo.imageUrl)}
               className="w-full aspect-square object-cover rounded cursor-pointer"
               onClick={() => {
+                const productId = location.pathname.split('/').pop();
+                navigate(`/product/${productId}/reviews`);
                 dispatch(
                   setReview({
-                    open: true,
                     reviews: combinedReviewPhotos,
                     photos: reviewPhotos,
                     currentIndex: idx,
-                    prevLocation: window.location.href,
                   })
                 );
               }}

@@ -78,13 +78,13 @@ const ReviewLayout = (props) => {
                 className="h-full w-full object-cover cursor-pointer"
                 alt={`리뷰 이미지 ${idx}`}
                 onClick={() => {
+                  navigate(`${location.pathname}/reviews`);
+
                   dispatch(
                     setReview({
-                      open: true,
                       reviews: combinedReviewPhotos,
                       photos: reviewPhotos,
                       currentIndex: idx,
-                      prevLocation: window.location.href,
                     })
                   );
                 }}
@@ -146,8 +146,8 @@ const ReviewLayout = (props) => {
                     className="h-full w-full object-cover cursor-pointer"
                     src={returnBucketUrl(image.imageUrl)}
                     onClick={() => {
-                      dispatch(
-                        setReview({
+                      navigate(`${location.pathname}/reviews`, {
+                        state: {
                           open: true,
                           reviews: combinedReviewPhotos,
                           photos: reviewPhotos,
@@ -155,6 +155,16 @@ const ReviewLayout = (props) => {
                             (photo) => photo.id === image.id
                           ),
                           prevLocation: window.location.href,
+                        },
+                      });
+
+                      dispatch(
+                        setReview({
+                          reviews: combinedReviewPhotos,
+                          photos: reviewPhotos,
+                          currentIndex: reviewPhotos.findIndex(
+                            (photo) => photo.id === image.id
+                          ),
                         })
                       );
                     }}

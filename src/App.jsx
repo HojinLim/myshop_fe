@@ -44,7 +44,6 @@ import Loading from './components/common/Loading';
 import { message } from 'antd';
 import AllReviewPhotos from './components/user/productDetail/AllReviewPhotos';
 import PhotoSliderModal from './components/common/PhotoSliderModal';
-import { setReview } from './store/slices/reviewSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -53,7 +52,6 @@ function App() {
   useEffect(() => {
     dispatch(fetchUserInfo());
   }, []);
-  const reviews = useSelector((state) => state.reviews.data);
 
   return (
     <>
@@ -62,7 +60,6 @@ function App() {
 
       {/* 라우터 */}
       <Router>
-        {reviews.open && <PhotoSliderModal />}
         <Routes>
           <Route path="/" element={<HomeLanding />}>
             <Route path="/" element={<Home />} index />
@@ -75,7 +72,6 @@ function App() {
             <Route path="/mypage/review" element={<ReviewList />} />
             <Route path="/mypage/review/upload" element={<UploadReview />} />
           </Route>
-
           {/* 어드민 부모 라우터*/}
           <Route path="/admin" element={<AdminLanding />}>
             {/* 어드민 자식 라우터*/}
@@ -85,7 +81,12 @@ function App() {
             <Route path="users" element={<Users />} />
           </Route>
           {/* 상품 상세 */}
-          <Route path="/product/:id" element={<ProductDetail />}></Route>
+          <Route path="/product/:id" element={<ProductDetail />}></Route>(
+          <Route
+            path="/product/:id/reviews"
+            element={<PhotoSliderModal />}
+          ></Route>
+          )
           <Route path="/product/grid/:id" element={<AllReviewPhotos />}></Route>
           {/* 카테고리 */}
           <Route path="/category/:category" element={<Category />}></Route>
@@ -97,7 +98,6 @@ function App() {
           {/* 검색 */}
           <Route path="/search/:keyword" element={<SearchProduct />}></Route>
           <Route path="/search/*" element={<SearchProduct />}></Route>
-
           <Route path="/signup" element={<SignupForm />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="*" element={<NotFound />} />
