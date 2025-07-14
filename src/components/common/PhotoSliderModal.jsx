@@ -17,12 +17,30 @@ import { useDispatch, useSelector } from 'react-redux';
 import { reviewInitialState, setReview } from '@/store/slices/reviewSlice';
 import { anonymizeNickname, returnBucketUrl } from '@/utils';
 import dayjs from '@/utils/dayjs';
+import { useLocation } from 'react-router-dom';
 
 const PhotoSliderModal = () => {
-  const { reviews, photos, currentIndex, open } = useSelector(
+  const { reviews, photos, currentIndex, open, prevLocation } = useSelector(
     (state) => state.reviews.data
   );
   const dispatch = useDispatch();
+  const location = useLocation();
+
+  // 전역 리뷰 초기화
+  const initReview = () => {
+    dispatch(
+      setReview({
+        ...reviewInitialState.data,
+        open: false,
+      })
+    );
+  };
+
+  useEffect(() => {
+    if (prevLocation && prevLocation !== window.location.href) {
+      initReview();
+    }
+  }, [location.pathname]);
 
   return (
     <Layout className="fixed inset-0 bg-black/70 z-100">
@@ -33,14 +51,7 @@ const PhotoSliderModal = () => {
           {/* 닫기 버튼 */}
           <CloseOutlined
             className="absolute top-4 right-4 translate-x-12 !text-white !cursor-pointer z-10 text-xl"
-            onClick={() => {
-              dispatch(
-                setReview({
-                  ...reviewInitialState.data,
-                  open: false,
-                })
-              );
-            }}
+            onClick={initReview}
           />
 
           {/* 화살표 */}

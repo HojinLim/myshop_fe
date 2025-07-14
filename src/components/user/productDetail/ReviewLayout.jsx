@@ -81,10 +81,10 @@ const ReviewLayout = (props) => {
                   dispatch(
                     setReview({
                       open: true,
-                      // reviews: reviews.reviews,
                       reviews: combinedReviewPhotos,
                       photos: reviewPhotos,
                       currentIndex: idx,
+                      prevLocation: window.location.href,
                     })
                   );
                 }}
@@ -154,6 +154,7 @@ const ReviewLayout = (props) => {
                           currentIndex: reviewPhotos.findIndex(
                             (photo) => photo.id === image.id
                           ),
+                          prevLocation: window.location.href,
                         })
                       );
                     }}

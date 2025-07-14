@@ -40,6 +40,7 @@ const AllReviewPhotos = () => {
                     reviews: combinedReviewPhotos,
                     photos: reviewPhotos,
                     currentIndex: idx,
+                    prevLocation: window.location.href,
                   })
                 );
               }}

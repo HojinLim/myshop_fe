@@ -60,9 +60,9 @@ function App() {
       {contextHolder}
       <Loading />
 
-      {reviews.open && <PhotoSliderModal />}
       {/* 라우터 */}
       <Router>
+        {reviews.open && <PhotoSliderModal />}
         <Routes>
           <Route path="/" element={<HomeLanding />}>
             <Route path="/" element={<Home />} index />

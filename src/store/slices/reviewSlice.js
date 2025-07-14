@@ -7,6 +7,7 @@ const initialState = {
     reviews: [],
     photos: [],
     currentIndex: 0,
+    prevLocation: null,
   },
 };
 
