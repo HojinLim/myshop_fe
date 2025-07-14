@@ -110,6 +110,8 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 <br/>
 <br/>
 
+---
+
 -  상품 상세 페이지
   
 > 개별 상품 정보 확인, 수량 선택, 장바구니 및 찜하기 버튼이 포함된 상세 페이지입니다.
@@ -123,6 +125,8 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 <br/>
 <br/>
 
+---
+
 -  상품 리뷰 슬라이드
   
 > 유저가 작성한 리뷰 사진들과 남긴 정보들을 슬라이드로 확인하는 페이지입니다.
@@ -134,6 +138,8 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 <br/>
 <br/>
 
+---
+
 -  상품 리뷰 모아보기
   
 <img width="650" alt="gif" src="https://github.com/user-attachments/assets/86c7d68c-7c89-4784-a1e8-5fd7afbfc529" />
@@ -144,6 +150,8 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 <br/>
 <br/>
 
+---
+
 -  상품 검색
   
 <img alt="gif" width="400" src="https://github.com/user-attachments/assets/da82b14b-6eee-4d53-ba8e-1b1bc603e47b" />
@@ -152,6 +160,8 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 <br/>
 <br/>
 <br/>
+
+---
 
 -  상품 좋아요 기능
 > 선호하는 상품을 좋아요 리스트에 추가하거나 삭제합니다.
@@ -163,6 +173,7 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 <br/>
 <br/>
 
+---
 
 -  주문 리스트 조회 및 환불
   
@@ -172,6 +183,8 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 <br/>
 <br/>
 <br/>
+
+---
 
 -  상품 리뷰 작성
 > 주문한 제품의 리뷰를 작성합니다. (별점 제출만 필수 항목입니다.)
@@ -183,6 +196,8 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 <br/>
 <br/>
 
+---
+
 -  쇼핑몰 포인트 조회
 > 자신이 보유한 포인트를 조회합니다. (포인트는 상품 구매 시 사용 가능)
  
@@ -192,6 +207,8 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 <br/>
 <br/>
 <br/>
+
+---
 
 -  상품 구매
 > 원하는 상품을 바로 혹은 장바구니 추가된 상품을 선택해 구매합니다. (카카오페이 및 이니시스 테스트 구현)
@@ -215,6 +232,8 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 <br/>
 <br/>
 
+---
+
 -  어드민_ 카테고리 조정
 > 쇼핑몰 상품의 카테고리 메뉴들의 사진과 이름을 수정 및 삭제 가능합니다.
  
@@ -225,6 +244,8 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 <br/>
 <br/>
 
+---
+
 -  어드민_ 상품 업로드
  
 <img alt="gif" width="700" src="https://github.com/user-attachments/assets/588523c1-d3c3-4752-a1a5-cb5e458161c6" />
@@ -233,6 +254,8 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 <br/>
 <br/>
 <br/>
+
+---
 
 -  어드민_ 상품 옵션 조정
 > 등록된 상품의 세부적인 옵션(사이즈, 색상, 가격)을 생성, 조회, 수정 및 삭제합니다. <br/>
@@ -245,6 +268,8 @@ AWS를 통한 배포와 GitHub Actions 기반 CI/CD 자동화를 구축하였습
 <br/>
 <br/>
 <br/>
+
+---
 
 -  어드민_ 유저 관리
 > 쇼핑몰 가입된 유저 정보를 확인하고 포인트 송수신 및 부적절한 리뷰를 삭제 할 수 있습니다.
