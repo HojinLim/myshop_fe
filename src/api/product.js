@@ -4,10 +4,10 @@ import axios from 'axios';
 const back_url = import.meta.env.VITE_BACK_URL;
 
 // 상품 조회 (type: category, id)
-const getProducts = async (type = '', value = '', page = 1) => {
+const getProducts = async (type = '', value = '', page = 1, limit = 6) => {
   try {
     const response = await fetch(
-      `${back_url}/product?${type}=${value}&page=${page}`
+      `${back_url}/product?${type}=${value}&page=${page}&limit=${limit}`
     );
     if (!response.ok) throw new Error('시스템 오류 발생.');
 

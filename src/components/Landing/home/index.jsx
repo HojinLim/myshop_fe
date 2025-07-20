@@ -66,7 +66,7 @@ const index = () => {
     setIsFetching(true);
     dispatch(setLoading(true));
 
-    await getProducts('', '', page)
+    await getProducts('', '', page, 12)
       .then((res) => {
         if (res.products && res.products.length > 0) {
           if (res.products.length < 5) setHasMore(false);
@@ -103,23 +103,20 @@ const index = () => {
   }, [page]);
 
   useEffect(() => {
-    if (!hasMore || isFetching) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !isFetching && hasMore) {
-          setPage((prev) => prev + 1);
-        }
-      },
-      {
-        threshold: 1.0,
-        rootMargin: '0px 0px 200px 0px',
-      }
-    );
-
-    if (loaderRef.current) observer.observe(loaderRef.current);
-
-    return () => observer.disconnect();
+    // if (!hasMore || isFetching) return;
+    // const observer = new IntersectionObserver(
+    //   ([entry]) => {
+    //     if (entry.isIntersecting && !isFetching && hasMore) {
+    //       setPage((prev) => prev + 1);
+    //     }
+    //   },
+    //   {
+    //     threshold: 1.0,
+    //     rootMargin: '0px 0px 200px 0px',
+    //   }
+    // );
+    // if (loaderRef.current) observer.observe(loaderRef.current);
+    // return () => observer.disconnect();
   }, [hasMore, isFetching]);
   const [imgLoaded, setImgLoaded] = useState(false);
   return (
@@ -220,6 +217,7 @@ const index = () => {
                     alt={product.name}
                     style={{ opacity: imgLoaded ? 1 : 0 }}
                     onLoad={() => setImgLoaded(true)}
+                    loading="lazy"
                   />
                 </div>
 
